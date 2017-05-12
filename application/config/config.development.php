@@ -53,7 +53,7 @@ return array(
 	 */
 	'DB_TYPE' => 'mysql',
 	'DB_HOST' => 'localhost',
-	'DB_NAME' => 'hugenew',
+	'DB_NAME' => 'component_management',
 	'DB_USER' => 'root',
 	'DB_PASS' => '',
 	'DB_PORT' => '3306',

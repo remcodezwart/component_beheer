@@ -1,1 +1,1 @@
-CREATE DATABASE IF NOT EXISTS `huge`;
+CREATE DATABASE IF NOT EXISTS `component_management`;
