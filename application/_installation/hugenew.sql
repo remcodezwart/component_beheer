@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `mutations` (
 -- Dumpen data van tabel hugenew.mutations: ~26 rows (ongeveer)
 /*!40000 ALTER TABLE `mutations` DISABLE KEYS */;
 REPLACE INTO `mutations` (`id`, `productId`, `date`, `studentId`, `description`, `stock`) VALUES
-	(1, 0, '0000-00-00 00:00:00', 0, '0', NULL),
+	(1, 0, '2017-01-24 00:00:00', 0, '0', NULL),
 	(2, 0, '2017-01-24 00:00:00', 99030821, '', NULL),
 	(3, 22, '2017-01-24 00:00:00', 99030821, '', NULL),
 	(4, 22, '2017-01-24 00:00:00', 99030821, '', NULL),
