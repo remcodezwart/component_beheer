@@ -16,34 +16,31 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <!-- wrapper, to center website -->
     <div class="wrapper">
-
-        <!-- logo -->
     
 
         <!-- navigation -->
         <ul class="navigation">
             <li <?php if (View::checkForActiveController($filename, "index")) { echo ' class="active" '; } ?> >
-                <a href="<?=Config::get('URL'); ?>index/index">Index</a>
+                <a href="<?=Config::get('URL'); ?>index/index">Home</a>
             </li>
             <li <?php if (View::checkForActiveController($filename, "overview")) { echo ' class="active" '; } ?> >
-                <a href="<?=Config::get('URL'); ?>profile/index">Profiles</a>
+                <a href="<?=Config::get('URL'); ?>profile/index">Profielen</a>
             </li>
             <?php if (Session::userIsLoggedIn()) { ?>
                 <li <?php if (View::checkForActiveController($filename, "dashboard")) { echo ' class="active" '; } ?> >
                     <a href="<?=Config::get('URL'); ?>dashboard/index">Dashboard</a>
                 </li>
                 <li <?php if (View::checkForActiveController($filename, "Components")) { echo ' class="active" '; } ?> >
-                    <a href="<?=Config::get('URL'); ?>component/index">Components</a>
+                    <a href="<?=Config::get('URL'); ?>component/index">Componenten</a>
                 </li>
             <?php } else { ?>
                 <!-- for not logged in users -->
                 <li <?php if (View::checkForActiveControllerAndAction($filename, "login/index")) { echo ' class="active" '; } ?> >
-                    <a href="<?=Config::get('URL'); ?>login/index">Login</a>
+                    <a href="<?=Config::get('URL'); ?>login/index">Inloggen</a>
                 </li>
                 <li <?php if (View::checkForActiveControllerAndAction($filename, "login/register")) { echo ' class="active" '; } ?> >
-                    <a href="<?=Config::get('URL'); ?>login/register">Register</a>
+                    <a href="<?=Config::get('URL'); ?>login/register">Registreren</a>
                 </li>
             <?php } ?>
         </ul>
@@ -57,17 +54,15 @@
                     <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
                         <a href="<?=Config::get('URL'); ?>login/changeUserRole">Change account type</a>
                     </li>
-                    <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
-                        <a href="<?=Config::get('URL'); ?>login/editAvatar">Edit your avatar</a>
                     </li>
                     <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
-                        <a href="<?=Config::get('URL'); ?>login/editusername">Edit my username</a>
+                        <a href="<?=Config::get('URL'); ?>login/editusername">wijzig gebruikersnaam</a>
                     </li>
                     <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
-                        <a href="<?=Config::get('URL'); ?>login/edituseremail">Edit my email</a>
+                        <a href="<?=Config::get('URL'); ?>login/edituseremail">wijzig email-adress</a>
                     </li>
                     <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
-                        <a href="<?=Config::get('URL'); ?>login/logout">Logout</a>
+                        <a href="<?=Config::get('URL'); ?>login/logout">Uitloggen</a>
                     </li>
                 </ul>
             </li>

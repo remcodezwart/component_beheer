@@ -2,16 +2,14 @@
     <h1>Request a password reset</h1>
     <div class="box">
 
-        <!-- echo out the system feedback (error and success messages) -->
-        <?php $this->renderFeedbackMessages(); ?>
+        <?=$this->renderFeedbackMessages(); ?>
 
-        <!-- request password reset form box -->
-        <form method="post" action="<?php echo Config::get('URL'); ?>login/requestPasswordReset_action">
+        <form method="post" action="<?=Config::get('URL'); ?>login/requestPasswordReset_action">
             <label>
-                Enter your username or email and you'll get a mail with instructions:
-                <input type="text" name="user_name_or_email" required />
+                Voer u gebruikers naam of email en volg de instructies in de email
+                <input type="text" name="user_name_or_email" required="true">
             </label>
-            <input type="submit" value="Send me a password-reset mail" />
+            <button type="submit">Stuur een email om mijn wachtwoord te resetten</button>
         </form>
 
     </div>

@@ -1,17 +1,16 @@
 <div class="container">
-    <h1>LoginController/editUserEmail</h1>
 
-    <!-- echo out the system feedback (error and success messages) -->
-    <?php $this->renderFeedbackMessages(); ?>
+    <?=$this->renderFeedbackMessages(); ?>
 
     <div class="box">
-        <h2>Change your email address</h2>
+        <h2>Wijzig uw email adress</h2>
 
-        <form action="<?php echo Config::get('URL'); ?>login/editUserEmail_action" method="post">
+        <form action="<?=Config::get('URL'); ?>login/editUserEmail_action" method="post">
             <label>
-                New email address: <input type="text" name="user_email" required />
+                Nieuw email address: <input type="text" name="user_email" required="true">
             </label>
-            <input type="submit" value="Submit" />
+            <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
+            <button type="submit">Versturen</button>
         </form>
     </div>
 </div>
