@@ -61,13 +61,13 @@
                         <a href="<?=Config::get('URL'); ?>login/editAvatar">Edit your avatar</a>
                     </li>
                     <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>login/editusername">Edit my username</a>
+                        <a href="<?=Config::get('URL'); ?>login/editusername">Edit my username</a>
                     </li>
                     <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>login/edituseremail">Edit my email</a>
+                        <a href="<?=Config::get('URL'); ?>login/edituseremail">Edit my email</a>
                     </li>
                     <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>login/logout">Logout</a>
+                        <a href="<?=Config::get('URL'); ?>login/logout">Logout</a>
                     </li>
                 </ul>
             </li>
