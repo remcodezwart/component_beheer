@@ -162,10 +162,6 @@ class LoginModel
         Session::set('user_account_type', $user_account_type);
         Session::set('user_provider_type', 'DEFAULT');
 
-        // get and set avatars
-        Session::set('user_avatar_file', AvatarModel::getPublicUserAvatarFilePathByUserId($user_id));
-        Session::set('user_gravatar_image_url', AvatarModel::getGravatarLinkByEmail($user_email));
-
         // finally, set user as logged-in
         Session::set('user_logged_in', true);
     }

@@ -1,18 +1,16 @@
 <div class="container">
-    <h1>LoginController/editUsername</h1>
 
-    <!-- echo out the system feedback (error and success messages) -->
-    <?php $this->renderFeedbackMessages(); ?>
+    <?=$this->renderFeedbackMessages(); ?>
 
     <div class="box">
         <h2>Change your username</h2>
 
-        <form action="<?php echo Config::get('URL'); ?>login/editUserName_action" method="post">
-            <!-- btw http://stackoverflow.com/questions/774054/should-i-put-input-tag-inside-label-tag -->
+        <form action="<?=Config::get('URL'); ?>login/editUserName_action" method="post">
             <label>
-                New username: <input type="text" name="user_name" required />
+                Nieuwe gebruikersnaam: <input type="text" name="user_name" required="true">
             </label>
-            <input type="submit" value="Submit" />
+            <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
+            <button type="submit">Versturen</button>
         </form>
     </div>
 </div>

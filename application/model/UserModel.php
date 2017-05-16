@@ -31,7 +31,6 @@ class UserModel
             $all_users_profiles[$user->user_id]->user_name = $user->user_name;
             $all_users_profiles[$user->user_id]->user_email = $user->user_email;
             $all_users_profiles[$user->user_id]->user_active = $user->user_active;
-            $all_users_profiles[$user->user_id]->user_avatar_link = (Config::get('USE_GRAVATAR') ? AvatarModel::getGravatarLinkByEmail($user->user_email) : AvatarModel::getPublicAvatarFilePathOfUser($user->user_has_avatar, $user->user_id));
         }
 
         return $all_users_profiles;
@@ -53,13 +52,7 @@ class UserModel
 
         $user = $query->fetch();
 
-        if ($query->rowCount() == 1) {
-            if (Config::get('USE_GRAVATAR')) {
-                $user->user_avatar_link = AvatarModel::getGravatarLinkByEmail($user->user_email);
-            } else {
-                $user->user_avatar_link = AvatarModel::getPublicAvatarFilePathOfUser($user->user_has_avatar, $user->user_id);
-            }
-        } else {
+        if (!$query->rowCount() == 1) {
             Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
         }
 
@@ -245,7 +238,6 @@ class UserModel
         // ... then write new email to session, Gravatar too (as this relies to the user's email address)
         if (UserModel::saveNewEmailAddress(Session::get('user_id'), $new_user_email)) {
             Session::set('user_email', $new_user_email);
-            Session::set('user_gravatar_image_url', AvatarModel::getGravatarLinkByEmail($new_user_email));
             Session::add('feedback_positive', Text::get('FEEDBACK_EMAIL_CHANGE_SUCCESSFUL'));
             return true;
         }

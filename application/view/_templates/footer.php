@@ -1,7 +1,4 @@
-        <div class="footer"></div>
-    </div><!-- close class="wrapper" -->
-
-    <!-- the support button on the top right -->
-    
+        <footer></footer>
+    </div>
 </body>
 </html>

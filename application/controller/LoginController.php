@@ -34,6 +34,7 @@ class LoginController extends Controller
      */
     public function login()
     {
+        Csrf::checkToken();
         // perform the login method, put result (true or false) into $login_successful
         $login_successful = LoginModel::login(
             Request::post('user_name'), Request::post('user_password'), Request::post('set_remember_me_cookie')
@@ -85,8 +86,6 @@ class LoginController extends Controller
         $this->View->render('login/showProfile', array(
             'user_name' => Session::get('user_name'),
             'user_email' => Session::get('user_email'),
-            'user_gravatar_image_url' => Session::get('user_gravatar_image_url'),
-            'user_avatar_file' => Session::get('user_avatar_file'),
             'user_account_type' => Session::get('user_account_type')
         ));
     }
@@ -108,6 +107,7 @@ class LoginController extends Controller
     public function editUsername_action()
     {
         Auth::checkAuthentication();
+        Csrf::checkToken();
         UserModel::editUserName(Request::post('user_name'));
         Redirect::to('login/index');
     }
@@ -130,49 +130,11 @@ class LoginController extends Controller
     public function editUserEmail_action()
     {
         Auth::checkAuthentication();
+        Csrf::checkToken();
         UserModel::editUserEmail(Request::post('user_email'));
         Redirect::to('login/editUserEmail');
     }
 
-    /**
-     * Edit avatar
-     * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
-     */
-    public function editAvatar()
-    {
-        Auth::checkAuthentication();
-        $this->View->render('login/editAvatar', array(
-            'avatar_file_path' => AvatarModel::getPublicUserAvatarFilePathByUserId(Session::get('user_id'))
-        ));
-    }
-
-    /**
-     * Perform the upload of the avatar
-     * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
-     * POST-request
-     */
-    public function uploadAvatar_action()
-    {
-        Auth::checkAuthentication();
-        AvatarModel::createAvatar();
-        Redirect::to('login/editAvatar');
-    }
-
-    /**
-     * Delete the current user's avatar
-     * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
-     */
-    public function deleteAvatar_action()
-    {
-        Auth::checkAuthentication();
-        AvatarModel::deleteAvatar(Session::get("user_id"));
-        Redirect::to('login/editAvatar');
-    }
-
-    /**
-     * Show the change-account-type page
-     * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
-     */
     public function changeUserRole()
     {
         Auth::checkAuthentication();
@@ -187,6 +149,7 @@ class LoginController extends Controller
     public function changeUserRole_action()
     {
         Auth::checkAuthentication();
+        Csrf::checkToken();
 
         if (Request::post('user_account_upgrade')) {
             // "2" is quick & dirty account type 2, something like "premium user" maybe. you got the idea :)
@@ -220,6 +183,7 @@ class LoginController extends Controller
      */
     public function register_action()
     {
+        Csrf::checkToken();
         $registration_successful = RegistrationModel::registerNewUser();
 
         if ($registration_successful) {
@@ -258,6 +222,7 @@ class LoginController extends Controller
      */
     public function requestPasswordReset_action()
     {
+
         PasswordResetModel::requestPasswordReset(Request::post('user_name_or_email'));
         Redirect::to('login/index');
     }
@@ -291,6 +256,7 @@ class LoginController extends Controller
      */
     public function setNewPassword()
     {
+        Csrf::checkToken();
         PasswordResetModel::setNewPassword(
             Request::post('user_name'), Request::post('user_password_reset_hash'),
             Request::post('user_password_new'), Request::post('user_password_repeat')
