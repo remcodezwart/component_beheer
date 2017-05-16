@@ -57,4 +57,14 @@ class Csrf
         $token = Request::post('csrf_token');
         return $token === Session::get('csrf_token') && !empty($token);
     }
+
+    public static function checkToken()
+    {
+        if (!self::isTokenValid()) {
+            LoginModel::logout();
+            redirect::home();
+            exit;
+        }
+        return true;
+    }
 }
