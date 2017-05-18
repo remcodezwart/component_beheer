@@ -49,16 +49,16 @@
                         <a href="<?=Config::get('URL'); ?>login/changeUserRole">Change account type</a>
                     </li>
                     <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>login/editusername">wijzig gebruikersnaam</a>
+                        <a href="<?=Config::get('URL'); ?>login/editusername">wijzig gebruikersnaam</a>
                     </li>
                     <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>login/edituseremail">wijzig email-adress</a>
+                        <a href="<?=Config::get('URL'); ?>login/edituseremail">wijzig email-adress</a>
                     </li>
                     <li <?php if (View::checkForActiveController($filename, "location")) { echo ' class="active" '; } ?> >
                         <a href="<?=Config::get('URL'); ?>location/index">locaties</a>
                     </li>
                     <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>login/logout">Uitloggen</a>
+                        <a href="<?=Config::get('URL'); ?>login/logout">Uitloggen</a>
                     </li>
                 </ul>
             </li>
