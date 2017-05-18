@@ -6,7 +6,7 @@
  * Could be extended to i18n etc.
  */
 return array(
-	"FEEDBACK_UNKNOWN_ERROR" => "Unknown error occurred!",
+	"FEEDBACK_UNKNOWN_ERROR" => "Er is een onbekende fout opgetreden",
 	"FEEDBACK_PASSWORD_WRONG_3_TIMES" => "You have typed in a wrong password 3 or more times already. Please wait 30 seconds to try again.",
 	"FEEDBACK_ACCOUNT_NOT_ACTIVATED_YET" => "Your account is not activated yet. Please click on the confirm link in the mail.",
 	"FEEDBACK_PASSWORD_WRONG" => "Password was wrong.",
@@ -70,4 +70,5 @@ return array(
 	"FEEDBACK_FACEBOOK_USERNAME_ALREADY_EXISTS" => "Sorry, but you have already registered here (your Facebook username exists in our database).",
 	"FEEDBACK_FACEBOOK_REGISTER_SUCCESSFUL" => "You have been successfully registered with Facebook.",
 	"FEEDBACK_FACEBOOK_OFFLINE" => "We could not reach the Facebook servers. Maybe Facebook is offline (that really happens sometimes).",
+	"LOCATION_NO_ADDRESS" => "Vul een adress in"
 );

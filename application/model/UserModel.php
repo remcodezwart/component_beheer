@@ -33,7 +33,7 @@ class UserModel
             $all_users_profiles[$user->user_id]->user_active = $user->user_active;
         }
 
-        return $all_users_profiles;
+        return Filter::XSSFilter($all_users_profiles);
     }
 
     /**
@@ -56,7 +56,7 @@ class UserModel
             Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
         }
 
-        return $user;
+        return Filter::XSSFilter($user);
     }
 
     /**
@@ -73,7 +73,8 @@ class UserModel
                                            AND user_provider_type = :provider_type LIMIT 1");
         $query->execute(array(':user_name_or_email' => $user_name_or_email, ':provider_type' => 'DEFAULT'));
 
-        return $query->fetch();
+        $user = $query->fetch();
+        return Filter::XSSFilter($user);
     }
 
     /**
@@ -292,7 +293,8 @@ class UserModel
         $query->execute(array(':user_name' => $user_name, ':provider_type' => 'DEFAULT'));
 
         // return one row (we only have one result or nothing)
-        return $query->fetch();
+        $user = $query->fetch();
+        return Filter::XSSFilter($user);
     }
 
     /**
@@ -318,6 +320,7 @@ class UserModel
         $query->execute(array(':user_id' => $user_id, ':user_remember_me_token' => $token, ':provider_type' => 'DEFAULT'));
 
         // return one row (we only have one result or nothing)
-        return $query->fetch();
+        $user = $query->fetch();
+        return Filter::XSSFilter($user);
     }
 }
