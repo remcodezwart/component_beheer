@@ -43,10 +43,10 @@
         <ul class="navigation right">
         <?php if (Session::userIsLoggedIn()) : ?>
             <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
-                <a href="<?=Config::get('URL'); ?>login/showprofile">My Account</a>
+                <a href="<?=Config::get('URL'); ?>login/showprofile">Mijn acount</a>
                 <ul class="navigation-submenu">
                     <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
-                        <a href="<?=Config::get('URL'); ?>login/changeUserRole">Change account type</a>
+                        <a href="<?=Config::get('URL'); ?>login/changeUserRole">verander acount type</a>
                     </li>
                     <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
                         <a href="<?=Config::get('URL'); ?>login/editusername">wijzig gebruikersnaam</a>
@@ -56,6 +56,9 @@
                     </li>
                     <li <?php if (View::checkForActiveController($filename, "location")) { echo ' class="active" '; } ?> >
                         <a href="<?=Config::get('URL'); ?>location/index">locaties</a>
+                    </li>
+                    <li <?php if (View::checkForActiveController($filename, "supplier")) { echo ' class="active" '; } ?> >
+                        <a href="<?=Config::get('URL'); ?>supplier/index">Leveranciers</a>
                     </li>
                     <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
                         <a href="<?=Config::get('URL'); ?>login/logout">Uitloggen</a>

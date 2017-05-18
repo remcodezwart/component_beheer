@@ -70,5 +70,6 @@ return array(
 	"FEEDBACK_FACEBOOK_USERNAME_ALREADY_EXISTS" => "Sorry, but you have already registered here (your Facebook username exists in our database).",
 	"FEEDBACK_FACEBOOK_REGISTER_SUCCESSFUL" => "You have been successfully registered with Facebook.",
 	"FEEDBACK_FACEBOOK_OFFLINE" => "We could not reach the Facebook servers. Maybe Facebook is offline (that really happens sometimes).",
-	"LOCATION_NO_ADDRESS" => "Vul een adress in"
+	"LOCATION_NO_ADDRESS" => "Vul een adress in",
+	"SUPPLIER_NO_NAME" => "Vul een naam van de leverancier in"
 );
