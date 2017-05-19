@@ -20,4 +20,11 @@ class IndexController extends Controller
             'component' => ComponentModel::getAllComponent()
         ));
     }
+
+    public function background()
+    {
+        Csrf::checkToken();
+
+        
+    }
 }

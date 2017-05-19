@@ -30,12 +30,7 @@ return array(
 	 */
 	'PATH_CONTROLLER' => realpath(dirname(__FILE__).'/../../') . '/application/controller/',
 	'PATH_VIEW' => realpath(dirname(__FILE__).'/../../') . '/application/view/',
-	/**
-	 * Configuration for: Avatar paths
-	 * Internal path to save avatars. Make sure this folder is writable. The slash at the end is VERY important!
-	 */
-	'PATH_AVATARS' => realpath(dirname(__FILE__).'/../../') . '/public/avatars/',
-	'PATH_AVATARS_PUBLIC' => 'avatars/',
+
 	/**
 	 * Configuration for: Default controller and action
 	 */
@@ -59,12 +54,6 @@ return array(
 	'DB_PORT' => '3306',
 	'DB_CHARSET' => 'utf8',
 	/**
-	 * Configuration for: Additional login providers: Facebook
-	 * CURRENTLY REMOVED (as Facebook has removed support for the used API version).
-	 * Another, better and up-to-date implementation might come soon.
-	 */
-	'FACEBOOK_LOGIN' => false,
-	/**
 	 * Configuration for: Captcha size
 	 * The currently used Captcha generator (https://github.com/Gregwar/Captcha) also runs without giving a size,
 	 * so feel free to use ->build(); inside CaptchaModel.
@@ -80,19 +69,6 @@ return array(
 	 */
 	'COOKIE_RUNTIME' => 1209600,
 	'COOKIE_PATH' => '/',
-	/**
-	 * Configuration for: Avatars/Gravatar support
-	 * Set to true if you want to use "Gravatar(s)", a service that automatically gets avatar pictures via using email
-	 * addresses of users by requesting images from the gravatar.com API. Set to false to use own locally saved avatars.
-	 * AVATAR_SIZE set the pixel size of avatars/gravatars (will be 44x44 by default). Avatars are always squares.
-	 * AVATAR_DEFAULT_IMAGE is the default image in public/avatars/
-	 */
-	'USE_GRAVATAR' => false,
-	'GRAVATAR_DEFAULT_IMAGESET' => 'mm',
-	'GRAVATAR_RATING' => 'pg',
-	'AVATAR_SIZE' => 44,
-	'AVATAR_JPEG_QUALITY' => 85,
-	'AVATAR_DEFAULT_IMAGE' => 'default.jpg',
 	/**
 	 * Configuration for: Email server credentials
 	 *
