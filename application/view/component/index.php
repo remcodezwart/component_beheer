@@ -69,14 +69,16 @@
 }
  ?>
   <p id="create">
-    <h3>New component</h3>
+    <h3>Nieuw component</h3>
   </p>
 <p>
   <form method="post" action="<?=Config::get('URL');?>component/create">
-    <label>Url of photo: </label><input class="reset" type="text" name="photo" />
-    <label>Description: </label><input class="reset" type="text" name="description" />
-    <label>Supplier id: </label><input class="reset" type="text" name="supplier_id" />
-    <label>Price: </label><input class="reset" type="text" name="price" />
-    <input class="button" type="submit" value='Create this component' autocomplete="off" />
+    <ul>
+      <li><label>Naam component: </label><input class="reset" type="text" name="name" required /></li>
+      <li><label>Beschrijving: </label><input class="reset" type="textarea" name="description" required /></li>
+      <li><label>Specs: </label><input class="reset" type="textarea" name="specs" required /></li>
+      <li><label>Hyperlink: </label><input class="reset" type="text" name="hyperlink" required /></li>
+    </ul>
+    <input class="button" type="submit" value='Maak dit component aan' autocomplete="off" />
   </form>
 </p>

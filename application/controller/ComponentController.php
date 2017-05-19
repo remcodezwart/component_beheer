@@ -43,8 +43,8 @@ class ComponentController extends Controller
     public function create()
     {
 
-        ComponentModel::createComponent(Request::post('photo'), Request::post('description'), Request::post('price'), Request::post('supplierId'));
-        Redirect::to('component');
+        ComponentModel::createComponent(Request::post('name'), Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('amount'));
+        Redirect::to('index');
     }
 
     /**
@@ -66,8 +66,8 @@ class ComponentController extends Controller
      */
     public function editSave()
     {
-        ComponentModel::updateComponent(Request::post('productId'), Request::post('photo'), Request::post('description'), Request::post('price'), Request::post('supplierId'));
-        Redirect::to('component');
+        ComponentModel::updateComponent(Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('amount'), Request::post('id'));
+        Redirect::to('index');
     }
 
     /**
@@ -79,6 +79,6 @@ class ComponentController extends Controller
     public function delete($productId)
     {
         ComponentModel::deleteComponent($productId);
-        Redirect::to('component');
+        Redirect::to('index');
     }
 }

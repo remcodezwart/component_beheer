@@ -4,7 +4,7 @@
     <div class="box">
 
         <!-- echo out the system feedback (error and success messages) -->
-        <?php $this->renderFeedbackMessages(); ?>
+        <?=$this->renderFeedbackMessages(); ?>
 
         <a href="<?=Config::get('URL'); ?>">Ga terug naar de hoofdpagina</a>
     </div>

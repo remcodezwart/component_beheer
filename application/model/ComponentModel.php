@@ -9,25 +9,16 @@ class ComponentModel
      */
     public static function getAllComponent()
     {
-        
         $database = DatabaseFactory::getFactory()->getConnection();
 
-
-    if (!isset($_POST['search'])) {}
-
-        else{
-
-        $sql = "SELECT components.productId, components.photo,components.description,components.price,components.supplierId,users.user_name,supplier.name,loaned.date_start,loaned.date_end, loaned.userid FROM components
-        left join supplier on components.supplierid = supplier.id
-        left join loaned on components.productId = loaned.compid
-        left join users on loaned.userid = users.user_id where description = '" . $_POST['search'] . "'or userid = NULLIF('" . $_POST['search'] . "',0);";
+        $sql = "SELECT * FROM components";
         $query = $database->prepare($sql);
-        $query->execute(array(':user_id' => Session::get('user_id')));
+        $query->execute();
 
         // fetchAll() is the PDO method that gets all result rows
         return $query->fetchAll();
     }
-}
+
 
     /**
      * Get a single note
@@ -73,16 +64,16 @@ class ComponentModel
      * @param string $note_text note text that will be created
      * @return bool feedback (was the note created properly ?)
      */
-    public static function createComponent($photo, $description, $price, $stock, $supplier_id)
+    public static function createComponent($name, $description, $specs, $hyperlink, $amount)
     {
       
 
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $sql = "
-        INSERT INTO components (photo, description, price, supplierId) VALUES (:photo, :description, :price,  :supplierId)";
+        INSERT INTO components (name, description, specs, hyperlink, amount) VALUES (:name, :description, :specs, :hyperlink, :amount)";
         $query = $database->prepare($sql);
-        $query->execute(array(':photo' => $photo, ':description' => $description, ':price' => $price, ':supplierId' => $supplierId)); 
+        $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':amount' => $amount)); 
     }
 
     /**
@@ -91,18 +82,13 @@ class ComponentModel
      * @param string $note_text new text of the specific note
      * @return bool feedback (was the update successful ?)
      */
-    public static function updateComponent($productId, $photo, $description, $price, $supplierId)
+    public static function updateComponent($description, $specs, $hyperlink, $amount, $id)
     {
-        if (!$productId ) {
-            return false;
-        }
-
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "
-        UPDATE components SET photo = :photo, description = :description, price = :price, supplierId = :supplierId WHERE productId = :productId LIMIT 1; ";
+        $sql = "UPDATE components SET description = :description, specs = :specs, hyperlink = :hyperlink, amount = :amount WHERE id = :id LIMIT 1";
         $query = $database->prepare($sql);
-        $query->execute(array(':productId' => $productId, ':photo' => $photo, ':description' => $description, ':price' => $price, ':supplierId' => $supplierId));
+        $query->execute(array(':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':amount' => $amount, ':id' => $id));
 
         if ($query->rowCount() == 1) {
             return true;
@@ -117,7 +103,7 @@ class ComponentModel
      * @param int $note_id id of the note
      * @return bool feedback (was the note deleted properly ?)
      */
-    public static function deleteComponent($productId)
+    public static function deleteComponent($id)
     {
         if (!$productId) {
             return false;
@@ -125,9 +111,9 @@ class ComponentModel
 
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "DELETE FROM components WHERE productId = :productId LIMIT 1";
+        $sql = "DELETE FROM components WHERE id = :id LIMIT 1";
         $query = $database->prepare($sql);
-        $query->execute(array(':productId' => $productId));
+        $query->execute(array(':id' => $id));
 
         if ($query->rowCount() == 1) {
             return true;
