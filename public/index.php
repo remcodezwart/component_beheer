@@ -1,5 +1,4 @@
 <?php
-
 /**
  * A super-simple user-authentication solution, embedded into a small framework.
  *

@@ -18,4 +18,11 @@ class IndexController extends Controller
     {
         $this->View->render('index/index');
     }
+
+    public function background()
+    {
+        Csrf::checkToken();
+
+        
+    }
 }

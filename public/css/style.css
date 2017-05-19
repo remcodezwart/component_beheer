@@ -67,9 +67,7 @@ body {
     margin: 0;
     padding: 0;
 }
-/* TODO */
-.navigation {
-}
+
 .navigation.right {
     float: right;
 }

@@ -8,13 +8,15 @@
     <link rel="stylesheet" href="<?=Config::get('URL'); ?>css/style2.css" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf_token" content="<?=Csrf::makeToken() ?>">
+    <meta name="url" content="<?=Config::get('URL')?>">
+
+    <!-- <script src="<?=Config::get('URL')?>js/initializing.js" type="text/javascript"></script>-->
 </head>
 <body>
     <div class="wrapper">
-    
-
         <!-- navigation -->
-        <ul class="navigation">
+        <nav class="navigation">
             <li <?php if (View::checkForActiveController($filename, "index")) { echo ' class="active" '; } ?> >
                 <a href="<?=Config::get('URL'); ?>index/index">Home</a>
             </li>
@@ -37,10 +39,10 @@
                     <a href="<?=Config::get('URL'); ?>login/register">Registreren</a>
                 </li>
             <?php } ?>
-        </ul>
+        </nav>
 
         <!-- my account -->
-        <ul class="navigation right">
+        <nav class="navigation right">
         <?php if (Session::userIsLoggedIn()) : ?>
             <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
                 <a href="<?=Config::get('URL'); ?>login/showprofile">Mijn acount</a>
@@ -66,4 +68,4 @@
                 </ul>
             </li>
         <?php endif; ?>
-        </ul>
+        </nav>
