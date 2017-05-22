@@ -11,7 +11,7 @@ class ComponentModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT * FROM components";
+        $sql = "SELECT * FROM components WHERE active = 1";
         $query = $database->prepare($sql);
         $query->execute();
 
@@ -105,13 +105,13 @@ class ComponentModel
      */
     public static function deleteComponent($id)
     {
-        if (!$productId) {
+        if (!$id) {
             return false;
         }
 
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "DELETE FROM components WHERE id = :id LIMIT 1";
+        $sql = "UPDATE components SET active = 0 WHERE id = :id LIMIT 1";
         $query = $database->prepare($sql);
         $query->execute(array(':id' => $id));
 

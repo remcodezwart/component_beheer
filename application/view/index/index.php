@@ -28,8 +28,12 @@
                         <p>Verander specs:<input type="textarea" name="specs" value="<?=$value->specs?>"/></p>
                         <p>Verander hyperlink:<input type="textarea" name="hyperlink" value="<?=$value->hyperlink?>"/></p>
                         <p>Verander voorraad:<input type="textarea" name="amount" value="<?=$value->amount?>"/></p>
-                        <input type="hidden" name="id" id="id" value="<?=$value->id?>"/>
-                        <input type="submit" class="button" value='Change'/>
+                        <input type="hidden" name="id" value="<?=$value->id?>"/>
+                        <input type="submit" class="button" value='Sla op'/>
+                    </form>
+                    <form method="post" action="<?=Config::get('URL'); ?>component/delete">
+                        <input type="hidden" name="id" value="<?=$value->id?>"/>
+                        <input type="submit" class="button" value='verwijder'/>
                     </form>
                 <?php endif; ?>
             </div>

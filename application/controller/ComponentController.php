@@ -76,9 +76,9 @@ class ComponentController extends Controller
      * totally okay.
      * @param int $note_id id of the note
      */
-    public function delete($productId)
+    public function delete()
     {
-        ComponentModel::deleteComponent($productId);
+        ComponentModel::deleteComponent(Request::post('id'));
         Redirect::to('index');
     }
 }
