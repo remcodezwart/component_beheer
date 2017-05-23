@@ -14,9 +14,9 @@ class ComponentModel
         $sql = "SELECT * FROM components WHERE active = 1";
         $query = $database->prepare($sql);
         $query->execute();
-
+        $components = $query->fetchAll();
         // fetchAll() is the PDO method that gets all result rows
-        return $query->fetchAll();
+        return Filter::XSSFilter($components);
     }
 
 
@@ -54,9 +54,9 @@ class ComponentModel
         WHERE components.productId = :productId LIMIT 1";
         $query = $database->prepare($sql);
         $query->execute(array(':productId' => $productId));
-
+        $component = $query->fetch();
         // fetch() is the PDO method that gets a single result
-        return $query->fetch();
+        return Filter::XSSFilter($component);
     }
 
     /**
@@ -82,13 +82,13 @@ class ComponentModel
      * @param string $note_text new text of the specific note
      * @return bool feedback (was the update successful ?)
      */
-    public static function updateComponent($description, $specs, $hyperlink, $amount, $id)
+    public static function updateComponent($description, $specs, $hyperlink, $id)
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "UPDATE components SET description = :description, specs = :specs, hyperlink = :hyperlink, amount = :amount WHERE id = :id LIMIT 1";
+        $sql = "UPDATE components SET description = :description, specs = :specs, hyperlink = :hyperlink WHERE id = :id LIMIT 1";
         $query = $database->prepare($sql);
-        $query->execute(array(':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':amount' => $amount, ':id' => $id));
+        $query->execute(array(':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':id' => $id));
 
         if ($query->rowCount() == 1) {
             return true;

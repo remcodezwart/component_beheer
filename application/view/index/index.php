@@ -23,16 +23,22 @@
                 <p><?=$value->description?> <?=$value->specs?></p>
                 <p>In voorraad: <?=$value->amount?></p>
                 <?php if (Session::userIsLoggedIn()) : ?>
+                    <form method="post" action="<?=Config::get('URL'); ?>index/loanMe">
+                        <input type="hidden" name="id" value="<?=$value->id?>"/>
+                        <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
+                        <input type="submit" class="button" value="Ik wil dit lenen."/>
+                    </form>
                     <form method="post" action="<?=Config::get('URL'); ?>component/editSave">
                         <p>Verander beschrijving:<textarea name="description"><?=$value->description?></textarea></p>
                         <p>Verander specs:<textarea type="textarea" name="specs"><?=$value->specs?></textarea></p>
-                        <p>Verander hyperlink:<input type="textarea" name="hyperlink" value="<?=$value->hyperlink?>"/></p>
-                        <p>Verander voorraad:<input type="textarea" name="amount" value="<?=$value->amount?>"/></p>
+                        <p>Verander hyperlink:<input type="text" name="hyperlink" value="<?=$value->hyperlink?>"/></p>
                         <input type="hidden" name="id" value="<?=$value->id?>"/>
+                        <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
                         <input type="submit" class="button" value='Sla op'/>
                     </form>
                     <form method="post" action="<?=Config::get('URL'); ?>component/delete">
                         <input type="hidden" name="id" value="<?=$value->id?>"/>
+                        <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
                         <input type="submit" class="button" value='verwijder'/>
                     </form>
                 <?php endif; ?>
