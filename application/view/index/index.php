@@ -24,8 +24,8 @@
                 <p>In voorraad: <?=$value->amount?></p>
                 <?php if (Session::userIsLoggedIn()) : ?>
                     <form method="post" action="<?=Config::get('URL'); ?>component/editSave">
-                        <p>Verander beschrijving:<input type="textarea" name="description" value="<?=$value->description?>"/></p>
-                        <p>Verander specs:<input type="textarea" name="specs" value="<?=$value->specs?>"/></p>
+                        <p>Verander beschrijving:<textarea name="description"><?=$value->description?></textarea></p>
+                        <p>Verander specs:<textarea type="textarea" name="specs"><?=$value->specs?></textarea></p>
                         <p>Verander hyperlink:<input type="textarea" name="hyperlink" value="<?=$value->hyperlink?>"/></p>
                         <p>Verander voorraad:<input type="textarea" name="amount" value="<?=$value->amount?>"/></p>
                         <input type="hidden" name="id" value="<?=$value->id?>"/>

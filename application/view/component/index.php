@@ -71,7 +71,6 @@
   <p id="create">
     <h3>Nieuw component</h3>
   </p>
-<p>
   <form method="post" action="<?=Config::get('URL');?>component/create">
     <ul>
       <li><label>Naam component: </label><input class="reset" type="text" name="name" required /></li>
@@ -81,4 +80,3 @@
     </ul>
     <input class="button" type="submit" value='Maak dit component aan' autocomplete="off" />
   </form>
-</p>
