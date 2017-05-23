@@ -3,11 +3,9 @@
     <h1>IndexController/index</h1>
     <div class="box">
 
-        <!-- echo out the system feedback (error and success messages) -->
-        <?php $this->renderFeedbackMessages()?>
+        <?=$this->renderFeedbackMessages()?>
 
         <h3>What happens here ?</h3>
-        <!--span><?=var_dump($this->component)?></span-->
         <p>
             This is the homepage. As no real URL-route (like /login/register) is provided, the app uses the default
             controller and the default action, defined in application/config/config.php, by default it's

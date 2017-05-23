@@ -5,6 +5,7 @@
     <title>component beheer</title>
 
     <link rel="stylesheet" href="<?=Config::get('URL'); ?>css/style.css" />
+    <link rel="stylesheet" href="<?=Config::get('URL'); ?>css/Spectre.css" />
     <link rel="stylesheet" href="<?=Config::get('URL'); ?>css/style2.css" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
