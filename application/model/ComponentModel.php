@@ -45,15 +45,14 @@ class ComponentModel
 
 
 
-    public static function getComponent($productId)
+    public static function getComponent($id)
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT components.*,supplier.name FROM components
-        left join supplier on components.supplierId = supplierId
-        WHERE components.productId = :productId LIMIT 1";
+        $sql = "SELECT * FROM components
+        WHERE id = :id LIMIT 1";
         $query = $database->prepare($sql);
-        $query->execute(array(':productId' => $productId));
+        $query->execute(array(':id' => $id));
         $component = $query->fetch();
         // fetch() is the PDO method that gets a single result
         return Filter::XSSFilter($component);
