@@ -27,4 +27,12 @@ class IndexController extends Controller
 
         
     }
+
+    public function loanMe()
+    {
+        Csrf::checkToken();
+        $this->View->render('index/loanscreen', array(
+            'component' => ComponentModel::getComponent(Request::post('id'))
+        ));
+    }
 }

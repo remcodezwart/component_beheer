@@ -30,8 +30,8 @@ class ComponentController extends Controller
 
     public function create()
     {
-
-        ComponentModel::createComponent(Request::post('name'), Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('amount'));
+        Csrf::checkToken();
+        ComponentModel::createComponent(Request::post('name'), Request::post('description'), Request::post('specs'), Request::post('hyperlink'));
         Redirect::to('index');
     }
 
@@ -42,12 +42,14 @@ class ComponentController extends Controller
 
     public function editSave()
     {
+        Csrf::checkToken();
         ComponentModel::updateComponent(Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('amount'), Request::post('id'));
         Redirect::to('index');
     }
 
     public function delete()
     {
+        Csrf::checkToken();
         ComponentModel::deleteComponent(Request::post('id'));
         Redirect::to('index');
     }

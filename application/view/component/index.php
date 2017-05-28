@@ -6,17 +6,13 @@
     <button type="submit">Zoeken</button>
   </form>
   
-  <p id="create">
-    <h3>Nieuw component</h3>
-  </p>
-<p>
+  <h3>Nieuw component</h3>
   <form method="post" action="<?=Config::get('URL');?>component/create">
-    <ul>
-      <li><label>Naam component: </label><input class="reset" type="text" name="name" required /></li>
-      <li><label>Beschrijving: </label><input class="reset" type="textarea" name="description" required /></li>
-      <li><label>Specs: </label><input class="reset" type="textarea" name="specs" required /></li>
-      <li><label>Hyperlink: </label><input class="reset" type="text" name="hyperlink" required /></li>
-    </ul>
-    <input class="button" type="submit" value='Maak dit component aan' autocomplete="off" />
+      <label>Naam component: </label><input class="reset" type="text" name="name" required /><br>
+      <label>Beschrijving: </label><textarea class="reset" name="description" required></textarea><br>
+      <label>Specs: </label><textarea class="reset" name="specs" required></textarea><br>
+      <label>Hyperlink: </label><input class="reset" type="text" name="hyperlink" required /><br>
+      <label>Voorraad: </label><input type="number" class="reset" name="amount" required /><br>
+      <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">     
+      <button type="submit">Maak dit component aan</button>
   </form>
-<div>

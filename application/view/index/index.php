@@ -11,6 +11,11 @@
             <pre>specs: <?=$value->specs?></pre>
             <p>In voorraad: <?=$value->amount?></p>
             <?php if (Session::userIsLoggedIn()) : ?>
+                <form method="post" action="<?=Config::get('URL'); ?>index/loanMe">
+                    <input type="hidden" name="id" value="<?=$value->id?>"/>
+                    <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
+                    <input type="submit" class="button" value="Ik wil dit lenen."/>
+                </form>
                 <form method="post" action="<?=Config::get('URL'); ?>component/editSave">
                     <p>Verander beschrijving:</p>
                     <textarea name="description"><?=$value->description ?></textarea>
