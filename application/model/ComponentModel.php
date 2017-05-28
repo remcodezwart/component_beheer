@@ -45,25 +45,17 @@ class ComponentModel
 
 
 
-    public static function getComponent($productId)
+    public static function getComponent($id)
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT components.*,supplier.name FROM components
-        left join supplier on components.supplierId = supplierId
-        WHERE components.productId = :productId LIMIT 1";
+        $sql = "SELECT * FROM components WHERE id = :id";
         $query = $database->prepare($sql);
-        $query->execute(array(':productId' => $productId));
+        $query->execute(array(':id' => $id));
 
-        // fetch() is the PDO method that gets a single result
         return $query->fetch();
     }
 
-    /**
-     * Set a note (create a new one)
-     * @param string $note_text note text that will be created
-     * @return bool feedback (was the note created properly ?)
-     */
     public static function createComponent($name, $description, $specs, $hyperlink, $amount)
     {
       
@@ -122,5 +114,46 @@ class ComponentModel
         // default return
         Session::add('feedback_negative', Text::get('FEEDBACK_COMPONENT_DELETION_FAILED'));
         return false;
+    }
+
+    public static function addOrder($componentId, $supplierId, $amount, $date)
+    {
+        if (empty($date)) {
+            Session::add('feedback_negative', Text::get('NO_DATE'));
+            return false;
+        }
+
+        if (is_numeric($componentId) === false || self::getComponent($componentId) === false) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_COMPONENT_DOES_NOT_EXSIST'));
+            return false;
+        }
+
+        if (is_numeric($supplierId) === false || SupplierModel::getSupplier($supplierId) === false) {
+            Session::add('feedback_negative', Text::get('NO_SUPPLIER'));
+            return false;
+        }
+
+        if (is_numeric($amount) === false || 0 > $amount) {
+            Session::add('feedback_negative', Text::get('NEGATIVE_AMOUNT'));
+            return false;
+        }
+
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "UPDATE components SET amount += :amount WHERE id = :id";
+        $query = $database->prepare($sql);
+        $query->execute(array(':id' => $componentId, ':amount' => $amount));
+
+        $sql = "INSERT INTO order_history (date, amount, supplierId, componentId) VALUES(:date, :amount, :supplierId, :componentId)";
+        $query = $database->prepare($sql);
+        $query->execute(array(':date' => $date, ':amount' => $amount, ':supplierId' => $supplierId, ':componentId'  => $componentId));
+
+        if ($query->rowCount() == 1) {
+            return true;
+        }
+        exit;
+        Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
+        return false;
+
     }
 }
