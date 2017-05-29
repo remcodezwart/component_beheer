@@ -71,5 +71,9 @@ return array(
 	"FEEDBACK_FACEBOOK_REGISTER_SUCCESSFUL" => "You have been successfully registered with Facebook.",
 	"FEEDBACK_FACEBOOK_OFFLINE" => "We could not reach the Facebook servers. Maybe Facebook is offline (that really happens sometimes).",
 	"LOCATION_NO_ADDRESS" => "Vul een adress in",
-	"SUPPLIER_NO_NAME" => "Vul een naam van de leverancier in"
+	"SUPPLIER_NO_NAME" => "Vul een naam van de leverancier in",
+	"FEEDBACK_COMPONENT_DOES_NOT_EXSIST" => "Dit onderdeel bestaat niet",
+	"NEGATIVE_AMOUNT" => "Vul een positief getal in",
+	"NO_SUPPLIER" => "Deze leverancier bestaat niet",
+	"NO_DATE" => "Vul een geldigen datum in"
 );

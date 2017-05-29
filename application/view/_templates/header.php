@@ -17,7 +17,7 @@
     <div class="wrapper">
         <div class="container">
             <div class="columns">
-                <div class="center column col-12">
+                <div class="column col-12">
                     <nav>
                         <ul class="navigation">
                             <li <?php if (View::checkForActiveController($filename, "index")) { echo ' class="active" '; } ?> >
@@ -32,6 +32,9 @@
                             </li>
                             <li <?php if (View::checkForActiveController($filename, "component")) { echo ' class="active" '; } ?> >
                                 <a href="<?=Config::get('URL'); ?>component/index">Componenten</a>
+                            </li>
+                            <li <?php if (View::checkForActiveControllerAndAction  ($filename,                 "orderOverview/index")) { echo ' class="active" '; } ?> >
+                                <a href="<?=Config::get('URL'); ?>component/orderOverview">Order geschiedenis</a>
                             </li>
                             <li <?php if (View::checkForActiveControllerAndAction($filename,                   "login/changeUserRole")) { echo ' class="active" '; } ?> >
                                 <a href="<?=Config::get('URL'); ?>login/changeUserRole">verander acount type</a>

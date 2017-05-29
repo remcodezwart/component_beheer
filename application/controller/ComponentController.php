@@ -1,8 +1,5 @@
 <?php
 
-/**
- * The note controller: Just an example of simple create, read, update and delete (CRUD) actions.
- */
 class ComponentController extends Controller
 {
     /**
@@ -18,10 +15,6 @@ class ComponentController extends Controller
         Auth::checkAuthentication();
     }
 
-    /**
-     * This method controls what happens when you move to /note/index in your app.
-     * Gets all notes (of the user).
-     */
     public function index()
     {
         $this->View->render('component/index', array(
@@ -36,11 +29,6 @@ class ComponentController extends Controller
        Redirect::to('component');
     }
 
-    /**
-     * This method controls what happens when you move to /dashboard/create in your app.
-     * Creates a new note. This is usually the target of form submit actions.
-     * POST request.
-     */
     public function create()
     {
         Csrf::checkToken();
@@ -55,23 +43,11 @@ class ComponentController extends Controller
         Redirect::to('index');
     }
 
-    /**
-     * This method controls what happens when you move to /note/edit(/XX) in your app.
-     * Shows the current content of the note and an editing form.
-     * @param $note_id int id of the note
-     */
     public function edit($productId)
     {
-        $this->View->render('component/edit', array(
-            'comp' => ComponentModel::getComponent($productId)
-        ));
+        $this->View->render('component/edit');
     }
 
-    /**
-     * This method controls what happens when you move to /note/editSave in your app.
-     * Edits a note (performs the editing after form submit).
-     * POST request.
-     */
     public function editSave()
     {
         Csrf::checkToken();
@@ -79,16 +55,28 @@ class ComponentController extends Controller
         Redirect::to('index');
     }
 
-    /**
-     * This method controls what happens when you move to /note/delete(/XX) in your app.
-     * Deletes a note. In a real application a deletion via GET/URL is not recommended, but for demo purposes it's
-     * totally okay.
-     * @param int $note_id id of the note
-     */
     public function delete()
     {
         Csrf::checkToken();
         ComponentModel::deleteComponent(Request::post('id'));
         Redirect::to('index');
+    }
+
+    public function orderOverview()
+    {
+        $this->View->render('orderOverview/index', array(
+            'stores' => SupplierModel::getAllSuppliers(),     
+            'components' => ComponentModel::getAllComponent()
+        ));
+    }
+
+    public function addOrder()
+    {
+
+
+        Csrf::checkToken();
+
+        ComponentModel::addOrder(Request::post('component'), Request::post('store'), Request::post('amount'), Request::post('shipping-date'));
+        //Redirect::to('component/orderoverview');
     }
 }
