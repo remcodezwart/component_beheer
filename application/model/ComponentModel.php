@@ -97,6 +97,17 @@ class ComponentModel
         return false;
     }
 
+    public static function loanComponent($name, $amount1, $amount0)
+    {
+        $database = DatabaseFactory::getFactory()->getConnection();
+        var_dump($name, $amount1, $amount0);
+        $sql = "UPDATE components SET amount1 = :amount WHERE name = :name";
+        $query = $database->prepare($sql);
+        $amount = -($amount0 - $amount1);
+        var_dump($amount);
+        $query->execute(array(':amount' => $amount, ':name' => $name));
+    }
+
     /**
      * Delete a specific note
      * @param int $note_id id of the note

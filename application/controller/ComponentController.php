@@ -25,7 +25,8 @@ class ComponentController extends Controller
     public function index()
     {
         $this->View->render('component/index', array(
-            'component' => ComponentModel::getAllComponent()
+            'component' => ComponentModel::getAllComponent(),
+            'locations' => LocationModel::getAllLocations()
         ));
     }
 
@@ -43,7 +44,14 @@ class ComponentController extends Controller
     public function create()
     {
         Csrf::checkToken();
-        ComponentModel::createComponent(Request::post('name'), Request::post('description'), Request::post('specs'), Request::post('hyperlink'));
+        ComponentModel::createComponent(Request::post('name'), Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('amount1'));
+        Redirect::to('index');
+    }
+
+    public function loanComponent()
+    {
+        Csrf::checkToken();
+        ComponentModel::loanComponent(Request::post('name'), Request::post('amount0'), Request::post('amount1'));
         Redirect::to('index');
     }
 
@@ -67,7 +75,7 @@ class ComponentController extends Controller
     public function editSave()
     {
         Csrf::checkToken();
-        ComponentModel::updateComponent(Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('amount'), Request::post('id'));
+        ComponentModel::updateComponent(Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('amount1'), Request::post('id'));
         Redirect::to('index');
     }
 
