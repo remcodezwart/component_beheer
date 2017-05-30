@@ -120,7 +120,10 @@ class ComponentModel
 
     public static function addOrder($componentId, $supplierId, $amount, $date)
     {
-        if (empty($date)) {
+        $date = explode("-", $date);
+
+        if (count($date) !== 3 || checkdate($date[1] ,$date[0] ,$date[2]) === false) {
+            //count $date to see if it has 3 items if not then php will halt the if statment preventing error undefinde index in the next condition
             Session::add('feedback_negative', Text::get('NO_DATE'));
             return false;
         }
@@ -135,16 +138,12 @@ class ComponentModel
             return false;
         }
 
-        if (is_numeric($amount) === false || 0 > $amount) {
+        if (is_numeric($amount) === false || 0 >= $amount) {
             Session::add('feedback_negative', Text::get('NEGATIVE_AMOUNT'));
             return false;
         }
 
         $database = DatabaseFactory::getFactory()->getConnection();
-
-        $sql = "UPDATE components SET amount += :amount WHERE id = :id";
-        $query = $database->prepare($sql);
-        $query->execute(array(':id' => $componentId, ':amount' => $amount));
 
         $sql = "INSERT INTO order_history (date, amount, supplierId, componentId) VALUES(:date, :amount, :supplierId, :componentId)";
         $query = $database->prepare($sql);
@@ -153,9 +152,122 @@ class ComponentModel
         if ($query->rowCount() == 1) {
             return true;
         }
-        exit;
+
         Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
         return false;
+        
+    }
 
+    public static function editOrder($componentId, $supplierId, $amount, $date, $id)
+    {
+        $date = explode("-", $date);
+
+        if (count($date) !== 3 || checkdate($date[1] ,$date[0] ,$date[2]) === false) {
+            //count $date to see if it has 3 items if not then php will halt the if statment preventing error undefinde index in the next condition
+            Session::add('feedback_negative', Text::get('NO_DATE'));
+            return false;
+        }
+
+        if (is_numeric($componentId) === false || self::getComponent($componentId) === false) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_COMPONENT_DOES_NOT_EXSIST'));
+            return false;
+        }
+
+        if (is_numeric($supplierId) === false || SupplierModel::getSupplier($supplierId) === false) {
+            Session::add('feedback_negative', Text::get('NO_SUPPLIER'));
+            return false;
+        }
+
+        if (is_numeric($amount) === false || 0 >= $amount) {
+            Session::add('feedback_negative', Text::get('NEGATIVE_AMOUNT'));
+            return false;
+        }
+
+        $date = implode("-", $date);
+        
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "UPDATE order_history SET date = :date, amount = :amount, supplierId = :supplierId, componentId = :componentId WHERE id = :id";
+        $query = $database->prepare($sql); 
+        $query->execute(array(
+            ':date' => $date, 
+            ':amount' => $amount, 
+            ':supplierId' => $supplierId,
+            ':componentId'  => $componentId, 
+            ':id' => $id
+        ));
+
+        if ($query->rowCount() == 1) {
+            return true;
+        }
+
+        Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
+        return false;
+    }
+
+    public static function getAllOrders()
+    {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "SELECT order_history.id as order_id,order_history.*,supplier.id,supplier.name as supplierName,supplier.active as activeSupplier,components.* FROM order_history INNER JOIN components ON order_history.componentId = components.id INNER JOIN supplier ON order_history.supplierId = supplier.id WHERE supplier.active = :active AND components.active = :active";
+        $query = $database->prepare($sql);
+        $query->execute(array(':active' => 1));
+
+        $orders = $query->fetchAll();
+        return Filter::XSSFilter($orders);
+    }
+
+    /*public static function validateOrder($componentId, $supplierId, $amount, $date)
+    {
+        $date = explode("-", $date);
+
+        if (count($date) !== 3 || checkdate($date[1] ,$date[0] ,$date[2]) === false) {
+            //count $date to see if it has 3 items if not then php will halt the if statment preventing error undefinde index in the next condition
+            Session::add('feedback_negative', Text::get('NO_DATE'));
+            return false;
+        }
+
+        if (is_numeric($componentId) === false || self::getComponent($componentId) === false) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_COMPONENT_DOES_NOT_EXSIST'));
+            return false;
+        }
+
+        if (is_numeric($supplierId) === false || SupplierModel::getSupplier($supplierId) === false) {
+            Session::add('feedback_negative', Text::get('NO_SUPPLIER'));
+            return false;
+        }
+
+        if (is_numeric($amount) === false || 0 >= $amount) {
+            Session::add('feedback_negative', Text::get('NEGATIVE_AMOUNT'));
+            return false;
+        }
+        return true;
+    }*/
+
+    public static function getOrder($id)
+    {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "SELECT order_history.id as order_id,order_history.*,supplier.id as supplierId,supplier.name as supplierName,supplier.active as activeSupplier,components.* FROM order_history INNER JOIN components ON order_history.componentId = components.id INNER JOIN supplier ON order_history.supplierId = supplier.id WHERE supplier.active = :active AND components.active = :active AND order_history.id = :id";
+        $query = $database->prepare($sql);
+        $query->execute(array(':active' => 1, ':id' => $id));
+
+        $order = $query->fetch();
+        return Filter::XSSFilter($order);
+    }
+
+    public static function deleteOrder($id) {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "UPDATE order_history SET active = :active WHERE id = :id";
+        $query = $database->prepare($sql);
+        $query->execute(array(':active' => 0, ':id' => $id));
+
+        if ($query->rowCount() == 1) {
+            return true;
+        }
+
+        Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
+        return false;
     }
 }

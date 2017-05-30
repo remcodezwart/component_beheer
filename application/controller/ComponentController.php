@@ -57,18 +57,47 @@ class ComponentController extends Controller
     public function orderOverview()
     {
         $this->View->render('orderOverview/index', array(
+            'orders' => ComponentModel::getAllOrders(),
             'stores' => SupplierModel::getAllSuppliers(),     
             'components' => ComponentModel::getAllComponent()
         ));
     }
 
+    public function orderedit()
+    {
+        $this->View->render('orderOverview/edit', array(
+            'order' => componentModel::getOrder( request::get('id') ),
+            'stores' => SupplierModel::getAllSuppliers(),     
+            'components' => ComponentModel::getAllComponent()
+        ));
+    }
+
+    public function orderdelete()
+    {
+        $this->View->render('orderOverview/delete', array(
+            'order' => componentModel::getOrder( request::get('id') )
+        ));
+    }
+
     public function addOrder()
     {
-
-
         Csrf::checkToken();
 
         ComponentModel::addOrder(Request::post('component'), Request::post('store'), Request::post('amount'), Request::post('shipping-date'));
-        //Redirect::to('component/orderoverview');
+        Redirect::to('component/orderoverview');
+    }
+
+    public function editOrder()
+    {
+        Csrf::checkToken();
+        componentModel::editOrder(Request::post('component'), Request::post('store'), Request::post('amount'), Request::post('shipping-date'), Request::post('id'));
+        Redirect::to('component/orderoverview');
+    }
+
+    public function deleteOrder()
+    {
+        Csrf::checkToken();
+        componentModel::deleteOrder( request('id') );
+        Redirect::to('component/orderoverview');
     }
 }

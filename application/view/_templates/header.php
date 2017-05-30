@@ -34,7 +34,7 @@
                                 <a href="<?=Config::get('URL'); ?>component/index">Componenten</a>
                             </li>
                             <li <?php if (View::checkForActiveControllerAndAction  ($filename,                 "orderOverview/index")) { echo ' class="active" '; } ?> >
-                                <a href="<?=Config::get('URL'); ?>component/orderOverview">Order geschiedenis</a>
+                                <a href="<?=Config::get('URL'); ?>component/orderOverview">Order overzicht/geschiedenis</a>
                             </li>
                             <li <?php if (View::checkForActiveControllerAndAction($filename,                   "login/changeUserRole")) { echo ' class="active" '; } ?> >
                                 <a href="<?=Config::get('URL'); ?>login/changeUserRole">verander acount type</a>
