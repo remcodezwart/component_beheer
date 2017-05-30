@@ -61,4 +61,8 @@ class LocationController extends Controller
         LocationModel::editLocation(request::post('id'), request::post('adress'));
         redirect::to('location/index');
     }
+    public function comloc()
+    {
+
+    }
 }

@@ -33,6 +33,7 @@
                 </form>
                 <form method="post" action="<?=Config::get('URL'); ?>component/delete">
                     <input type="hidden" name="id" value="<?=$value->id?>"/>
+                    <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
                     <button type="submit">verwijder</button>
                 </form>
             <?php endif; ?>
