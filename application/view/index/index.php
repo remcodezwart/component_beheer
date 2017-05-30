@@ -9,9 +9,9 @@
             <img src="<?=$value->hyperlink?>" alt="component plaatje">
             <p>beschrijving: <?=$value->description?></p>
             <pre>specs: <?=$value->specs?></pre>
-            <p>In voorraad: <br><?php foreach ($this->locations as $location) { ?>
-                <label><?=$location->address?>: <?=$value->amount1?></label><br>
-            <?php } ?></p>
+            <p>In voorraad: <!--br><?php foreach ($this->locations as $location) { ?>-->
+                <label><?=$value->amount?></label><br>
+            <!--<?php } ?></p-->
             <?php if (Session::userIsLoggedIn()) : ?>
                 <form method="post" action="<?=Config::get('URL'); ?>index/loanMe">
                     <input type="hidden" name="id" value="<?=$value->id?>"/>
@@ -24,10 +24,11 @@
                     <p>Verander specs:</p>
                     <textarea name="specs"><?=$value->specs ?></textarea>
                     <p>Verander hyperlink:<input type="text" name="hyperlink" value="<?=$value->hyperlink?>"/></p>
-                    <p>Verander aantal in de voorraad:<br><?php foreach ($this->locations as $location) { ?>
+                    <!--p>Verander aantal in de voorraad:<br><?php foreach ($this->locations as $location) { ?>
                         <label><?=$location->address?>:<input type="textarea" name="amount" value="<?=$value->amount1?>"/></p>
-                    <?php } ?>
+                    <?php } ?>-->
                     <input type="hidden" name="id" value="<?=$value->id?>"/>
+                    <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
                     <button type="submit">Sla op</button>
                 </form>
                 <form method="post" action="<?=Config::get('URL'); ?>component/delete">

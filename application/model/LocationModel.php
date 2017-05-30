@@ -94,4 +94,10 @@ class LocationModel
         } 
     }
 
+    public static function comlocSelect($component, $location)
+    {
+        $sql = "SELECT amount from comloc WHERE component_id = :component AND location_id = :location";
+        $query = $database->prepare($sql);
+        $query->execute(array(':component' => $component, ':location' => $location));
+    }
 }

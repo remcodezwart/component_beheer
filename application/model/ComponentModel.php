@@ -83,7 +83,7 @@ class ComponentModel
         $sql = "UPDATE components SET description = :description, specs = :specs, hyperlink = :hyperlink WHERE id = :id LIMIT 1";
         $query = $database->prepare($sql);
         $query->execute(array(':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':id' => $id));
-
+        var_dump($description, $specs, $hyperlink, $id);
         if ($query->rowCount() == 1) {
             return true;
         }
@@ -92,13 +92,13 @@ class ComponentModel
         return false;
     }
 
-    public static function loanComponent($name, $amount1, $amount0)
+    public static function loanComponent($name, $amount0, $amount)
     {
         $database = DatabaseFactory::getFactory()->getConnection();
-        var_dump($name, $amount1, $amount0);
-        $sql = "UPDATE components SET amount1 = :amount WHERE name = :name";
+        var_dump($name, $amount, $amount0);
+        $sql = "UPDATE components SET amount = :amount WHERE name = :name";
         $query = $database->prepare($sql);
-        $amount = -($amount0 - $amount1);
+        $amount = ($amount0 - $amount);
         var_dump($amount);
         $query->execute(array(':amount' => $amount, ':name' => $name));
     }

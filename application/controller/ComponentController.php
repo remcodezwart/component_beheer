@@ -32,14 +32,14 @@ class ComponentController extends Controller
     public function create()
     {
         Csrf::checkToken();
-        ComponentModel::createComponent(Request::post('name'), Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('amount1'));
+        ComponentModel::createComponent(Request::post('name'), Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('amount'));
         Redirect::to('index');
     }
 
     public function loanComponent()
     {
         Csrf::checkToken();
-        ComponentModel::loanComponent(Request::post('name'), Request::post('amount0'), Request::post('amount1'));
+        ComponentModel::loanComponent(Request::post('name'), Request::post('amount0'), Request::post('amount'));
         Redirect::to('index');
     }
 
@@ -51,7 +51,7 @@ class ComponentController extends Controller
     public function editSave()
     {
         Csrf::checkToken();
-        ComponentModel::updateComponent(Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('amount1'), Request::post('id'));
+        ComponentModel::updateComponent(Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('id'));
         Redirect::to('index');
     }
 
