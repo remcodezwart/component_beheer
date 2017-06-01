@@ -4,7 +4,7 @@
 		
 		<?=$this->renderFeedbackMessages()?>
 		<?php foreach($this->orders as $order) { ?>
-			<p class="border">besteld op: <?=$order->date ?> | aantal: <?=$order->amount ?> | levenranchier: <?=$order->supplierName ?> | onderdeel: <?=$order->name ?>
+			<p class="border">besteld op: <?=$order->date ?> | aantal: <?=$order->orderAmount ?> | levenranchier: <?=$order->supplierName ?> | onderdeel: <?=$order->name ?>
 			<a href="<?=config::get('URL')?>component/orderedit?id=<?=$order->order_id?>">editen</a> 
             <a href="<?=config::get('URL')?>component/orderdelete?id=<?=$order->order_id?>">verwijderen</a></p>
 			</p>

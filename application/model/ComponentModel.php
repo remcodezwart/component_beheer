@@ -120,26 +120,7 @@ class ComponentModel
 
     public static function addOrder($componentId, $supplierId, $amount, $date)
     {
-        $date = explode("-", $date);
-
-        if (count($date) !== 3 || checkdate($date[1] ,$date[0] ,$date[2]) === false) {
-            //count $date to see if it has 3 items if not then php will halt the if statment preventing error undefinde index in the next condition
-            Session::add('feedback_negative', Text::get('NO_DATE'));
-            return false;
-        }
-
-        if (is_numeric($componentId) === false || self::getComponent($componentId) === false) {
-            Session::add('feedback_negative', Text::get('FEEDBACK_COMPONENT_DOES_NOT_EXSIST'));
-            return false;
-        }
-
-        if (is_numeric($supplierId) === false || SupplierModel::getSupplier($supplierId) === false) {
-            Session::add('feedback_negative', Text::get('NO_SUPPLIER'));
-            return false;
-        }
-
-        if (is_numeric($amount) === false || 0 >= $amount) {
-            Session::add('feedback_negative', Text::get('NEGATIVE_AMOUNT'));
+        if (!self::validateOrder($componentId, $supplierId, $amount, $date)) {
             return false;
         }
 
@@ -160,34 +141,13 @@ class ComponentModel
 
     public static function editOrder($componentId, $supplierId, $amount, $date, $id)
     {
-        $date = explode("-", $date);
-
-        if (count($date) !== 3 || checkdate($date[1] ,$date[0] ,$date[2]) === false) {
-            //count $date to see if it has 3 items if not then php will halt the if statment preventing error undefinde index in the next condition
-            Session::add('feedback_negative', Text::get('NO_DATE'));
+        if (!self::validateOrder($componentId, $supplierId, $amount, $date)) {
             return false;
         }
-
-        if (is_numeric($componentId) === false || self::getComponent($componentId) === false) {
-            Session::add('feedback_negative', Text::get('FEEDBACK_COMPONENT_DOES_NOT_EXSIST'));
-            return false;
-        }
-
-        if (is_numeric($supplierId) === false || SupplierModel::getSupplier($supplierId) === false) {
-            Session::add('feedback_negative', Text::get('NO_SUPPLIER'));
-            return false;
-        }
-
-        if (is_numeric($amount) === false || 0 >= $amount) {
-            Session::add('feedback_negative', Text::get('NEGATIVE_AMOUNT'));
-            return false;
-        }
-
-        $date = implode("-", $date);
         
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "UPDATE order_history SET date = :date, amount = :amount, supplierId = :supplierId, componentId = :componentId WHERE id = :id";
+        $sql = "UPDATE order_history SET amount = :amount, supplierId = :supplierId, componentId = :componentId, date = :date WHERE id = :id";
         $query = $database->prepare($sql); 
         $query->execute(array(
             ':date' => $date, 
@@ -209,15 +169,18 @@ class ComponentModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT order_history.id as order_id,order_history.*,supplier.id,supplier.name as supplierName,supplier.active as activeSupplier,components.* FROM order_history INNER JOIN components ON order_history.componentId = components.id INNER JOIN supplier ON order_history.supplierId = supplier.id WHERE supplier.active = :active AND components.active = :active";
+        $sql = "SELECT order_history.amount as orderAmount,order_history.id as order_id,order_history.*,supplier.id,supplier.name as supplierName,supplier.active as activeSupplier,components.* FROM order_history INNER JOIN components ON order_history.componentId = components.id INNER JOIN supplier ON order_history.supplierId = supplier.id WHERE order_history.active = :active AND supplier.active = :active AND components.active = :active";
         $query = $database->prepare($sql);
         $query->execute(array(':active' => 1));
 
         $orders = $query->fetchAll();
+
+        $database = null;
+
         return Filter::XSSFilter($orders);
     }
 
-    /*public static function validateOrder($componentId, $supplierId, $amount, $date)
+    public static function validateOrder($componentId, $supplierId, $amount, $date)
     {
         $date = explode("-", $date);
 
@@ -242,17 +205,20 @@ class ComponentModel
             return false;
         }
         return true;
-    }*/
+    }
 
     public static function getOrder($id)
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT order_history.id as order_id,order_history.*,supplier.id as supplierId,supplier.name as supplierName,supplier.active as activeSupplier,components.* FROM order_history INNER JOIN components ON order_history.componentId = components.id INNER JOIN supplier ON order_history.supplierId = supplier.id WHERE supplier.active = :active AND components.active = :active AND order_history.id = :id";
+        $sql = "SELECT order_history.amount as orderAmount,order_history.id as order_id,order_history.*,supplier.id as supplierId,supplier.name as supplierName,supplier.active as activeSupplier,components.* FROM order_history INNER JOIN components ON order_history.componentId = components.id INNER JOIN supplier ON order_history.supplierId = supplier.id WHERE supplier.active = :active AND components.active = :active AND order_history.id = :id";
         $query = $database->prepare($sql);
         $query->execute(array(':active' => 1, ':id' => $id));
 
         $order = $query->fetch();
+
+        $database = null;
+
         return Filter::XSSFilter($order);
     }
 
@@ -266,6 +232,7 @@ class ComponentModel
         if ($query->rowCount() == 1) {
             return true;
         }
+
 
         Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
         return false;

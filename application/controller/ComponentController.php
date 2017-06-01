@@ -97,7 +97,7 @@ class ComponentController extends Controller
     public function deleteOrder()
     {
         Csrf::checkToken();
-        componentModel::deleteOrder( request('id') );
+        componentModel::deleteOrder( Request::post('id') );
         Redirect::to('component/orderoverview');
     }
 }
