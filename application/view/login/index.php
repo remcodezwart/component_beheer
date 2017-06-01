@@ -16,7 +16,7 @@
                                 blijf ingelogd voor 2 weken
                             </label>
                             <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
-                            <button type="submit" class="login-submit-button">inloggen</button> 
+                            <button type="submit" class="center login-submit-button">inloggen</button> 
                         </form>
                         <p>
                             <a href="<?=Config::get('URL'); ?>login/requestPasswordReset">Ik ben mijn wachtwoord vergeten</a>

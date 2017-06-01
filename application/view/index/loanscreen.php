@@ -1,7 +1,8 @@
 <div class="container">
 	<h2><?=$value->name?></h2>
-    <p><?=$value->hyperlink?></p>
-    <p><?=$value->description?> <?=$value->specs?></p>
+    <p><img alt="component plaatje" src="<?=$value->hyperlink?>"</p>
+    <p><?=$value->description?></p>
+    <p><pre><?=$value->specs?></pre></p>
     <p>In voorraad: <?=$value->amount?></p>
     <p>Je kan op dit moment alleen lenen van Duurzaamheidsfabriek Dordrecht Da Vinci.</p>
     <br>

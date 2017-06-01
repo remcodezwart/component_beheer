@@ -42,7 +42,7 @@ class LoginController extends Controller
 
         // check login status: if true, then redirect user login/showProfile, if false, then to login form again
         if ($login_successful) {
-            Redirect::to('login/showProfile');
+            Redirect::to('index/index');
         } else {
             Redirect::to('login/index');
         }
@@ -74,20 +74,6 @@ class LoginController extends Controller
             LoginModel::deleteCookie();
             Redirect::to('login/index');
         }
-    }
-
-    /**
-     * Show user's PRIVATE profile
-     * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
-     */
-    public function showProfile()
-    {
-        Auth::checkAuthentication();
-        $this->View->render('login/showProfile', array(
-            'user_name' => Session::get('user_name'),
-            'user_email' => Session::get('user_email'),
-            'user_account_type' => Session::get('user_account_type')
-        ));
     }
 
     /**
@@ -135,39 +121,6 @@ class LoginController extends Controller
         Redirect::to('login/editUserEmail');
     }
 
-    public function changeUserRole()
-    {
-        Auth::checkAuthentication();
-        $this->View->render('login/changeUserRole');
-    }
-
-    /**
-     * Perform the account-type changing
-     * Auth::checkAuthentication() makes sure that only logged in users can use this action
-     * POST-request
-     */
-    public function changeUserRole_action()
-    {
-        Auth::checkAuthentication();
-        Csrf::checkToken();
-
-        if (Request::post('user_account_upgrade')) {
-            // "2" is quick & dirty account type 2, something like "premium user" maybe. you got the idea :)
-            UserRoleModel::changeUserRole(2);
-        }
-
-        if (Request::post('user_account_downgrade')) {
-            // "1" is quick & dirty account type 1, something like "basic user" maybe.
-            UserRoleModel::changeUserRole(1);
-        }
-
-        Redirect::to('login/changeUserRole');
-    }
-
-    /**
-     * Register page
-     * Show the register form, but redirect to main-page if user is already logged-in
-     */
     /*public function register()
     {
         if (LoginModel::isUserLoggedIn()) {
@@ -177,10 +130,6 @@ class LoginController extends Controller
         }
     }*/
 
-    /**
-     * Register page action
-     * POST-request after form submit
-     */
     /*public function register_action()
     {
         Csrf::checkToken();

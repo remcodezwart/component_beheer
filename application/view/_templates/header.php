@@ -23,21 +23,12 @@
                             <li <?php if (View::checkForActiveController($filename, "index")) { echo ' class="active" '; } ?> >
                                 <a href="<?=Config::get('URL'); ?>index/index">Home</a>
                             </li>
-                            <li <?php if (View::checkForActiveController($filename, "profile")) { echo ' class="active" '; } ?> >
-                                <a href="<?=Config::get('URL'); ?>profile/index">Profielen</a>
-                            </li>
                             <?php if (Session::userIsLoggedIn()) { ?>
-                            <li <?php if (View::checkForActiveController($filename, "dashboard")) { echo ' class="active" '; } ?> >
-                                <a href="<?=Config::get('URL'); ?>dashboard/index">Dashboard</a>
-                            </li>
                             <li <?php if (View::checkForActiveController($filename, "component")) { echo ' class="active" '; } ?> >
                                 <a href="<?=Config::get('URL'); ?>component/index">Componenten</a>
                             </li>
                             <li <?php if (View::checkForActiveControllerAndAction  ($filename,                 "orderOverview/index")) { echo ' class="active" '; } ?> >
                                 <a href="<?=Config::get('URL'); ?>component/orderOverview">Order overzicht/geschiedenis</a>
-                            </li>
-                            <li <?php if (View::checkForActiveControllerAndAction($filename,                   "login/changeUserRole")) { echo ' class="active" '; } ?> >
-                                <a href="<?=Config::get('URL'); ?>login/changeUserRole">verander acount type</a>
                             </li>
                             <li <?php if (View::checkForActiveControllerAndAction($filename,                   "login/editUsername")) { echo ' class="active" '; } ?> >
                                 <a href="<?=Config::get('URL'); ?>login/editusername">wijzig gebruikersnaam</a>

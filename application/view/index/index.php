@@ -4,21 +4,21 @@
             <h1>Onderdelen</h1>
             <div class="box">
                 <?=$this->renderFeedbackMessages()?>
-                <table>
+                <table cellspacing="0">
                     <tr>
-                        <td>naam</td>
-                        <td>plaatje</td>
-                        <td>beschrijving</td>
-                        <td>specs</td>
-                        <td>In voorraad</td>
+                        <th>naam</th>
+                        <th>plaatje</th>
+                        <th>beschrijving</th>
+                        <th>specs</th>
+                        <th>In voorraad</th>
                     </tr>  
                 <?php foreach($this->component as $value) { ?>
                     <tr>
                         <td><?=$value->name?></td>
                         <td><img src="<?=$value->hyperlink?>" alt="component plaatje"></td>
-                        <td><p>beschrijving: <?=$value->description?></p></td>
-                        <td><pre>specs: <?=$value->specs?></pre></td>
-                        <td><p>In voorraad: <?=$value->amount?></td>
+                        <td><?=$value->description?></td>
+                        <td><pre><?=$value->specs?></pre></td>
+                        <td><?=$value->amount?></td>
                     </tr>    
                 <?php } ?>
                 </table>
@@ -27,6 +27,7 @@
         <?php if (Session::userIsLoggedIn()) : ?>
             <div class="column col-12">
                 <?php foreach($this->component as $value) { ?>
+                    <h2><?=$value->name ?></h2>
                     <form method="post" action="<?=Config::get('URL'); ?>index/loanMe">
                         <input type="hidden" name="id" value="<?=$value->id?>"/>
                         <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
