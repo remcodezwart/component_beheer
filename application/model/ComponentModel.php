@@ -180,7 +180,7 @@ class ComponentModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT order_history.amount as orderAmount,order_history.id as order_id,order_history.*,supplier.id,supplier.name as supplierName,supplier.active as activeSupplier,components.* FROM order_history INNER JOIN components ON order_history.componentId = components.id INNER JOIN supplier ON order_history.supplierId = supplier.id WHERE order_history.active = :active AND supplier.active = :active AND components.active = :active";
+        $sql = "SELECT order_history.amount as orderAmount,order_history.id as order_id,order_history.*,supplier.id,supplier.name as supplierName,supplier.active as activeSupplier,components.* FROM order_history INNER JOIN components ON order_history.componentId = components.id INNER JOIN supplier ON order_history.supplierId = supplier.id WHERE order_history.active = :active AND supplier.active = :active AND components.active = :active ORDER BY history ASC";
         $query = $database->prepare($sql);
         $query->execute(array(':active' => 1));
 
@@ -244,6 +244,21 @@ class ComponentModel
             return true;
         }
 
+
+        Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
+        return false;
+    }
+
+    public static function archieve($id) {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "UPDATE order_history SET history = :history WHERE id = :id";
+        $query = $database->prepare($sql);
+        $query->execute(array(':history' => 1, ':id' => $id));
+
+        if ($query->rowCount() == 1) {
+            return true;
+        }
 
         Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
         return false;

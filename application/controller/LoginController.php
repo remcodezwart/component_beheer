@@ -64,7 +64,7 @@ class LoginController extends Controller
     public function loginWithCookie()
     {
         // run the loginWithCookie() method in the login-model, put the result in $login_successful (true or false)
-         $login_successful = LoginModel::loginWithCookie(Request::cookie('remember_me'));
+        $login_successful = LoginModel::loginWithCookie(Request::cookie('remember_me'));
 
         // if login successful, redirect to dashboard/index ...
         if ($login_successful) {
@@ -168,20 +168,20 @@ class LoginController extends Controller
      * Register page
      * Show the register form, but redirect to main-page if user is already logged-in
      */
-    public function register()
+    /*public function register()
     {
         if (LoginModel::isUserLoggedIn()) {
             Redirect::home();
         } else {
             $this->View->render('login/register');
         }
-    }
+    }*/
 
     /**
      * Register page action
      * POST-request after form submit
      */
-    public function register_action()
+    /*public function register_action()
     {
         Csrf::checkToken();
         $registration_successful = RegistrationModel::registerNewUser();
@@ -191,14 +191,14 @@ class LoginController extends Controller
         } else {
             Redirect::to('login/register');
         }
-    }
+    }*/
 
     /**
      * Verify user after activation mail link opened
      * @param int $user_id user's id
      * @param string $user_activation_verification_code user's verification token
      */
-    public function verify($user_id, $user_activation_verification_code)
+    /*public function verify($user_id, $user_activation_verification_code)
     {
         if (isset($user_id) && isset($user_activation_verification_code)) {
             RegistrationModel::verifyNewUser($user_id, $user_activation_verification_code);
@@ -206,7 +206,7 @@ class LoginController extends Controller
         } else {
             Redirect::to('login/index');
         }
-    }
+    }*/
 
     /**
      * Show the request-password-reset page

@@ -58,9 +58,6 @@
                             <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
                                 <a href="<?=Config::get('URL'); ?>login/index">Inloggen</a>
                             </li>
-                            <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
-                                <a href="<?=Config::get('URL'); ?>login/register">Registreren</a>
-                            </li>
                             <?php } ?>
                         </ul>
                     </nav>

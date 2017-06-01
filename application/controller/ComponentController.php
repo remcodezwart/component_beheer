@@ -108,4 +108,19 @@ class ComponentController extends Controller
         componentModel::deleteOrder( Request::post('id') );
         Redirect::to('component/orderoverview');
     }
+
+    public function archieve()
+    {
+        $this->View->render('orderOverview/archieve', array(
+            'order' => componentModel::getOrder( request::get('id') )
+        ));
+    }
+
+    public function addToArchieve()
+    {
+        Csrf::checkToken();
+        componentModel::archieve( request::post('id') );
+        Redirect::to('component/orderoverview');
+    }
+
 }

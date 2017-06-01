@@ -3,10 +3,21 @@
     <div class="box">
 		
 		<?=$this->renderFeedbackMessages()?>
+		<h2>Openstaanden orders</h2>
 		<?php foreach($this->orders as $order) { ?>
+			<?php if ($order->history == 1) continue ?>
 			<p class="border">besteld op: <?=$order->date ?> | aantal: <?=$order->orderAmount ?> | levenranchier: <?=$order->supplierName ?> | onderdeel: <?=$order->name ?>
 			<a href="<?=config::get('URL')?>component/orderedit?id=<?=$order->order_id?>">editen</a> 
-            <a href="<?=config::get('URL')?>component/orderdelete?id=<?=$order->order_id?>">verwijderen</a></p>
+            <a href="<?=config::get('URL')?>component/orderdelete?id=<?=$order->order_id?>">verwijderen</a>
+            <a href="<?=config::get('URL')?>component/archieve?id=<?=$order->order_id?>">archief</a>
+			</p>
+		<?php } ?>
+		<h2>Order history</h2>
+		<?php foreach($this->orders as $order) { ?>
+			<?php if ($order->history == 0) continue ?>
+			<p class="border">besteld op: <?=$order->date ?> | aantal: <?=$order->orderAmount ?> | levenranchier: <?=$order->supplierName ?> | onderdeel: <?=$order->name ?>
+			<a href="<?=config::get('URL')?>component/orderedit?id=<?=$order->order_id?>">editen</a> 
+            <a href="<?=config::get('URL')?>component/orderdelete?id=<?=$order->order_id?>">verwijderen</a>
 			</p>
 		<?php } ?>
 	</div>
