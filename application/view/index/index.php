@@ -9,9 +9,13 @@
             <img src="<?=$value->hyperlink?>" alt="component plaatje">
             <p>beschrijving: <?=$value->description?></p>
             <pre>specs: <?=$value->specs?></pre>
-            <p>In voorraad: <!--br><?php foreach ($this->locations as $location) { ?>-->
-                <label><?=$value->amount?></label><br>
-            <!--<?php } ?></p-->
+            <p>In voorraad: <br><?php foreach ($this->comloc as $comloc) {
+                if ($value->id == $comloc->component_id) { ?>
+                <label><?=$comloc->address?>: <?=$value->amount?></label><br>
+            <?php }} ?></p>
+
+            
+
             <?php if (Session::userIsLoggedIn()) : ?>
                 <form method="post" action="<?=Config::get('URL'); ?>index/loanMe">
                     <input type="hidden" name="id" value="<?=$value->id?>"/>

@@ -16,9 +16,15 @@ class IndexController extends Controller
      */
     public function index()
     {
+        //$comloc = LocationModel::getAllComloc();
+        //foreach ($comp as $one) {
+        //    $comloc = LocationModel::comlocSelect($one);
+        //}
+        //var_dump($comloc);
         $this->View->render('index/index', array(
             'component' => ComponentModel::getAllComponent(),
-            'locations' => LocationModel::getAllLocations()
+            'locations' => LocationModel::getAllLocations(),
+            'comloc' => LocationModel::getAllComloc()
         ));
     }
 
@@ -34,6 +40,7 @@ class IndexController extends Controller
         Csrf::checkToken();
         $this->View->render('index/loanscreen', array(
             'component' => ComponentModel::getComponent(Request::post('id'))
+            //'username' => Session::get('user_name')
         ));
     }
 }

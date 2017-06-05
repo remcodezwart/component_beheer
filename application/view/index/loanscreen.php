@@ -1,3 +1,4 @@
+<?php var_dump($value); ?> 
 <div class="container">
 	<h2><?=$value->name?></h2>
     <p><?=$value->hyperlink?></p>

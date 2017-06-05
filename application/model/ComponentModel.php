@@ -83,7 +83,6 @@ class ComponentModel
         $sql = "UPDATE components SET description = :description, specs = :specs, hyperlink = :hyperlink WHERE id = :id LIMIT 1";
         $query = $database->prepare($sql);
         $query->execute(array(':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':id' => $id));
-        var_dump($description, $specs, $hyperlink, $id);
         if ($query->rowCount() == 1) {
             return true;
         }
