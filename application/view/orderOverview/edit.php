@@ -7,21 +7,21 @@
 			<form method="post" action="<?=Config::get('URL') ?>component/editOrder">
 
 			<label>Onderdeel</label>
-			<select required="true" name="component">
+			<select name="component">
 			<?php foreach ($this->components as $component) { ?>
-				<option <?php if ($component->id === $this->order->id) { ?> checked="true" <?php } ?> 	value="<?=$component->id ?>"><?=$component->name ?></option>
+				<option <?php if ($component->id === $this->order->id) { ?> selected="true" <?php } ?> 	value="<?=$component->id ?>"><?=$component->name ?></option>
 			<?php } ?>
 			</select><br>
 			
 			<label>Besteld bij</label>
-			<select required="true" name="store">
+			<select name="store">
 			<?php foreach ($this->stores as $store) { ?>
-				<option <?php if ($store->id === $this->order->supplierId) { ?> checked="true" <?php } ?>                  value="<?=$store->id ?>"><?=$store->name ?></option>
+				<option <?php if ($store->id === $this->order->supplierId) { ?> selected="true" <?php } ?>                  value="<?=$store->id ?>"><?=$store->name ?></option>
 			<?php } ?>
 			</select><br>
 
 			<label for="amount">Aantal
-				<input required="true" value="<?=$this->order->amount ?>" id="amount" name="amount" type="text" placeholder="aantal">
+				<input required="true" value="<?=$this->order->orderAmount ?>" id="amount" name="amount" type="text" placeholder="aantal">
 			</label><br>
 
 			<label for="shipping-date">Datum besteld

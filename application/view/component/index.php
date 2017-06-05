@@ -1,5 +1,5 @@
 <div class="container">
-  <img src="http://i.imgur.com/Jeoxccv.png">
+  <img class="barcode-image" src="http://i.imgur.com/Jeoxccv.png">
 
   <form action="<?=Config::get('URL');?>component/index"  method="post">
     <input id="search" name="search" type="text" placeholder="Scan Barcode">
