@@ -26,7 +26,9 @@
         margin:0px;
         width:20%;
         border: solid 1px black;
+        text-align: center;
     }
+
     img {
         width:100px;
         height:100px;
@@ -34,6 +36,7 @@
     label, button {
         display:block;
     }
+    
     .center {
         text-align: center;
         margin:0px auto;
