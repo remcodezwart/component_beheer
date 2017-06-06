@@ -93,8 +93,13 @@ class ComponentModel
         $query = $database->prepare($sql);
         $amount = $amount0 - $amount;
         
-        if (!is_numeric($amount)) {
+        if (!is_numeric($amount) ) {
             Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
+            return false;
+        }
+
+        if (0 > $amount) {
+            Session::add('feedback_negative', Text::get('NOT_ENOUGH_COMPONENTS'));
             return false;
         }
 

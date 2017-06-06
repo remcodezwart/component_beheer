@@ -76,5 +76,6 @@ return array(
 	"NEGATIVE_AMOUNT" => "Vul een positief getal in",
 	"NO_SUPPLIER" => "Deze leverancier bestaat niet",
 	"NO_DATE" => "Vul een geldigen datum in",
-	"REQUIERED_FIELDS" => "Vul alle verplichten velden in"
+	"REQUIERED_FIELDS" => "Vul alle verplichten velden in",
+	"NOT_ENOUGH_COMPONENTS" => "U heeft meer componenten ingevuld dan dat er zijn"
 );
