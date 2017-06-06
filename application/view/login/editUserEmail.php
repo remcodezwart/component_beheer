@@ -1,9 +1,10 @@
 <div class="container">
 
     <?=$this->renderFeedbackMessages(); ?>
-
+    <p>Wijzig uw email adress</p>
     <div class="box">
-        <h2>Wijzig uw email adress</h2>
+
+        <p>huidige email adress: <?=Session::get('user_email') ?></p>
 
         <form action="<?=Config::get('URL'); ?>login/editUserEmail_action" method="post">
             <label>

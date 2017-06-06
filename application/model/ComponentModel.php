@@ -19,32 +19,6 @@ class ComponentModel
         return Filter::XSSFilter($components);
     }
 
-
-    /**
-     * Get a single note
-     * @param int $note_id id of the specific note
-     * @return object a single object (the result)
-     */
-
-
- public static function createMutation()
-    {
-
-      $database = DatabaseFactory::getFactory()->getConnection();
-           if (!isset($_POST['student'])) {}
-          else{
-            
-        $sql = "
-        INSERT INTO mutations (date, productId,description, studentId,stock) VALUES (CURDATE(), '".$_GET['productId']."','".$_POST['description']."', '".$_POST['student']."','".$_POST['quantity']."')
-        ON DUPLICATE KEY UPDATE date=CURDATE(), productId='".$_GET['productId']."', studentId='".$_POST['student']."',description='".$_POST['description']."';
-        ";
-        $query = $database->prepare($sql);
-        $query->execute(array()); 
-    }
-}
-
-
-
     public static function getComponent($id)
     {
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -60,7 +34,10 @@ class ComponentModel
 
     public static function createComponent($name, $description, $specs, $hyperlink, $amount)
     {
-      
+        if ( empty($name) || empty($description) || empty($specs) || empty($hyperlink) || empty($amount) ||    is_numeric($amount) === false) {
+            Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
+            return false;
+        }
 
         $database = DatabaseFactory::getFactory()->getConnection();
 
@@ -68,38 +45,73 @@ class ComponentModel
         INSERT INTO components (name, description, specs, hyperlink, amount) VALUES (:name, :description, :specs, :hyperlink, :amount)";
         $query = $database->prepare($sql);
         $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':amount' => $amount)); 
+
+        if ($query->rowCount() == 1) {
+            return true;
+        }
+
+        Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
+        return false;
     }
 
-    /**
-     * Update an existing note
-     * @param int $note_id id of the specific note
-     * @param string $note_text new text of the specific note
-     * @return bool feedback (was the update successful ?)
-     */
     public static function updateComponent($description, $specs, $hyperlink, $id)
     {
+        if ( empty($description) || empty($specs) || empty($hyperlink) ) {
+            Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
+            return false;
+        }
+
+        if (!$id) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
+            return false;
+        }
+
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $sql = "UPDATE components SET description = :description, specs = :specs, hyperlink = :hyperlink WHERE id = :id LIMIT 1";
         $query = $database->prepare($sql);
         $query->execute(array(':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':id' => $id));
+
         if ($query->rowCount() == 1) {
             return true;
         }
 
-        Session::add('feedback_negative', Text::get('FEEDBACK_COMPONENT_EDITING_FAILED'));
+        Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
         return false;
     }
 
     public static function loanComponent($name, $amount0, $amount)
     {
+        if ( empty($name) || empty($amount0) || empty($amount) ||                                           is_numeric($amount0) === false || is_numeric($amount) === false ) {
+            Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
+            return false;
+        }
+
         $database = DatabaseFactory::getFactory()->getConnection();
-        var_dump($name, $amount, $amount0);
+        
         $sql = "UPDATE components SET amount = :amount WHERE name = :name";
         $query = $database->prepare($sql);
-        $amount = ($amount0 - $amount);
-        var_dump($amount);
+        $amount = $amount0 - $amount;
+        
+        if (!is_numeric($amount) ) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
+            return false;
+        }
+
+        if (0 > $amount) {
+            Session::add('feedback_negative', Text::get('NOT_ENOUGH_COMPONENTS'));
+            return false;
+        }
+
         $query->execute(array(':amount' => $amount, ':name' => $name));
+
+
+        if ($query->rowCount() == 1) {
+            return true;
+        }
+
+        Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
+        return false;
     }
 
     /**
@@ -110,6 +122,7 @@ class ComponentModel
     public static function deleteComponent($id)
     {
         if (!$id) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
             return false;
         }
 
@@ -250,6 +263,12 @@ class ComponentModel
 
     public static function archieve($id) {
         $database = DatabaseFactory::getFactory()->getConnection();
+
+        $amount = self::getOrder($id);
+
+        $sql = "UPDATE components SET amount = amount + :amount WHERE id = :id";
+        $query = $database->prepare($sql);
+        $query->execute(array(':id' => $amount->id,':amount' => $amount->orderAmount));
 
         $sql = "UPDATE order_history SET history = :history WHERE id = :id";
         $query = $database->prepare($sql);

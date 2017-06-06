@@ -19,7 +19,11 @@
                         <td><img src="<?=$value->hyperlink?>" alt="component plaatje"></td>
                         <td><?=$value->description?></td>
                         <td><pre><?=$value->specs?></pre></td>
-                        <td><?=$value->amount?></td>
+                        <td>totaal: <?=$value->amount?>
+                            <?php foreach($this->comloc as $component) { ?>
+                                locatie: <?=$component->address ?> aantal: <?=$component->amount ?>
+                            <?php } ?>
+                        </td>
                     </tr>    
                 <?php } ?>
                 </table>

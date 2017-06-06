@@ -1,9 +1,10 @@
 <div class="container">
 
     <?=$this->renderFeedbackMessages(); ?>
-
+        
+    <p>Verander u gebruikersnaam</p>
     <div class="box">
-        <h2>Change your username</h2>
+        <p>huidige gebruikersnaam: <?=Session::get('user_name') ?></p>
 
         <form action="<?=Config::get('URL'); ?>login/editUserName_action" method="post">
             <label>
