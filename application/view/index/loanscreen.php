@@ -11,6 +11,8 @@
     	<input type="hidden" name="name" value="<?=$value->name?>"/>
     	<input type="hidden" name="amount0" value=<?=$value->amount?> />
     	<input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
+    	<p>Mijn barcode is...</p>
+    	<input type="text" name="barcode" required="true"/><br>
     	<input type="submit" class="button" value="Dit is zo goed."/>
     </form>
  </div>

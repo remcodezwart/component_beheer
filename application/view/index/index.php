@@ -1,3 +1,4 @@
+<?php var_dump($this->comloc); ?>
 <div class="container">
     <div class="columns">
         <div class="column col-12">
@@ -32,6 +33,10 @@
             <div class="column col-12">
                 <?php foreach($this->component as $value) { ?>
                     <h2><?=$value->name ?></h2>
+                    <p>In voorraad: <br><?php foreach ($this->comloc as $comloc) {
+                        if ($value->id == $comloc->component_id) { ?>
+                        <label><?=$comloc->address?>: <?=$comloc->amount?></label><br>
+                    <?php }} ?></p>
                     <form method="post" action="<?=Config::get('URL'); ?>index/loanMe">
                         <input type="hidden" name="id" value="<?=$value->id?>"/>
                         <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
