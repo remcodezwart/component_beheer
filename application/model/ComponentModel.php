@@ -34,7 +34,10 @@ class ComponentModel
 
     public static function createComponent($name, $description, $specs, $hyperlink, $amount)
     {
-      
+        if ( empty($name) || empty($description) || empty($specs) || empty($hyperlink) || empty($amount) ||    is_numeric($amount) === false) {
+            Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
+            return false;
+        }
 
         $database = DatabaseFactory::getFactory()->getConnection();
 
@@ -42,38 +45,68 @@ class ComponentModel
         INSERT INTO components (name, description, specs, hyperlink, amount) VALUES (:name, :description, :specs, :hyperlink, :amount)";
         $query = $database->prepare($sql);
         $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':amount' => $amount)); 
+
+        if ($query->rowCount() == 1) {
+            return true;
+        }
+
+        Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
+        return false;
     }
 
-    /**
-     * Update an existing note
-     * @param int $note_id id of the specific note
-     * @param string $note_text new text of the specific note
-     * @return bool feedback (was the update successful ?)
-     */
     public static function updateComponent($description, $specs, $hyperlink, $id)
     {
+        if ( empty($description) || empty($specs) || empty($hyperlink) ) {
+            Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
+            return false;
+        }
+
+        if (!$id) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
+            return false;
+        }
+
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $sql = "UPDATE components SET description = :description, specs = :specs, hyperlink = :hyperlink WHERE id = :id LIMIT 1";
         $query = $database->prepare($sql);
         $query->execute(array(':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':id' => $id));
+
         if ($query->rowCount() == 1) {
             return true;
         }
 
-        Session::add('feedback_negative', Text::get('FEEDBACK_COMPONENT_EDITING_FAILED'));
+        Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
         return false;
     }
 
     public static function loanComponent($name, $amount0, $amount)
     {
+        if ( empty($name) || empty($amount0) || empty($amount) ||                                           is_numeric($amount0) === false || is_numeric($amount) === false ) {
+            Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
+            return false;
+        }
+
         $database = DatabaseFactory::getFactory()->getConnection();
         
         $sql = "UPDATE components SET amount = :amount WHERE name = :name";
         $query = $database->prepare($sql);
         $amount = $amount0 - $amount;
         
+        if (!is_numeric($amount)) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
+            return false;
+        }
+
         $query->execute(array(':amount' => $amount, ':name' => $name));
+
+
+        if ($query->rowCount() == 1) {
+            return true;
+        }
+
+        Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
+        return false;
     }
 
     /**
