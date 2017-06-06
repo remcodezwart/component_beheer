@@ -60,4 +60,9 @@ class SupplierController extends Controller
         SupplierModel::deleteSupplier(request::post('id'));
         redirect::to('supplier/index');
     }
+
+    public function mutationsIndex() 
+    {
+        $this->View->render('mutations/index');
+    }
 }

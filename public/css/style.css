@@ -27,7 +27,6 @@
         width:20%;
         border: solid 1px black;
     }
-
     img {
         width:100px;
         height:100px;
@@ -35,7 +34,6 @@
     label, button {
         display:block;
     }
-    
     .center {
         text-align: center;
         margin:0px auto;
