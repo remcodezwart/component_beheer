@@ -16,6 +16,12 @@
     h1,h2,h3,h4,h5,h6 {
         text-align: center;
     }
+    pre {
+        margin:0px;
+    }
+    td {
+        vertical-align:top;
+    }
     td,th {
         margin:0px;
         width:20%;
@@ -99,9 +105,6 @@
         padding: 0;
     }
 
-    .navigation.right {
-        float: right;
-    }
     .navigation li {
         display:inline-block;
         margin-right: 5px;
@@ -113,16 +116,6 @@
     }
     .navigation a:hover {
         text-decoration: underline;
-    }
-
-    .navigation li:hover li,
-    .navigation li:hover a {
-        float: none;
-    }
-    .navigation li a:hover,
-    .navigation li:hover li a:hover {
-        background: #fff;
-        color: #454545;
     }
     
     /* overview */
@@ -149,15 +142,10 @@
         background-color: #BDE5F8;
     }
 
-    .header_right_box {
-        float: right;
-    }
-
     .login-box {
         text-align: center;
     }
 
-    /* error page */
     .red-text {
         color: red;
     }

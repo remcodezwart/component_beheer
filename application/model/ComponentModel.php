@@ -19,32 +19,6 @@ class ComponentModel
         return Filter::XSSFilter($components);
     }
 
-
-    /**
-     * Get a single note
-     * @param int $note_id id of the specific note
-     * @return object a single object (the result)
-     */
-
-
- public static function createMutation()
-    {
-
-      $database = DatabaseFactory::getFactory()->getConnection();
-           if (!isset($_POST['student'])) {}
-          else{
-            
-        $sql = "
-        INSERT INTO mutations (date, productId,description, studentId,stock) VALUES (CURDATE(), '".$_GET['productId']."','".$_POST['description']."', '".$_POST['student']."','".$_POST['quantity']."')
-        ON DUPLICATE KEY UPDATE date=CURDATE(), productId='".$_GET['productId']."', studentId='".$_POST['student']."',description='".$_POST['description']."';
-        ";
-        $query = $database->prepare($sql);
-        $query->execute(array()); 
-    }
-}
-
-
-
     public static function getComponent($id)
     {
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -95,11 +69,11 @@ class ComponentModel
     public static function loanComponent($name, $amount0, $amount)
     {
         $database = DatabaseFactory::getFactory()->getConnection();
-        var_dump($name, $amount, $amount0);
+        
         $sql = "UPDATE components SET amount = :amount WHERE name = :name";
         $query = $database->prepare($sql);
-        $amount = ($amount0 - $amount);
-        var_dump($amount);
+        $amount = $amount0 - $amount;
+        
         $query->execute(array(':amount' => $amount, ':name' => $name));
     }
 
@@ -111,6 +85,7 @@ class ComponentModel
     public static function deleteComponent($id)
     {
         if (!$id) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
             return false;
         }
 
@@ -251,6 +226,12 @@ class ComponentModel
 
     public static function archieve($id) {
         $database = DatabaseFactory::getFactory()->getConnection();
+
+        $amount = self::getOrder($id);
+
+        $sql = "UPDATE components SET amount = amount + :amount WHERE id = :id";
+        $query = $database->prepare($sql);
+        $query->execute(array(':id' => $amount->id,':amount' => $amount->orderAmount));
 
         $sql = "UPDATE order_history SET history = :history WHERE id = :id";
         $query = $database->prepare($sql);
