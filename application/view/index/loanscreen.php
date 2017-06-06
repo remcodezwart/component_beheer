@@ -1,3 +1,4 @@
+<?php var_dump($value); ?> 
 <div class="container">
 	<h2><?=$value->name?></h2>
     <p><img alt="component plaatje" src="<?=$value->hyperlink?>"</p>

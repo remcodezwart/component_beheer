@@ -63,6 +63,6 @@ class LocationController extends Controller
     }
     public function comloc()
     {
-
+        LocationModel::getAllComloc();//request::post('component_id')
     }
 }

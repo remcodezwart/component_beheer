@@ -94,10 +94,14 @@ class LocationModel
         } 
     }
 
-    public static function comlocSelect($component, $location)
+    public static function getAllComloc()
     {
-        $sql = "SELECT amount from comloc WHERE component_id = :component AND location_id = :location";
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "select comloc.*, components.name as name, location.address as address from ((comloc inner join components on comloc.component_id = components.id)inner join location on comloc.location_id = location.id)";
         $query = $database->prepare($sql);
-        $query->execute(array(':component' => $component, ':location' => $location));
+        $query->execute();
+        $locations = $query->fetchALL();
+        return Filter::XSSFilter($locations);
     }
 }
