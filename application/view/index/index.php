@@ -1,5 +1,5 @@
 <h1>Onderdelen</h1>
-    <table cellspacing="0">
+    <table cellspacing="0" class="striped responsive-table">
         <tr>
             <th>naam</th>
             <th>plaatje</th>
@@ -8,7 +8,7 @@
             <th>In voorraad</th>
         </tr>  
     <?php foreach($this->component as $value): ?>
-        <tr>
+        <tr> 
             <td><?=$value->name?></td>
             <td><img src="<?=$value->hyperlink?>" alt="component plaatje"></td>
             <td><?=$value->description?></td>
