@@ -20,7 +20,11 @@
 </table>
 
 <form method="post" action="<?=Config::get('URL') ?>supplier/add">
-    <label>adres/website</label><input required="true" type="text" name="name">
+    <label>adres/website</label>
+    <textarea name="name"></textarea>
     <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
-    <button tpye="submit">Toevoegen</button>
+
+    <button class="btn waves-effect waves-light blue" type="submit" name="action">Submit
+    	<i class="material-icons right">send</i>
+  	</button>
 </form>

@@ -23,5 +23,7 @@
     <label>Adres</label>
     <textarea name="adress" required="true"></textarea>
     <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
-    <button tpye="submit">Toevoegen</button>
+    <button class="btn waves-effect waves-light blue" type="submit" name="action">Submit
+    	<i class="material-icons right">send</i>
+  	</button>
 </form>
