@@ -1,26 +1,32 @@
 <h1>Onderdelen</h1>
-    <table cellspacing="0" class="striped responsive-table">
+
+<table class="striped responsive-table">
+    <thead>
         <tr>
             <th>naam</th>
             <th>plaatje</th>
             <th>beschrijving</th>
             <th>specs</th>
             <th>In voorraad</th>
-        </tr>  
-    <?php foreach($this->component as $value): ?>
-        <tr> 
-            <td><?=$value->name?></td>
-            <td><img src="<?=$value->hyperlink?>" alt="component plaatje"></td>
-            <td><?=$value->description?></td>
-            <td><pre><?=$value->specs?></pre></td>
-            <td>totaal: <?=$value->amount?>
-                <?php foreach($this->comloc as $component): ?>
-                    locatie: <?=$component->address ?> aantal: <?=$component->amount ?>
-                <?php endforeach ?>
-            </td>
-        </tr>    
-    <?php endforeach ?>
-    </table>
+        </tr>
+    </thead>  
+    <tbody>
+        <?php foreach($this->component as $value): ?>
+            <tr> 
+                <td><?=$value->name?></td>
+                <td><img src="<?=$value->hyperlink?>" alt="component plaatje"></td>
+                <td><?=$value->description?></td>
+                <td><pre><?=$value->specs?></pre></td>
+                <td>totaal: <?=$value->amount?>
+                    <?php foreach($this->comloc as $component): ?>
+                        locatie: <?=$component->address ?> aantal: <?=$component->amount ?>
+                    <?php endforeach ?>
+                </td>
+            </tr>
+        <?php endforeach ?>
+    </tbody>    
+</table>
+
 <?php if (Session::userIsLoggedIn()): ?>
     <?php foreach($this->component as $value): ?>
         <h2><?=$value->name ?></h2>
