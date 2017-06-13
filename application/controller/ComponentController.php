@@ -23,6 +23,20 @@ class ComponentController extends Controller
         ));
     }
 
+    public function switchAmount()
+    {
+        Csrf::checkToken();
+        $this->View->render('component/amounts', array(
+            'comloc' => LocationModel::getSomeComloc(request::post('id'))
+        ));
+    }
+
+    public function confirmSwitchAmount()
+    {
+        Csrf::checkToken();
+        
+    }
+
     public function createMutation()
     {
       ComponentModel::createMutation();

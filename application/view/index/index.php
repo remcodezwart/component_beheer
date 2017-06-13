@@ -14,9 +14,10 @@
             <td><?=$value->description?></td>
             <td><pre><?=$value->specs?></pre></td>
             <td>totaal: <?=$value->amount?>
-                <?php foreach($this->comloc as $component): ?>
-                    locatie: <?=$component->address ?> aantal: <?=$component->amount ?>
-                <?php endforeach ?>
+                <?php foreach($this->comloc as $component){ 
+                    if($value->id == $component->component_id): ?>
+                        locatie: <?=$component->address ?> aantal: <?=$component->amount ?>
+                <?php endif;} ?>
             </td>
         </tr>    
     <?php endforeach ?>
@@ -31,7 +32,13 @@
         <form method="post" action="<?=Config::get('URL'); ?>index/loanMe">
             <input type="hidden" name="id" value="<?=$value->id?>"/>
             <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
-            <input type="submit" class="button" value="Ik wil dit lenen."/>
+            <button type="submit">Ik wil dit lenen.</button>
+        </form>
+        <form method="post" action="<?=Config::get('URL'); ?>component/switchAmount">
+            <input type="hidden" name="id" value="<?=$value->id?>"/>
+            <?=var_dump($value->id)?>
+            <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
+            <button type="submit">De aantallen per locatie zijn niet goed.</button>
         </form>
         <form method="post" action="<?=Config::get('URL'); ?>component/editSave">
             <p>Verander beschrijving:</p>
