@@ -1,7 +1,9 @@
+# project overgenomen van sebas en jelle
 
-# Voorraadbeheer & Arduiknow
+# Grote veranderingen
 
-Voorraad systeem voor de componenten gebruikt in het smart technologies lab.
+* [Materializecss](http://materializecss.com/) css/javascript framework 
+
 
 ## Getting Started
 
@@ -21,8 +23,6 @@ Dit allen kan ook handmatig gedaan worden zonder barcodescanner.
 
 * **Sebas Bakker** -        [SebasBakker](https://github.com/SebasBakker/)
 * **Jelle van den Bergh** - [jellevandenbergh](https://github.com/jellevandenbergh/)
-
-
 
 
 

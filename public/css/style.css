@@ -41,16 +41,10 @@
         text-align: center;
         margin:0px auto;
     }
-    .active {
-        text-decoration: underline;
-    }
     .border {
         border:1px solid black;
     }
-    .wrapper {
-        width: 80%;
-        margin: 0 auto;
-    }
+
     .container {
         background-color: white;
         max-width: 960px;
@@ -115,9 +109,6 @@
         font-size: 10px;
         font-weight: bold;
     }
-    .navigation a:hover {
-        text-decoration: underline;
-    }
     
     /* overview */
     .overview-table img {
@@ -141,10 +132,6 @@
     .feedback.info {
         color: #00529B;
         background-color: #BDE5F8;
-    }
-
-    .login-box {
-        text-align: center;
     }
 
     .red-text {

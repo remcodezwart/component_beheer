@@ -1,27 +1,33 @@
 <h1>Onderdelen</h1>
-    <table cellspacing="0">
+
+<table class="striped responsive-table">
+    <thead>
         <tr>
             <th>naam</th>
             <th>plaatje</th>
             <th>beschrijving</th>
             <th>specs</th>
             <th>In voorraad</th>
-        </tr>  
-    <?php foreach($this->component as $value): ?>
-        <tr>
-            <td><?=$value->name?></td>
-            <td><img src="<?=$value->hyperlink?>" alt="component plaatje"></td>
-            <td><?=$value->description?></td>
-            <td><pre><?=$value->specs?></pre></td>
-            <td>totaal: <?=$value->amount?>
-                <?php foreach($this->comloc as $component){ 
-                    if($value->id == $component->component_id): ?>
-                        locatie: <?=$component->address ?> aantal: <?=$component->amount ?>
-                <?php endif;} ?>
-            </td>
-        </tr>    
-    <?php endforeach ?>
-    </table>
+        </tr>
+    </thead>  
+    <tbody>
+        <?php foreach($this->component as $value): ?>
+            <tr> 
+                <td><?=$value->name?></td>
+                <td><img src="<?=$value->hyperlink?>" alt="component plaatje"></td>
+                <td><?=$value->description?></td>
+                <td><pre><?=$value->specs?></pre></td>
+                <td>totaal: <?=$value->amount?>
+                    <?php foreach($this->comloc as $component):
+                        if($value->id == $component->component_id): ?>
+                            locatie: <?=$component->address ?> aantal: <?=$component->amount ?>
+                        <?php endif ?>
+                    <?php endforeach ?>
+                </td>
+            </tr>
+        <?php endforeach ?>
+    </tbody>    
+</table>
 <?php if (Session::userIsLoggedIn()): ?>
     <?php foreach($this->component as $value): ?>
         <h2><?=$value->name ?></h2>
@@ -36,7 +42,6 @@
         </form>
         <form method="post" action="<?=Config::get('URL'); ?>component/switchAmount">
             <input type="hidden" name="id" value="<?=$value->id?>"/>
-            <?=var_dump($value->id)?>
             <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
             <button type="submit">De aantallen per locatie zijn niet goed.</button>
         </form>
