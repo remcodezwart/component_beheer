@@ -104,4 +104,20 @@ class LocationModel
         $locations = $query->fetchALL();
         return Filter::XSSFilter($locations);
     }
+
+    public static function getSomeComloc($component_id)
+    {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "select comloc.*, components.name as name, location.address as address from ((comloc inner join components on comloc.component_id = components.id)inner join location on comloc.location_id = location.id) where comloc.component_id = :id";
+        $query = $database->prepare($sql);
+        $query->execute(array(':id' => $component_id));
+        $locations = $query->fetchALL();
+        return Filter::XSSFilter($locations);
+    }
+
+    public static function updateComloc()
+    {
+        
+    }
 }
