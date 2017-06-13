@@ -39,7 +39,7 @@ class ComponentController extends Controller
     public function loanComponent()
     {
         Csrf::checkToken();
-        ComponentModel::loanComponent(Request::post('name'), Request::post('amount0'), Request::post('amount'));
+        ComponentModel::loanComponent(Request::post('id') , Request::post('amount'));
         Redirect::to('index');
     }
 

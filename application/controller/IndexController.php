@@ -16,23 +16,11 @@ class IndexController extends Controller
      */
     public function index()
     {
-        //$comloc = LocationModel::getAllComloc();
-        //foreach ($comp as $one) {
-        //    $comloc = LocationModel::comlocSelect($one);
-        //}
-        //var_dump($comloc);
         $this->View->render('index/index', array(
             'component' => ComponentModel::getAllComponent(),
             'locations' => LocationModel::getAllLocations(),
             'comloc' => LocationModel::getAllComloc()
         ));
-    }
-
-    public function background()
-    {
-        Csrf::checkToken();
-
-        
     }
 
     public function loanMe()

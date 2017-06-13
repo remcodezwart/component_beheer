@@ -7,8 +7,7 @@
 <br>
 <form method="post" action="<?=Config::get('URL'); ?>component/loanComponent">
     <label>Ik heb hiervan nodig...</label><input type="number" name="amount" required="true"/><br>
-    <input type="hidden" name="name" value="<?=$value->name?>"/>
-    <input type="hidden" name="amount0" value=<?=$value->amount?> />
+    <input type="hidden" name="id" value="<?=$value->id?>"/>
     <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
     <p>Mijn barcode is...</p>
     <input type="text" name="barcode" required="true"/><br>

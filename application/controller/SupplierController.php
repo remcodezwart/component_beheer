@@ -63,6 +63,9 @@ class SupplierController extends Controller
 
     public function mutationsIndex() 
     {
-        $this->View->render('mutations/index');
+        $this->View->render('mutations/index', array(
+            'mutations' => mutationModel::getMutation(),
+            'components' => componentModel::getAllComponent()
+        ));
     }
 }
