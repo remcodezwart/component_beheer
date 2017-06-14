@@ -98,7 +98,7 @@ class LocationModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "select comloc.*, components.name as name, location.address as address from ((comloc inner join components on comloc.component_id = components.id)inner join location on comloc.location_id = location.id)";
+        $sql = "SELECT comloc.*, components.name AS name, location.address AS address FROM ((comloc inner join components on comloc.component_id = components.id) INNER JOIN location ON comloc.location_id = location.id)";
         $query = $database->prepare($sql);
         $query->execute();
         $locations = $query->fetchALL();
@@ -109,7 +109,7 @@ class LocationModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "select comloc.*, components.name as name, location.address as address from ((comloc inner join components on comloc.component_id = components.id)inner join location on comloc.location_id = location.id) where comloc.component_id = :id";
+        $sql = "SELECT comloc.*, components.name as name, location.address as address from ((comloc inner join components on comloc.component_id = components.id)inner join location on comloc.location_id = location.id) where comloc.component_id = :id";
         $query = $database->prepare($sql);
         $query->execute(array(':id' => $component_id));
         $locations = $query->fetchALL();
@@ -120,7 +120,7 @@ class LocationModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "update comloc set amount = :amount where component_id = :component and location_id = :location";
+        $sql = "UPDATE comloc SET amount = :amount WHERE component_id = :component AND location_id = :location";
         $query = $database->prepare($sql);
         $query->execute(array(':amount' => $amount, ':component' => $component, ':location' => $location));
 

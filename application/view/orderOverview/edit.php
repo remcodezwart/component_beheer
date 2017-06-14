@@ -3,16 +3,16 @@
 <?php if ($this->order) { ?>
 	<form method="post" action="<?=Config::get('URL') ?>component/editOrder">
 		<label>Onderdeel</label>
-		<select name="component">
+		<select class="browser-default" name="component">
 		<?php foreach ($this->components as $component) { ?>
 			<option <?php if ($component->id === $this->order->id) { ?> selected="true" <?php } ?> 	value="<?=$component->id ?>"><?=$component->name ?></option>
 		<?php } ?>
 		</select><br>
 		
 		<label>Besteld bij</label>
-		<select name="store">
+		<select class="browser-default" name="store">
 		<?php foreach ($this->stores as $store) { ?>
-			<option <?php if ($store->id === $this->order->supplierId) { ?> selected="true" <?php } ?>                  value="<?=$store->id ?>"><?=$store->name ?></option>
+			<option <?php if ($store->id === $this->order->supplierId) { ?> selected="true" <?php } ?>     value="<?=$store->id ?>"><?=$store->name ?></option>
 		<?php } ?>
 		</select><br>
 
@@ -25,7 +25,9 @@
 		</label>
 		<input type="hidden" name="id" value="<?=$this->order->order_id ?>"> 
 		<input name="csrf_token" type="hidden" value="<?=Csrf::makeToken() ?>"><br>
-		<button type="submit">edit order</button>
+		<button class="btn waves-effect waves-light blue" type="submit" name="action">order editen
+    		<i class="material-icons right">send</i>
+  		</button>
 	</form>
 <?php } else { ?>
 	<p>deze order bestaat niet</p>

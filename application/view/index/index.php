@@ -38,12 +38,16 @@
         <form method="post" action="<?=Config::get('URL'); ?>index/loanMe">
             <input type="hidden" name="id" value="<?=$value->id?>"/>
             <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
-            <button type="submit">Ik wil dit lenen.</button>
+            <button class="btn waves-effect waves-light blue" type="submit" name="action">Ik wil dit lenen
+                <i class="material-icons right">send</i>
+            </button>
         </form>
         <form method="post" action="<?=Config::get('URL'); ?>component/switchAmount">
             <input type="hidden" name="id" value="<?=$value->id?>"/>
             <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
-            <button type="submit">De aantallen per locatie zijn niet goed.</button>
+            <button class="btn waves-effect waves-light blue" type="submit" name="action">De aantallen per locatie zijn niet goed
+                <i class="material-icons right">send</i>
+            </button>
         </form>
         <form method="post" action="<?=Config::get('URL'); ?>component/editSave">
             <p>Verander beschrijving:</p>
@@ -56,12 +60,16 @@
             <?php } ?>-->
             <input type="hidden" name="id" value="<?=$value->id?>"/>
             <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
-            <button type="submit">Sla op</button>
+            <button class="btn waves-effect waves-light blue" type="submit" name="action">opslaan
+                <i class="material-icons right">send</i>
+            </button>
         </form>
         <form method="post" action="<?=Config::get('URL'); ?>component/delete">
             <input type="hidden" name="id" value="<?=$value->id?>"/>
             <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
-            <button type="submit">verwijder</button>
+            <button class="btn waves-effect waves-light blue" type="submit" name="action">verwijder
+                <i class="material-icons right">send</i>
+            </button>
         </form>
     <?php endforeach ?>
 <?php endif; ?>
