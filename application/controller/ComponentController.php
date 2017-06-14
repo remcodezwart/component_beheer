@@ -54,7 +54,7 @@ class ComponentController extends Controller
     public function loanComponent()
     {
         Csrf::checkToken();
-        ComponentModel::loanComponent(Request::post('name'), Request::post('amount0'), Request::post('amount'));
+        ComponentModel::loanComponent(Request::post('id') , Request::post('amount'));
         Redirect::to('index');
     }
 
@@ -137,5 +137,15 @@ class ComponentController extends Controller
         componentModel::archieve( request::post('id') );
         Redirect::to('component/orderoverview');
     }
+
+    public function correction()
+    {
+        Csrf::checkToken();
+        $reason = array("Diefstal", "Correctie", "Kapot");
+
+        mutationModel::addMutation(Request::post('component'), Request::post('location'), Request::post('amount'), Request::post('reason'));
+
+        Redirect::to('supplier/mutationsIndex');
+    }   
 
 }

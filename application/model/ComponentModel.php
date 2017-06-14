@@ -1,12 +1,6 @@
 <?php
-
-
 class ComponentModel
 {
-    /**
-     * Get all notes (notes are just example data that the user has created)
-     * @return array an array with several objects (the results)
-     */
     public static function getAllComponent()
     {
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -47,6 +41,7 @@ class ComponentModel
         $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':amount' => $amount)); 
 
         if ($query->rowCount() == 1) {
+            mutationModel::addMutation($database->lastInsertId() ,1 ,$amount ,"Onderdeel toegevoegd");
             return true;
         }
 
@@ -80,19 +75,16 @@ class ComponentModel
         return false;
     }
 
-    public static function loanComponent($name, $amount0, $amount)
-    {
-        if ( empty($name) || empty($amount0) || empty($amount) ||                                           is_numeric($amount0) === false || is_numeric($amount) === false ) {
+    public static function loanComponent($id, $amount)
+    {   
+        $validate = self::getComponent($id);
+
+        $amount = $validate->amount - $amount;
+
+        if (empty($id) || empty($amount) || is_numeric($amount) === false) {
             Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
             return false;
         }
-
-        $database = DatabaseFactory::getFactory()->getConnection();
-        
-        $sql = "UPDATE components SET amount = :amount WHERE name = :name";
-        $query = $database->prepare($sql);
-        $amount = $amount0 - $amount;
-        
         if (!is_numeric($amount) ) {
             Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
             return false;
@@ -103,10 +95,16 @@ class ComponentModel
             return false;
         }
 
-        $query->execute(array(':amount' => $amount, ':name' => $name));
+        $database = DatabaseFactory::getFactory()->getConnection();
+        
+        $sql = "UPDATE components SET amount = :amount WHERE id = :id";
+        $query = $database->prepare($sql);
+
+        $query->execute(array(':amount' => $amount, ':id' => $id));
 
 
         if ($query->rowCount() == 1) {
+            mutationModel::addMutation($id ,1 ,"-".$amount ,"Onderdeel uitgeleend");
             return true;
         }
 
@@ -114,16 +112,12 @@ class ComponentModel
         return false;
     }
 
-    /**
-     * Delete a specific note
-     * @param int $note_id id of the note
-     * @return bool feedback (was the note deleted properly ?)
-     */
     public static function deleteComponent($id)
     {
         if (!$id) {
             Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
             return false;
+            exit;
         }
 
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -133,7 +127,10 @@ class ComponentModel
         $query->execute(array(':id' => $id));
 
         if ($query->rowCount() == 1) {
+            $component = self::getComponent($id);
+            mutationModel::addMutation($id ,1 ,"-".$component->amount, "Onderdeel verwijderd");
             return true;
+            exit;
         }
 
         // default return
@@ -154,6 +151,7 @@ class ComponentModel
         $query->execute(array(':date' => $date, ':amount' => $amount, ':supplierId' => $supplierId, ':componentId'  => $componentId));
 
         if ($query->rowCount() == 1) {
+            mutationModel::addMutation($componentId ,1 ,$amount , "Onderdeel besteld");
             return true;
         }
 
@@ -275,6 +273,7 @@ class ComponentModel
         $query->execute(array(':history' => 1, ':id' => $id));
 
         if ($query->rowCount() == 1) {
+            mutationModel::addMutation($amount->id ,1 ,$amount->orderAmount , "Besteld onderdeel aangekomen");
             return true;
         }
 
