@@ -137,4 +137,14 @@ class ComponentController extends Controller
         Redirect::to('component/orderoverview');
     }
 
+    public function correction()
+    {
+        Csrf::checkToken();
+        $reason = array("Diefstal", "Correctie", "Kapot");
+
+        mutationModel::addMutation(Request::post('component'), Request::post('location'), Request::post('amount'), Request::post('reason'));
+
+        Redirect::to('supplier/mutationsIndex');
+    }   
+
 }

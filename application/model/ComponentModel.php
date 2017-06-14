@@ -112,11 +112,6 @@ class ComponentModel
         return false;
     }
 
-    /**
-     * Delete a specific note
-     * @param int $note_id id of the note
-     * @return bool feedback (was the note deleted properly ?)
-     */
     public static function deleteComponent($id)
     {
         if (!$id) {

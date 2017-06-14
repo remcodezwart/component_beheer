@@ -65,7 +65,8 @@ class SupplierController extends Controller
     {
         $this->View->render('mutations/index', array(
             'mutations' => mutationModel::getMutation(),
-            'components' => componentModel::getAllComponent()
+            'components' => componentModel::getAllComponent(),
+            'locations' => locationModel::getAllLocations()
         ));
     }
 }
