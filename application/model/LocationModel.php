@@ -116,8 +116,17 @@ class LocationModel
         return Filter::XSSFilter($locations);
     }
 
-    public static function updateComloc()
+    public static function updateComloc($amount, $component, $location)
     {
-        
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "update comloc set amount = :amount where component_id = :component and location_id = :location";
+        $query = $database->prepare($sql);
+        $query->execute(array(':amount' => $amount, ':component' => $component, ':location' => $location));
+
+        if ($query->rowCount() !== 1) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
+            return false;
+        }
     }
 }

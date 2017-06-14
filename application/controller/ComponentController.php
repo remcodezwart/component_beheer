@@ -27,14 +27,15 @@ class ComponentController extends Controller
     {
         Csrf::checkToken();
         $this->View->render('component/amounts', array(
-            'comloc' => LocationModel::getSomeComloc(request::post('id'))
+            'comloc' => LocationModel::getSomeComloc(Request::post('id'))
         ));
     }
 
     public function confirmSwitchAmount()
     {
         Csrf::checkToken();
-        
+        LocationModel::updateComloc(Request::post('amount'), Request::post('component'), Request::post('location'));
+        Redirect::to('index');
     }
 
     public function createMutation()
