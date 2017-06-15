@@ -18,5 +18,8 @@
 
     <!--<?php// } ?>-->
     <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>"><br>
-    <button type="submit">Maak dit component aan</button>
+    <button class="btn waves-effect waves-light blue" type="submit" name="action">Nieuwe order
+      <i class="material-icons right">send</i>
+    </button>
+
 </form>

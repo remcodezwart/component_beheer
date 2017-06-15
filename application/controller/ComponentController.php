@@ -25,7 +25,6 @@ class ComponentController extends Controller
 
     public function switchAmount()
     {
-        Csrf::checkToken();
         $this->View->render('component/amounts', array(
             'comloc' => LocationModel::getSomeComloc(Request::post('id'))
         ));
@@ -58,9 +57,12 @@ class ComponentController extends Controller
         Redirect::to('index');
     }
 
-    public function edit($productId)
+    public function edit()
     {
-        $this->View->render('component/edit');
+        $this->View->render('component/edit', array(
+            'component' => ComponentModel::getComponent(Request::get('id')),
+            'comloc' => LocationModel::getSomeComloc(Request::get('id'))
+        ));
     }
 
     public function editSave()
@@ -71,6 +73,13 @@ class ComponentController extends Controller
     }
 
     public function delete()
+    {
+        $this->View->render('component/delete', array(
+            'component' => ComponentModel::getComponent(Request::get('id'))
+        ));
+    }
+
+    public function deleteAction()
     {
         Csrf::checkToken();
         ComponentModel::deleteComponent(Request::post('id'));
@@ -147,5 +156,4 @@ class ComponentController extends Controller
 
         Redirect::to('supplier/mutationsIndex');
     }   
-
 }

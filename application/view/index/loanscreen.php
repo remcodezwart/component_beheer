@@ -11,5 +11,7 @@
     <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
     <p>Mijn barcode is...</p>
     <input type="text" name="barcode" required="true"/><br>
-    <input type="submit" class="button" value="Dit is zo goed."/>
+	<button class="btn waves-effect waves-light blue" type="submit" name="action">uitlenen
+		<i class="material-icons right">send</i>
+	</button>
 </form>

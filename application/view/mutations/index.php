@@ -1,4 +1,4 @@
-<h3>gebeurtenissen</h3>
+<h4 class="center-align">gebeurtenissen</h4>
 <table class="striped responsive-table" cellspacing="0">
 	<thead>
 		<tr>
@@ -23,11 +23,11 @@
 		<?php } ?>
 	</tbody>
 </table>
-<p>
+<p class="flow-text">
 	mochten het aantal niet overeenkomen met de daadwerkelijke vooraad kunt u hieronder een correctie aanbrengen
 </p>
 <div class="row">
-	<h6>Correctie</h6>
+	<h5 class="center-align">Correctie</h5>
 	<form method="post" action="<?=Config::get('URL') ?>component/correction">
 		<div class="row">
 			<div class="input-field col s12">
