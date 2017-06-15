@@ -1,4 +1,4 @@
-<h1>Onderdelen</h1>
+<h1 class="center-align">Onderdelen</h1>
 
 <table class="striped responsive-table">
     <thead>

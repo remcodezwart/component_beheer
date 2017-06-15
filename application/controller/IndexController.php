@@ -23,12 +23,24 @@ class IndexController extends Controller
         ));
     }
 
-    public function loanMe()
+    public function search()
+    {
+        $this->View->render('index/search', array(
+
+        ));
+    }
+
+    public function searchAction()
     {
         Csrf::checkToken();
+        searchModel::search(Request::post('search'));
+        Redirect::to('index/search');
+    }
+
+    public function loanMe()
+    {
         $this->View->render('index/loanscreen', array(
-            'component' => ComponentModel::getComponent(Request::post('id'))
-            //'username' => Session::get('user_name')
+            'component' => ComponentModel::getComponent(Request::get('id'))
         ));
     }
 }
