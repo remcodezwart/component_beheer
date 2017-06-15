@@ -33,7 +33,7 @@ class ComponentController extends Controller
     public function confirmSwitchAmount()
     {
         Csrf::checkToken();
-        LocationModel::updateComloc(Request::post('amount'), Request::post('component'), Request::post('location'));
+        LocationModel::updateComloc(Request::post('amount'), Request::post('id'));
         Redirect::to('index');
     }
 
