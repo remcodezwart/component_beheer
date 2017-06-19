@@ -8,6 +8,7 @@
             <th>beschrijving</th>
             <th>specs</th>
             <th>In voorraad</th>
+            <th>Moet dit terug?</th>
         <?php if (Session::userIsLoggedIn()) { ?>
             <th>editen</th>
             <th>verwijderen</th>
@@ -27,6 +28,12 @@
                             locatie: <?=$id->address ?> aantal: <?=$id->amount ?>
                         <?php endif ?>
                     <?php endforeach ?>
+                </td>
+                <td><?php if ($component->return == 1): ?>
+                    Ja.
+                    <?php else: ?>
+                    Nee.
+                    <?php endif; ?>
                 </td>
             <?php if (Session::userIsLoggedIn()) { ?>
                 <td><a class="waves-effect waves-light btn yellow" href="<?=Config::get('URL') ?>component/edit?id=<?=$component->id ?>"><i class="material-icons">mode_edit</i></a></td>
