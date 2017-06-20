@@ -10,8 +10,7 @@
             <th>In voorraad</th>
             <th>Moet dit terug?</th>
         <?php if (Session::userIsLoggedIn()) { ?>
-            <th>editen</th>
-            <th>verwijderen</th>
+            <th>acties</th>
         <?php } ?>
         </tr>
     </thead>  
@@ -36,8 +35,10 @@
                     <?php endif; ?>
                 </td>
             <?php if (Session::userIsLoggedIn()) { ?>
-                <td><a class="waves-effect waves-light btn yellow" href="<?=Config::get('URL') ?>component/edit?id=<?=$component->id ?>"><i class="material-icons">mode_edit</i></a></td>
-                <td><a class="waves-effect waves-light btn red" href="<?=Config::get('URL') ?>component/delete?id=<?=$component->id ?>"><i class="material-icons">delete</i></a></td>
+                <td>
+                    <a class="waves-effect waves-light btn yellow" href="<?=Config::get('URL') ?>component/edit?id=<?=$component->id ?>"><i class="material-icons">mode_edit</i></a>
+                    <a class="waves-effect waves-light btn red" href="<?=Config::get('URL') ?>component/delete?id=<?=$component->id ?>"><i class="material-icons">delete</i></a>
+                </td>
             <?php } ?>
             </tr>
         <?php endforeach ?>

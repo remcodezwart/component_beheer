@@ -10,6 +10,7 @@
     <label>Ik heb hiervan nodig...</label><input type="number" name="amount" required="true"/><br>
     <input type="hidden" name="id" value="<?=$this->component->id?>"/>
     <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
+    <img class="hide-on-small-only barcode-image" src="http://i.imgur.com/Jeoxccv.png">
     <p>Mijn barcode is...</p>
     <input id="barcode" type="text" name="barcode" required="true"/><br>
 	<button class="btn waves-effect waves-light blue" type="submit" name="action">uitlenen
