@@ -61,10 +61,10 @@
 		               		<?php } ?>
 		               	</ul>
 		               	<?php if ($filename !== "index/search") { ?>
-			   				<form class="right" action="<?=Config::get('URL') ?>index/searchAction" method="post">
+			   				<form id="searchForm" class="right" action="<?=Config::get('URL') ?>index/searchAction" method="post">
 						        <div class="input-field">
 						        	<input type="hidden" name="csrf_token" value="<?=Csrf::makeToken() ?>">
-							        <input name="search" id="search" type="search" required="true">
+							        <input placeholder="Zoeken bv arduino" name="search" id="search" type="search" required="true">
 							        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
 							        <i class="material-icons">close</i>
 						        </div>
