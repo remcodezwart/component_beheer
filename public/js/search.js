@@ -24,7 +24,7 @@ document.addEventListener('keydown', function(key) {
 					} else {
 						html += "\
 						<tr>\
-							<td colspan=\"4\" class=\"center-align red\">geen resultaten gevonden </td>\
+							<td colspan=\"4\" class=\"center-align red\">geen resultaten gevonden</td>\
 				    	</tr>"
 					}
 					
