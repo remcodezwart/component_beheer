@@ -28,7 +28,8 @@ document.addEventListener('keydown', function(key) {
 				    	</tr>"
 					}
 					
-					$('#results').empty().append(html);
+					$('#terms').empty().append("gezocht op: "+terms);
+					$('#results').empty().append(html); 
 				},
 				fail: function() {
 					alert('er is een onbekende fout opgetreden');

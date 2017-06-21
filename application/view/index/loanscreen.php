@@ -18,5 +18,5 @@
 	</button>
 </form>
 <?php } else { ?>
-<p class="red align-center"></p>
+<p class="red align-center">onderdeel niet gevonden</p>
 <?php } ?>

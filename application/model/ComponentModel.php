@@ -26,9 +26,9 @@ class ComponentModel
         return Filter::XSSFilter($component);
     }
 
-    public static function createComponent($name, $description, $specs, $hyperlink, $amount)
+    public static function createComponent($name, $description, $specs, $hyperlink, $amount, $minAmount)
     {
-        if ( empty($name) || empty($description) || empty($specs) || empty($hyperlink) || empty($amount) ||    is_numeric($amount) === false) {
+        if ( empty($name) || empty($description) || empty($specs) || empty($hyperlink) || empty($amount) || empty($minAmount) || is_numeric($minAmount) === false || is_numeric($amount) === false) {
             Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
             return false;
         }
@@ -36,9 +36,9 @@ class ComponentModel
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $sql = "
-        INSERT INTO components (name, description, specs, hyperlink, amount) VALUES (:name, :description, :specs, :hyperlink, :amount)";
+        INSERT INTO components (name, description, specs, hyperlink, amount,minAmount) VALUES (:name, :description, :specs, :hyperlink, :amount, :minAmount)";
         $query = $database->prepare($sql);
-        $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':amount' => $amount)); 
+        $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':amount' => $amount, ':minAmount' => $minAmount)); 
 
         if ($query->rowCount() == 1) {
             mutationModel::addMutation($database->lastInsertId() ,1 ,$amount ,"Onderdeel toegevoegd");
@@ -49,9 +49,10 @@ class ComponentModel
         return false;
     }
 
-    public static function updateComponent($description, $specs, $hyperlink, $id)
+    public static function updateComponent($description, $specs, $hyperlink, $minAmount, $name, $id)
     {
-        if ( empty($description) || empty($specs) || empty($hyperlink) ) {
+        if (empty($description) || empty($specs) || empty($hyperlink) || empty($minAmount) && $minAmount !== '0' || is_numeric($minAmount) === false || empty($name)) {
+            
             Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
             return false;
         }
@@ -63,9 +64,9 @@ class ComponentModel
 
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "UPDATE components SET description = :description, specs = :specs, hyperlink = :hyperlink WHERE id = :id LIMIT 1";
+        $sql = "UPDATE components SET name = :name, description = :description, specs = :specs, hyperlink = :hyperlink, minAmount = :minAmount WHERE id = :id LIMIT 1";
         $query = $database->prepare($sql);
-        $query->execute(array(':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':id' => $id));
+        $query->execute(array(':minAmount' => $minAmount, ':name' => $name,':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':id' => $id));
 
         if ($query->rowCount() == 1) {
             return true;

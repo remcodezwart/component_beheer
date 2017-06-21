@@ -36,7 +36,7 @@ class IndexController extends Controller
             Session::remove('searchResults');
             Session::set('searchResults', $results);
         }
-        Redirect::to('index/search');
+        Redirect::to('index/search?terms='.Request::post('search'));
     }
 
     public function loanMe()
