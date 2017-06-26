@@ -26,9 +26,9 @@ class ComponentModel
         return Filter::XSSFilter($component);
     }
 
-    public static function createComponent($name, $description, $specs, $hyperlink, $amount)
+    public static function createComponent($name, $description, $specs, $hyperlink, $amount, $return)
     {
-        if ( empty($name) || empty($description) || empty($specs) || empty($hyperlink) || empty($amount) ||    is_numeric($amount) === false) {
+        if ( empty($name) || empty($description) || empty($specs) || empty($hyperlink) || empty($amount) || empty($return) || is_numeric($amount) === false) {
             Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
             return false;
         }
@@ -36,9 +36,9 @@ class ComponentModel
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $sql = "
-        INSERT INTO components (name, description, specs, hyperlink, amount) VALUES (:name, :description, :specs, :hyperlink, :amount)";
+        INSERT INTO components (name, description, specs, hyperlink, amount, returns) VALUES (:name, :description, :specs, :hyperlink, :amount, :return)";
         $query = $database->prepare($sql);
-        $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':amount' => $amount)); 
+        $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':amount' => $amount, ':return' => $return)); 
 
         if ($query->rowCount() == 1) {
             mutationModel::addMutation($database->lastInsertId() ,1 ,$amount ,"Onderdeel toegevoegd");
