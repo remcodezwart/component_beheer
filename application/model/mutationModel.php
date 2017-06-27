@@ -6,8 +6,6 @@ class mutationModel
 	{
 		if (empty($componentId) || ComponentModel::getComponent($componentId) === false || empty($amount) || empty($reason) || empty($locationId) || LocationModel::getLocation($locationId) === false) {
 
-            var_dump( $locationId );
-            exit;
 			Session::add('feedback_negative', Text::get('MUTANT_CREATION_FAILED'));
 			return false;
 			exit;
@@ -33,8 +31,6 @@ class mutationModel
        		Session::add('feedback_positive', Text::get('MUTANT_CREATION_SUCCES'));
         	return true;
         }
-
-        exit;
 
         Session::add('feedback_negative', Text::get('MUTANT_CREATION_FAILED'));
         return false;

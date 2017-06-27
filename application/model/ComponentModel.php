@@ -40,7 +40,7 @@ class ComponentModel
         INSERT INTO components (name, description, specs, hyperlink, minAmount, returns) 
         VALUES (:name, :description, :specs, :hyperlink, :minAmount, :return)";
         $query = $database->prepare($sql);
-        $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':minAmount' => $minAmount, ':return' => ($return === 'on' ? '1' : '0') )); 
+        $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':minAmount' => $minAmount, ':return' => ($return === '1' ? '1' : '0') )); 
 
         if ($query->rowCount() == 1) {
             locationModel::createComloc($database->lastInsertId() ,$location ,$amount);
