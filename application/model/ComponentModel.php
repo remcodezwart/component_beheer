@@ -26,9 +26,10 @@ class ComponentModel
         return Filter::XSSFilter($component);
     }
 
-    public static function createComponent($name, $description, $specs, $hyperlink, $amount, $location, $minAmount)
+    public static function createComponent($name, $description, $specs, $hyperlink, $location, $amount, $return, $minAmount)
     {
-        if ( empty($name) || empty($description) || empty($specs) || empty($hyperlink) || empty($amount) || empty($minAmount) || is_numeric($minAmount) === false || is_numeric($amount) === false || 0 > $amount || 0 >= $minAmount || LocationModel::getLocation($location) === false) {
+        if ( empty($name) || empty($description) || empty($specs) || empty($hyperlink) || empty($location) || empty($minAmount) || is_numeric($minAmount) === false || empty($amount) ) {
+
             Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
             return false;
         }
@@ -36,10 +37,10 @@ class ComponentModel
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $sql = "
-        INSERT INTO components (name, description, specs, hyperlink, minAmount) 
-        VALUES (:name, :description, :specs, :hyperlink, :minAmount)";
+        INSERT INTO components (name, description, specs, hyperlink, minAmount, returns) 
+        VALUES (:name, :description, :specs, :hyperlink, :minAmount, :return)";
         $query = $database->prepare($sql);
-        $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':minAmount' => $minAmount)); 
+        $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':minAmount' => $minAmount, ':return' => ($return === 'on' ? '1' : '0') )); 
 
         if ($query->rowCount() == 1) {
             locationModel::createComloc($database->lastInsertId() ,$location ,$amount);
@@ -306,19 +307,20 @@ class ComponentModel
 
     public static function checkIfComponentsUnderMinimumAmount()
     {
-        $database = DatabaseFactory::getFactory()->getConnection();
+        //$database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT * FROM `components` WHERE minAmount > amount";
-        $query = $database->prepare($sql);
-        $query->execute();
+        //$sql = "SELECT * FROM `components` WHERE minAmount > amount";
+        //$query = $database->prepare($sql);
+        //$query->execute();
 
-        $components = $query->fetchAll();
+        //$components = $query->fetchAll();
 
-        if (!empty($components)) {
-            self::sendComponentEmail($components);
-        } else {
-            return false;
-        }
+        //if (!empty($components)) {
+        //    self::sendComponentEmail($components);
+        //} else {
+        //    return false;
+        //}
+        return;
     }
 
     protected static function sendComponentEmail($components)

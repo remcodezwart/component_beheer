@@ -23,6 +23,14 @@ class ComponentController extends Controller
         ));
     }
 
+    public function preCreate()
+    {
+        $this->View->render('component/createcomloc', array(
+            'create' => array(Request::post('name'), Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('amount')),
+            'locations' => LocationModel::getAllLocations()
+        ));
+    }
+
     public function switchAmount()
     {
         $this->View->render('component/amounts', array(
@@ -40,7 +48,9 @@ class ComponentController extends Controller
     public function create()
     {
         Csrf::checkToken();
-        ComponentModel::createComponent(Request::post('name'), Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('amount'), Request::post('location'), Request::post('minAmount'));
+
+ComponentModel::createComponent(Request::post('name'), Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('location'), Request::post('amount'), Request::post('return'), Request::post('minAmount'));
+
         Redirect::to('index');
     }
 

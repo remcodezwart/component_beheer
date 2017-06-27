@@ -28,7 +28,7 @@
                         <?php endif ?>
                     <?php endforeach ?>
                 </td>
-                <td><?php if ($component->return == 1): ?>
+                <td><?php if ($component->returns == 1): ?>
                     Ja.
                     <?php else: ?>
                     Nee.
