@@ -25,16 +25,18 @@ class IndexController extends Controller
 
     public function search()
     {
-        $this->View->render('index/search', array(
-
-        ));
+        $this->View->render('index/search');
     }
 
     public function searchAction()
     {
         Csrf::checkToken();
-        searchModel::search(Request::post('search'));
-        Redirect::to('index/search');
+        $results = searchModel::search(Request::post('search'));
+        if ($results) {
+            Session::remove('searchResults');
+            Session::set('searchResults', $results);
+        }
+        Redirect::to('index/search?terms='.Request::post('search'));
     }
 
     public function loanMe()

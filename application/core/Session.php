@@ -43,6 +43,12 @@ class Session
         }
     }
 
+    public static function remove($key)
+    {
+        if (isset($_SESSION[$key])) {
+            unset($_SESSION[$key]);
+        }
+    }
     /**
      * adds a value as a new array element to the key.
      * useful for collecting error messages etc

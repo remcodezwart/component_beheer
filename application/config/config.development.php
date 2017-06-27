@@ -83,23 +83,25 @@ return array(
 	 */
 	'EMAIL_USED_MAILER' => 'phpmailer',
 	'EMAIL_USE_SMTP' => false,
-	'EMAIL_SMTP_HOST' => 'yourhost',
-	'EMAIL_SMTP_AUTH' => true,
-	'EMAIL_SMTP_USERNAME' => 'yourusername',
-	'EMAIL_SMTP_PASSWORD' => 'yourpassword',
-	'EMAIL_SMTP_PORT' => 465,
-	'EMAIL_SMTP_ENCRYPTION' => 'ssl',
+	'EMAIL_SMTP_HOST' => '127.0.0.1',
+	'EMAIL_SMTP_AUTH' => false,
+	'EMAIL_SMTP_USERNAME' => '',
+	'EMAIL_SMTP_PASSWORD' => '',
+	'EMAIL_SMTP_PORT' => 25,
+	'EMAIL_SMTP_ENCRYPTION' => false,
 	/**
 	 * Configuration for: Email content data
 	 */
 	'EMAIL_PASSWORD_RESET_URL' => 'login/verifypasswordreset',
-	'EMAIL_PASSWORD_RESET_FROM_EMAIL' => 'no-reply@example.com',
-	'EMAIL_PASSWORD_RESET_FROM_NAME' => 'My Project',
-	'EMAIL_PASSWORD_RESET_SUBJECT' => 'Password reset for PROJECT XY',
-	'EMAIL_PASSWORD_RESET_CONTENT' => 'Please click on this link to reset your password: ',
+	'EMAIL_PASSWORD_RESET_FROM_EMAIL' => 'no-reply@component-beheer.com',
+	'EMAIL_PASSWORD_RESET_FROM_NAME' => 'component-beheer',
+	'EMAIL_PASSWORD_RESET_SUBJECT' => 'wachtwoord resseten voor component-beheer',
+	'EMAIL_PASSWORD_RESET_CONTENT' => 'klik alstublieft op deze link om u wachtwoord te resseten: ',
 	'EMAIL_VERIFICATION_URL' => 'login/verify',
-	'EMAIL_VERIFICATION_FROM_EMAIL' => 'no-reply@example.com',
-	'EMAIL_VERIFICATION_FROM_NAME' => 'My Project',
-	'EMAIL_VERIFICATION_SUBJECT' => 'Account activation for PROJECT XY',
-	'EMAIL_VERIFICATION_CONTENT' => 'Please click on this link to activate your account: ',
+	'EMAIL_VERIFICATION_FROM_EMAIL' => 'no-reply@component-beheer.com',
+	'EMAIL_VERIFICATION_FROM_NAME' => 'component-beheer',
+	'EMAIL_VERIFICATION_SUBJECT' => 'activeer u acount voor component-beheer',
+	'EMAIL_VERIFICATION_CONTENT' => 'Klik up deze link om u acount te activeren: ',
+	'EMAIL_VERIFICATION_SUBJECT_OUT_OF_COMPONENTS' => 'te weinig onderdelen'
+
 );

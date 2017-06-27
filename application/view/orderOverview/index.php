@@ -8,9 +8,7 @@
 			<th>aantal</th>
 			<th>levenranchier</th>
 			<th>onderdeel</th>
-			<th>edit</th>
-			<th>verwijderen</th>
-			<th>archief</th>
+			<th>acties</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -20,9 +18,10 @@
 				<td><?=$order->orderAmount ?></td>
 				<td><?=$order->supplierName ?></td>
 				<td><?=$order->name ?></td>
-				<td><a class="waves-effect waves-light btn yellow" href="<?=config::get('URL')?>component/orderedit?id=<?=$order->order_id?>"><i class="material-icons">mode_edit</i></a></td>
-				<td><a class="waves-effect waves-light btn red" href="<?=config::get('URL')?>component/orderdelete?id=<?=$order->order_id?>"><i class="material-icons">delete</i></a></td>
-				<td><?php if ($order->history === '0') {?><a class="waves-effect waves-light btn blue" href="<?=config::get('URL')?>component/archieve?id=<?=$order->order_id?>"><i class="material-icons">done</i></a><?php } else { ?>ja<?php } ?></td>
+				<td><a class="waves-effect waves-light btn yellow" href="<?=config::get('URL')?>component/orderedit?id=<?=$order->order_id?>"><i class="material-icons">mode_edit</i></a>
+				    <a class="waves-effect waves-light btn red" href="<?=config::get('URL')?>component/orderdelete?id=<?=$order->order_id?>"><i class="material-icons">delete</i></a>
+				    <?php if ($order->history === '0') {?><a class="waves-effect waves-light btn blue" href="<?=config::get('URL')?>component/archieve?id=<?=$order->order_id?>"><i class="material-icons">done</i></a><?php } else { ?>ja<?php } ?>
+				</td>
 			</tr>
 		<?php } ?>
 	</tbody>

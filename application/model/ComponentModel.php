@@ -28,7 +28,7 @@ class ComponentModel
 
     public static function createComponent($name, $description, $specs, $hyperlink, $amount, $return)
     {
-        if ( empty($name) || empty($description) || empty($specs) || empty($hyperlink) || empty($amount) || empty($return) || is_numeric($amount) === false) {
+        if ( empty($name) || empty($description) || empty($specs) || empty($hyperlink) || empty($amount) || empty($return) || empty($minAmount) || is_numeric($minAmount) === false || is_numeric($amount) === false) {
             Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
             return false;
         }
@@ -36,11 +36,12 @@ class ComponentModel
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $sql = "
-        INSERT INTO components (name, description, specs, hyperlink, amount, returns) VALUES (:name, :description, :specs, :hyperlink, :amount, :return)";
+        INSERT INTO components (name, description, specs, hyperlink, amount, returns, minAmount) VALUES (:name, :description, :specs, :hyperlink, :amount, :return, :minAmount)";
         $query = $database->prepare($sql);
-        $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':amount' => $amount, ':return' => $return)); 
+        $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':amount' => $amount, ':return' => $return, ':minAmount' => $minAmount)); 
 
         if ($query->rowCount() == 1) {
+            ComponentModel::checkIfComponentsUnderMinimumAmount();
             mutationModel::addMutation($database->lastInsertId() ,1 ,$amount ,"Onderdeel toegevoegd");
             return true;
         }
@@ -49,9 +50,10 @@ class ComponentModel
         return false;
     }
 
-    public static function updateComponent($description, $specs, $hyperlink, $id)
+    public static function updateComponent($description, $specs, $hyperlink, $minAmount, $name, $id)
     {
-        if ( empty($description) || empty($specs) || empty($hyperlink) ) {
+        if (empty($description) || empty($specs) || empty($hyperlink) || empty($minAmount) && $minAmount !== '0' || is_numeric($minAmount) === false || empty($name)) {
+            
             Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
             return false;
         }
@@ -63,11 +65,12 @@ class ComponentModel
 
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "UPDATE components SET description = :description, specs = :specs, hyperlink = :hyperlink WHERE id = :id LIMIT 1";
+        $sql = "UPDATE components SET name = :name, description = :description, specs = :specs, hyperlink = :hyperlink, minAmount = :minAmount WHERE id = :id LIMIT 1";
         $query = $database->prepare($sql);
-        $query->execute(array(':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':id' => $id));
+        $query->execute(array(':minAmount' => $minAmount, ':name' => $name,':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':id' => $id));
 
         if ($query->rowCount() == 1) {
+            ComponentModel::checkIfComponentsUnderMinimumAmount();
             return true;
         }
 
@@ -104,6 +107,7 @@ class ComponentModel
 
 
         if ($query->rowCount() == 1) {
+            ComponentModel::checkIfComponentsUnderMinimumAmount();
             mutationModel::addMutation($id ,1 ,"-".$amount ,"Onderdeel uitgeleend");
             return true;
         }
@@ -273,6 +277,7 @@ class ComponentModel
         $query->execute(array(':history' => 1, ':id' => $id));
 
         if ($query->rowCount() == 1) {
+            ComponentModel::checkIfComponentsUnderMinimumAmount();
             mutationModel::addMutation($amount->id ,1 ,$amount->orderAmount , "Besteld onderdeel aangekomen");
             return true;
         }
@@ -280,4 +285,83 @@ class ComponentModel
         Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
         return false;
     }
+
+    public static function checkIfComponentsUnderMinimumAmount()
+    {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "SELECT * FROM `components` WHERE minAmount > amount";
+        $query = $database->prepare($sql);
+        $query->execute();
+
+        $components = $query->fetchAll();
+
+        if (!empty($components)) {
+            self::sendComponentEmail($components);
+        } else {
+            return false;
+        }
+    }
+
+    protected static function sendComponentEmail($components)
+    {
+
+        $body = "
+        <html>
+            <head>
+            <style>
+            tr,td,th {
+                padding:5px;
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+            div {
+                margin:0xp auto;
+                text-align:center;
+                width:80%;
+            }
+
+            </style>
+        </head>
+        <body>
+            <div>
+                <h3>lage vooraad</h3>
+                <table cellspacing=\"0px\">
+                    <thead>
+                        <tr>
+                            <th>onderdeel</th>
+                            <th>minimaal aantal</th>
+                            <th>aantal in de vooraad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        ";
+
+        foreach ($components as $component) {
+            $body .= "<tr>
+                        <td>" . $component->name . "</td>
+                        <td>" . $component->minAmount . "</td>
+                        <td>". $component->amount ."</td>
+                    </tr>";
+        }
+
+        $body .= "
+                </tbody>
+            </table>
+            <h5>dit is een automatische email beantwoord hem niet</h5>
+            </div>
+        </body>";
+
+        $user_email = Session::get('user_email');
+
+        $mail = new Mail;
+        $mail_sent = $mail->sendMail($user_email, Config::get('EMAIL_VERIFICATION_FROM_EMAIL'),
+            Config::get('EMAIL_VERIFICATION_FROM_NAME'), Config::get('EMAIL_VERIFICATION_SUBJECT_OUT_OF_COMPONENTS'), $body );
+
+        if (!$mail_sent) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_VERIFICATION_MAIL_SENDING_ERROR') . $mail->getError() );
+            return false;
+        }
+    }
+
 }

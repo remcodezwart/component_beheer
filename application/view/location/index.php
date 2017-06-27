@@ -4,16 +4,17 @@
 	<thead>
 		<tr>
 			<th>locatie</th>
-			<th>editen</th>
-			<th>verwijderen</th>
+			<th>acties</th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php foreach ($this->locations as $location) { ?>
 		<tr>
 			<td><?=$location->address?></td>
-			<td><a class="waves-effect waves-light btn yellow" href="<?=Config::get('URL') ?>location/edit?id=<?=$location->id ?>"><i class="material-icons">mode_edit</i></a></td>
-			<td><a class="waves-effect waves-light btn red" href="<?=Config::get('URL') ?>location/delete?id=<?=$location->id ?>"><i class="material-icons">delete</i></a></td>
+			<td>
+				<a class="waves-effect waves-light btn yellow" href="<?=Config::get('URL') ?>location/edit?id=<?=$location->id ?>"><i class="material-icons">mode_edit</i></a>
+				<a class="waves-effect waves-light btn red" href="<?=Config::get('URL') ?>location/delete?id=<?=$location->id ?>"><i class="material-icons">delete</i></a>
+			</td>
 		</tr>
 		<?php } ?>
 	</tbody>

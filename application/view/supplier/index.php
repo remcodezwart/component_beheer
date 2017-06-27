@@ -4,16 +4,17 @@
 	<thead>
 		<tr>
 			<th>leverancier</th>
-			<th>editen</th>
-			<th>verwijderen</th>
+			<th>acties</th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php foreach ($this->suppliers as $supplier) { ?>
 			<tr>
 				<td><?=$supplier->name?></td>
-				<td><a class="waves-effect waves-light btn yellow" href="<?=Config::get('URL') ?>supplier/edit?id=<?=$supplier->id ?>"><i class="material-icons">mode_edit</i></a></td>
-				<td><a class="waves-effect waves-light btn red" href="<?=Config::get('URL') ?>supplier/delete?id=<?=$supplier->id ?>"><i class="material-icons">delete</i></a></td>
+				<td>
+					<a class="waves-effect waves-light btn yellow" href="<?=Config::get('URL') ?>supplier/edit?id=<?=$supplier->id ?>"><i class="material-icons">mode_edit</i></a>
+				    <a class="waves-effect waves-light btn red" href="<?=Config::get('URL') ?>supplier/delete?id=<?=$supplier->id ?>"><i class="material-icons">delete</i></a>
+				</td>
 			</tr>
 		<?php } ?>
 	</tbody>
