@@ -26,7 +26,7 @@ class ComponentController extends Controller
     public function switchAmount()
     {
         $this->View->render('component/amounts', array(
-            'comloc' => LocationModel::getSomeComloc(Request::post('id'))
+            'comloc' => LocationModel::getSomeComloc(Request::get('id'))
         ));
     }
 
@@ -37,23 +37,17 @@ class ComponentController extends Controller
         Redirect::to('index');
     }
 
-    public function createMutation()
-    {
-      ComponentModel::createMutation();
-       Redirect::to('component');
-    }
-
     public function create()
     {
         Csrf::checkToken();
-        ComponentModel::createComponent(Request::post('name'), Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('amount'), Request::post('minAmount'));
+        ComponentModel::createComponent(Request::post('name'), Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('amount'), Request::post('location'), Request::post('minAmount'));
         Redirect::to('index');
     }
 
     public function loanComponent()
     {
         Csrf::checkToken();
-        ComponentModel::loanComponent(Request::post('id') , Request::post('amount'));
+        ComponentModel::loanComponent(Request::post('id') , Request::post('amount'), Request::post('location'));
         Redirect::to('index');
     }
 
@@ -89,6 +83,7 @@ class ComponentController extends Controller
     public function orderOverview()
     {
         $this->View->render('orderOverview/index', array(
+            'locations' => LocationModel::getAllLocations(),
             'orders' => ComponentModel::getAllOrders(),
             'stores' => SupplierModel::getAllSuppliers(),     
             'components' => ComponentModel::getAllComponent()
@@ -100,6 +95,7 @@ class ComponentController extends Controller
         $this->View->render('orderOverview/edit', array(
             'order' => componentModel::getOrder( request::get('id') ),
             'stores' => SupplierModel::getAllSuppliers(),     
+            'locations' => LocationModel::getAllLocations(),
             'components' => ComponentModel::getAllComponent()
         ));
     }
@@ -115,7 +111,7 @@ class ComponentController extends Controller
     {
         Csrf::checkToken();
 
-        ComponentModel::addOrder(Request::post('component'), Request::post('store'), Request::post('amount'), Request::post('shipping-date'));
+        ComponentModel::addOrder(Request::post('component'), Request::post('store'), Request::post('amount'), Request::post('shipping-date'), Request::post('location'));
         Redirect::to('component/orderoverview');
     }
 

@@ -1,6 +1,6 @@
 <h2><?=$this->component->name ?></h2>
 <?php if ($this->comloc) { ?>
-    <label>In voorraad: <?=$this->comloc->address?>: <?=$this->comloc->amount?></label>
+    <label>In voorraad: </label>
 <?php } ?>
 
 <a class="waves-effect waves-light btn" href="<?=Config::get('URL'); ?>index/loanMe?id=<?=$this->component->id ?>">onderdeel uitlenen</a>
