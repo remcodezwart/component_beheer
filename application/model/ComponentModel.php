@@ -43,9 +43,10 @@ class ComponentModel
         $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':minAmount' => $minAmount, ':return' => ($return === '1' ? '1' : '0') )); 
 
         if ($query->rowCount() == 1) {
-            locationModel::createComloc($database->lastInsertId() ,$location ,$amount);
+            $inserId = $database->lastInsertId();
+            locationModel::createComloc($inserId ,$location ,$amount);
             ComponentModel::checkIfComponentsUnderMinimumAmount();
-            mutationModel::addMutation($database->lastInsertId() ,$location ,$amount ,"Onderdeel toegevoegd");
+            mutationModel::addMutation($inserId ,$location ,$amount ,"Onderdeel toegevoegd");
             return true;
         }
 
@@ -112,7 +113,7 @@ class ComponentModel
 
         if ($query->rowCount() == 1) {
             ComponentModel::checkIfComponentsUnderMinimumAmount();
-            mutationModel::addMutation($id ,$location ,"-".$amount ,"Onderdeel uitgeleend");
+            mutationModel::addMutation($id, $location, "-".$amount, "Onderdeel uitgeleend");
             return true;
         }
 
