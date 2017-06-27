@@ -26,9 +26,11 @@ class ComponentModel
         return Filter::XSSFilter($component);
     }
 
-    public static function createComponent($name, $description, $specs, $hyperlink, $return, $minAmount)
+
+    public static function createComponent($name, $description, $specs, $hyperlink, $location, $amount, $return, $minAmount)
     {
-        if ( empty($name) || empty($description) || empty($specs) || empty($hyperlink) || empty($return) || empty($minAmount) || is_numeric($minAmount) === false || is_numeric($amount) === false) {
+        if ( empty($name) || empty($description) || empty($specs) || empty($hyperlink) || empty($return) || empty($location) || empty($minAmount) || is_numeric($minAmount) === false || empty($amount) ) {
+
             Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
             return false;
         }
@@ -36,13 +38,17 @@ class ComponentModel
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $sql = "
-        INSERT INTO components (name, description, specs, hyperlink, returns, minAmount) VALUES (:name, :description, :specs, :hyperlink, :return, :minAmount)";
+
+        INSERT INTO components (name, description, specs, hyperlink, minAmount, returns) 
+        VALUES (:name, :description, :specs, :hyperlink, :minAmount, :return)";
         $query = $database->prepare($sql);
-        $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':return' => $return, ':minAmount' => $minAmount)); 
+        $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':minAmount' => $minAmount, ':return' => ($return === '1' ? '1' : '0') )); 
 
         if ($query->rowCount() == 1) {
+            $inserId = $database->lastInsertId();
+            locationModel::createComloc($inserId ,$location ,$amount);
             ComponentModel::checkIfComponentsUnderMinimumAmount();
-            mutationModel::addMutation($database->lastInsertId() ,1 ,$amount ,"Onderdeel toegevoegd");
+            mutationModel::addMutation($inserId ,$location ,$amount ,"Onderdeel toegevoegd");
             return true;
         }
 
@@ -78,16 +84,17 @@ class ComponentModel
         return false;
     }
 
-    public static function loanComponent($id, $amount)
+    public static function loanComponent($id, $amount, $location)
     {   
-        $validate = self::getComponent($id);
+        $validate = locationModel::getSomeComloc($id, $location);
 
-        $amount = $validate->amount - $amount;
-
-        if (empty($id) || empty($amount) || is_numeric($amount) === false) {
+        if (empty($id) || empty($amount) || is_numeric($amount) === false || $validate === false) {
             Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
             return false;
         }
+
+        $amount = $validate->amount - $amount;
+
         if (!is_numeric($amount) ) {
             Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
             return false;
@@ -100,15 +107,15 @@ class ComponentModel
 
         $database = DatabaseFactory::getFactory()->getConnection();
         
-        $sql = "UPDATE components SET amount = :amount WHERE id = :id";
+        $sql = "UPDATE comloc SET amount = :amount 
+        WHERE component_id = :componentId AND location_id = :locationId";
         $query = $database->prepare($sql);
 
-        $query->execute(array(':amount' => $amount, ':id' => $id));
-
+        $query->execute(array(':amount' => $amount, ':componentId' => $id, ':locationId' => $id));
 
         if ($query->rowCount() == 1) {
             ComponentModel::checkIfComponentsUnderMinimumAmount();
-            mutationModel::addMutation($id ,1 ,"-".$amount ,"Onderdeel uitgeleend");
+            mutationModel::addMutation($id, $location, "-".$amount, "Onderdeel uitgeleend");
             return true;
         }
 
@@ -142,20 +149,21 @@ class ComponentModel
         return false;
     }
 
-    public static function addOrder($componentId, $supplierId, $amount, $date)
+    public static function addOrder($componentId, $supplierId, $amount, $date, $location)
     {
-        if (!self::validateOrder($componentId, $supplierId, $amount, $date)) {
+        if (!self::validateOrder($componentId, $supplierId, $amount, $date, $location)) {
             return false;
         }
 
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "INSERT INTO order_history (date, amount, supplierId, componentId) VALUES(:date, :amount, :supplierId, :componentId)";
+        $sql = "INSERT INTO order_history (date, amount, supplierId, componentId, locationId) 
+        VALUES(:date, :amount, :supplierId, :componentId, :locationId)";
         $query = $database->prepare($sql);
-        $query->execute(array(':date' => $date, ':amount' => $amount, ':supplierId' => $supplierId, ':componentId'  => $componentId));
+        $query->execute(array(':date' => $date, ':amount' => $amount, ':supplierId' => $supplierId, ':componentId'  => $componentId, ':locationId' => $location));
 
         if ($query->rowCount() == 1) {
-            mutationModel::addMutation($componentId ,1 ,$amount , "Onderdeel besteld");
+            mutationModel::addMutation($componentId ,$location ,$amount , "Onderdeel besteld");
             return true;
         }
 
@@ -164,21 +172,26 @@ class ComponentModel
         
     }
 
-    public static function editOrder($componentId, $supplierId, $amount, $date, $id)
+    public static function editOrder($componentId, $supplierId, $amount, $date, $location, $id)
     {
-        if (!self::validateOrder($componentId, $supplierId, $amount, $date)) {
+        if (!self::validateOrder($componentId, $supplierId, $amount, $date, $location)) {
             return false;
         }
         
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "UPDATE order_history SET amount = :amount, supplierId = :supplierId, componentId = :componentId, date = :date WHERE id = :id";
+        $sql = "UPDATE order_history SET 
+        amount = :amount, supplierId = :supplierId,
+        componentId = :componentId, date = :date,
+        locationId = :locationId
+        WHERE id = :id";
         $query = $database->prepare($sql); 
         $query->execute(array(
             ':date' => $date, 
             ':amount' => $amount, 
             ':supplierId' => $supplierId,
             ':componentId'  => $componentId, 
+            'locationId' => $location,
             ':id' => $id
         ));
 
@@ -205,7 +218,7 @@ class ComponentModel
         return Filter::XSSFilter($orders);
     }
 
-    public static function validateOrder($componentId, $supplierId, $amount, $date)
+    public static function validateOrder($componentId, $supplierId, $amount, $date, $location)
     {
         $date = explode("-", $date);
 
@@ -229,6 +242,12 @@ class ComponentModel
             Session::add('feedback_negative', Text::get('NEGATIVE_AMOUNT'));
             return false;
         }
+
+        if (is_numeric($location) === false || LocationModel::getLocation($location) === false) {
+            Session::add('feedback_negative', Text::get('NEGATIVE_AMOUNT'));
+            return false;
+        }
+
         return true;
     }
 
@@ -266,11 +285,14 @@ class ComponentModel
     public static function archieve($id) {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $amount = self::getOrder($id);
+        $order = self::getOrder($id);
 
-        $sql = "UPDATE components SET amount = amount + :amount WHERE id = :id";
+        $sql = "UPDATE comloc SET amount = amount + :amount 
+        WHERE component_id = :componentId AND location_id = :locationId";
         $query = $database->prepare($sql);
-        $query->execute(array(':id' => $amount->id,':amount' => $amount->orderAmount));
+        $query->execute(
+            array(':locationId' => $order->locationId, ':componentId' => $order->componentId ,':amount' => $order->orderAmount)
+        );
 
         $sql = "UPDATE order_history SET history = :history WHERE id = :id";
         $query = $database->prepare($sql);
@@ -278,7 +300,7 @@ class ComponentModel
 
         if ($query->rowCount() == 1) {
             ComponentModel::checkIfComponentsUnderMinimumAmount();
-            mutationModel::addMutation($amount->id ,1 ,$amount->orderAmount , "Besteld onderdeel aangekomen");
+            mutationModel::addMutation($order->id ,$order->locationId ,$order->orderAmount , "Besteld onderdeel aangekomen");
             return true;
         }
 
@@ -290,7 +312,7 @@ class ComponentModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT * FROM `components` WHERE minAmount > amount";
+        $sql = "SELECT components.minAmount, components.id, components.name,comloc.* FROM comloc INNER JOIN components ON components.id = comloc.component_id WHERE components.minAmount > amount";
         $query = $database->prepare($sql);
         $query->execute();
 
@@ -301,6 +323,7 @@ class ComponentModel
         } else {
             return false;
         }
+        return false;
     }
 
     protected static function sendComponentEmail($components)
@@ -310,17 +333,16 @@ class ComponentModel
         <html>
             <head>
             <style>
-            tr,td,th {
-                padding:5px;
-                border: 1px solid black;
-                border-collapse: collapse;
-            }
-            div {
-                margin:0xp auto;
-                text-align:center;
-                width:80%;
-            }
-
+                tr,td,th {
+                    padding:5px;
+                    border: 1px solid black;
+                    border-collapse: collapse;
+                }
+                div {
+                    margin:0xp auto;
+                    text-align:center;
+                    width:80%;
+                }
             </style>
         </head>
         <body>

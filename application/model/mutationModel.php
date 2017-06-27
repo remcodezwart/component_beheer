@@ -5,6 +5,7 @@ class mutationModel
 	public static function addMutation($componentId, $locationId, $amount, $reason)
 	{
 		if (empty($componentId) || ComponentModel::getComponent($componentId) === false || empty($amount) || empty($reason) || empty($locationId) || LocationModel::getLocation($locationId) === false) {
+
 			Session::add('feedback_negative', Text::get('MUTANT_CREATION_FAILED'));
 			return false;
 			exit;

@@ -1,7 +1,7 @@
 <h2><?=$this->component->name ?></h2>
 <?php if ($this->comloc) {
     foreach ($this->comloc as $com) {?>
-        <label>In voorraad bij <?=$com->address?>: <?=$com->amount?></label>
+        <label>In voorraad bij <?=$this->comloc->address?>: <?=$this->comloc->amount?></label>
 <?php }} ?>
 
 <a class="waves-effect waves-light btn" href="<?=Config::get('URL'); ?>index/loanMe?id=<?=$this->component->id ?>">onderdeel uitlenen</a>

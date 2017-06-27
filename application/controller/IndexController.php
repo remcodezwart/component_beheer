@@ -42,6 +42,7 @@ class IndexController extends Controller
     public function loanMe()
     {
         $this->View->render('index/loanscreen', array(
+            'locations' => LocationModel::getAllLocations(),
             'component' => ComponentModel::getComponent(Request::get('id'))
         ));
     }

@@ -34,7 +34,7 @@
 	<?php foreach ($this->components as $component) { ?>
 		<option value="<?=$component->id ?>"><?=$component->name ?></option>
 	<?php } ?>
-	</select><br>
+	</select>
 	
 	<label>Besteld bij</label>
 	<select class="browser-default" required="true" name="store">
@@ -42,11 +42,19 @@
 	<?php foreach ($this->stores as $store) { ?>
 		<option value="<?=$store->id ?>"><?=$store->name ?></option>
 	<?php } ?>
-	</select><br>
+	</select>
+
+	<label>locatie</label>
+	<select class="browser-default" required="true" name="location">
+		<option>Selecteer een locatie</option>
+	<?php foreach ($this->locations as $location) { ?>
+		<option value="<?=$location->id ?>"><?=$location->address ?></option>
+	<?php } ?>
+	</select>
 
 	<label for="amount">Aantal
 		<input required="true" id="amount" name="amount" type="text" placeholder="aantal">
-	</label><br>
+	</label>
 
 	<label for="shipping-date">Datum besteld
 		<input required="true" placeholder="dd-mm-yyyy" type="text" name="shipping-date" id="shipping-date">
