@@ -34,7 +34,7 @@ class ComponentController extends Controller
     public function switchAmount()
     {
         $this->View->render('component/amounts', array(
-            'comloc' => LocationModel::getSomeComloc(Request::post('id'))
+            'comloc' => LocationModel::getSomeComloc(Request::get('id'))
         ));
     }
 
@@ -54,7 +54,7 @@ class ComponentController extends Controller
     public function create()
     {
         Csrf::checkToken();
-        ComponentModel::createComponent(Request::post('name'), Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('amount'), Request::post('return')), Request::post('minAmount'));
+        ComponentModel::createComponent(Request::post('name'), Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('return'), Request::post('minAmount'));
         Redirect::to('index');
     }
 

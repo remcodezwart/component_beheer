@@ -26,9 +26,9 @@ class ComponentModel
         return Filter::XSSFilter($component);
     }
 
-    public static function createComponent($name, $description, $specs, $hyperlink, $amount, $return)
+    public static function createComponent($name, $description, $specs, $hyperlink, $return, $minAmount)
     {
-        if ( empty($name) || empty($description) || empty($specs) || empty($hyperlink) || empty($amount) || empty($return) || empty($minAmount) || is_numeric($minAmount) === false || is_numeric($amount) === false) {
+        if ( empty($name) || empty($description) || empty($specs) || empty($hyperlink) || empty($return) || empty($minAmount) || is_numeric($minAmount) === false || is_numeric($amount) === false) {
             Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
             return false;
         }
@@ -36,9 +36,9 @@ class ComponentModel
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $sql = "
-        INSERT INTO components (name, description, specs, hyperlink, amount, returns, minAmount) VALUES (:name, :description, :specs, :hyperlink, :amount, :return, :minAmount)";
+        INSERT INTO components (name, description, specs, hyperlink, returns, minAmount) VALUES (:name, :description, :specs, :hyperlink, :return, :minAmount)";
         $query = $database->prepare($sql);
-        $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':amount' => $amount, ':return' => $return, ':minAmount' => $minAmount)); 
+        $query->execute(array(':name' => $name, ':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':return' => $return, ':minAmount' => $minAmount)); 
 
         if ($query->rowCount() == 1) {
             ComponentModel::checkIfComponentsUnderMinimumAmount();

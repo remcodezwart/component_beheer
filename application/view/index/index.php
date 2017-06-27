@@ -21,10 +21,10 @@
                 <td><img src="<?=$component->hyperlink?>" alt="component plaatje"></td>
                 <td><?=$component->description?></td>
                 <td><pre><?=$component->specs?></pre></td>
-                <td>totaal: <?=$component->amount?>
+                <td>totaal: <?=$component->minAmount?><br>locaties: 
                     <?php foreach($this->comloc as $id):
                         if ($component->id == $id->component_id): ?>
-                            locatie: <?=$id->address ?> aantal: <?=$id->amount ?>
+                            <?=$id->address ?> aantal: <?=$id->amount ?>
                         <?php endif ?>
                     <?php endforeach ?>
                 </td>
