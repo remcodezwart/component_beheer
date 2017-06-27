@@ -14,8 +14,8 @@
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="<?=Config::get('URL') ?>css/materialize.min.css"  media="screen,projection"/>
 </head>
-<body>
-    <div class="container">
+<body class="blue darken-1">
+    <div class="container white">
     	<div class="row">
     		<div class="col s12">
 			    <nav>

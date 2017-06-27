@@ -307,20 +307,20 @@ class ComponentModel
 
     public static function checkIfComponentsUnderMinimumAmount()
     {
-        //$database = DatabaseFactory::getFactory()->getConnection();
+        $database = DatabaseFactory::getFactory()->getConnection();
 
-        //$sql = "SELECT * FROM `components` WHERE minAmount > amount";
-        //$query = $database->prepare($sql);
-        //$query->execute();
+        $sql = "SELECT components.minAmount, components.id, components.name,comloc.* FROM comloc INNER JOIN components ON components.id = comloc.component_id WHERE components.minAmount > amount";
+        $query = $database->prepare($sql);
+        $query->execute();
 
-        //$components = $query->fetchAll();
+        $components = $query->fetchAll();
 
-        //if (!empty($components)) {
-        //    self::sendComponentEmail($components);
-        //} else {
-        //    return false;
-        //}
-        return;
+        if (!empty($components)) {
+            self::sendComponentEmail($components);
+        } else {
+            return false;
+        }
+        return false;
     }
 
     protected static function sendComponentEmail($components)
