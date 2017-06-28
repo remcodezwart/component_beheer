@@ -18,7 +18,7 @@
     
     <label>Moet dit teruggebracht worden?</label>
     <input type="radio" name="return" value="1" id="true"><label for="true">Ja</label>
-    <input type="radio" name="return" value="0" id="false"><label for="false">Nee</label>
+    <input type="radio" checked="true" name="return" value="0" id="false"><label for="false">Nee</label>
 
     <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>"><br>
     <button class="btn waves-effect waves-light blue" type="submit" name="action">Nieuwe order

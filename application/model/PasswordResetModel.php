@@ -93,8 +93,8 @@ class PasswordResetModel
 	public static function sendPasswordResetMail($user_name, $user_password_reset_hash, $user_email)
 	{
 		// create email body
-		$body = Config::get('EMAIL_PASSWORD_RESET_CONTENT') . ' ' . Config::get('URL') .
-		        Config::get('EMAIL_PASSWORD_RESET_URL') . '/' . urlencode($user_name) . '/' . urlencode($user_password_reset_hash);
+		$body = Config::get('EMAIL_PASSWORD_RESET_CONTENT') .
+		        "<a target='_blank' href=\"".Config::get('EMAIL_PASSWORD_RESET_URL') . '/' . $user_name . '/' . $user_password_reset_hash."\">nieuw wachtwoord</a>";
 
 		// create instance of Mail class, try sending and check
 		$mail = new Mail;

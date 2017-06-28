@@ -10,7 +10,9 @@
     <input id="reset_input_password_repeat" class="reset_input" type="password"
                name="user_password_repeat" pattern=".{6,}" required="true" autocomplete="off">
     <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
-    <button type="submit">Nieuw wachtwoord</button>       
+    <button class="btn waves-effect waves-light blue" type="submit" name="action">Nieuw wachtwoord
+      <i class="material-icons right">send</i>
+    </button>    
 </form>
 
 <a href="<?=Config::get('URL'); ?>login/index">Terug naar de login pagina</a>
