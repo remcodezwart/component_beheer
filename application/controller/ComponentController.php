@@ -50,7 +50,6 @@ class ComponentController extends Controller
         Csrf::checkToken();
 
         ComponentModel::createComponent(Request::post('name'), Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('location'), Request::post('amount'), Request::post('return'), Request::post('minAmount'));
-
         Redirect::to('index');
     }
 

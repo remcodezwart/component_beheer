@@ -26,9 +26,10 @@ class ComponentModel
         return Filter::XSSFilter($component);
     }
 
+
     public static function createComponent($name, $description, $specs, $hyperlink, $location, $amount, $return, $minAmount)
     {
-        if ( empty($name) || empty($description) || empty($specs) || empty($hyperlink) || empty($location) || empty($minAmount) || is_numeric($minAmount) === false || empty($amount) ) {
+        if ( empty($name) || empty($description) || empty($specs) || empty($hyperlink) || empty($return) || empty($location) || empty($minAmount) || is_numeric($minAmount) === false || empty($amount) ) {
 
             Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
             return false;
@@ -37,6 +38,7 @@ class ComponentModel
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $sql = "
+
         INSERT INTO components (name, description, specs, hyperlink, minAmount, returns) 
         VALUES (:name, :description, :specs, :hyperlink, :minAmount, :return)";
         $query = $database->prepare($sql);
