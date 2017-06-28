@@ -44,12 +44,13 @@ class ComponentModel
 
         if ($query->rowCount() == 1) {
             $inserId = $database->lastInsertId();
+
             locationModel::createComloc($inserId ,$location ,$amount);
             ComponentModel::checkIfComponentsUnderMinimumAmount();
             mutationModel::addMutation($inserId ,$location ,$amount ,"Onderdeel toegevoegd");
             return true;
         }
-
+  
         Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
         return false;
     }
@@ -137,7 +138,7 @@ class ComponentModel
 
         if ($query->rowCount() == 1) {
             $component = self::getComponent($id);
-            mutationModel::addMutation($id ,1 ,"-".$component->amount, "Onderdeel verwijderd");
+            mutationModel::addMutation($id ,1 , "-".$component->amount, "Onderdeel verwijderd");
             return true;
             exit;
         }

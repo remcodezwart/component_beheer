@@ -8,6 +8,7 @@
             <th>beschrijving</th>
             <th>specs</th>
             <th>In voorraad</th>
+            <th>totaal</th>
             <th>Moet dit terug?</th>
         <?php if (Session::userIsLoggedIn()) { ?>
             <th>acties</th>
@@ -21,14 +22,18 @@
                 <td><img src="<?=$component->hyperlink?>" alt="component plaatje"></td>
                 <td><?=$component->description?></td>
                 <td><pre><?=$component->specs?></pre></td>
-                <td>totaal:
+                <td>
+                    <?php $total = 0 ?>
                     <?php foreach($this->comloc as $id):
                         if ($component->id == $id->component_id): ?>
                             locatie: <?=$id->address ?> aantal: <?=$id->amount ?>
+                            <?php $total += $id->amount ?>
                         <?php endif ?>
                     <?php endforeach ?>
                 </td>
-                <td><?php if ($component->returns == 1): ?>
+                <td><?=$total ?></td>
+                <td>
+                    <?php if ($component->returns == 1): ?>
                     Ja.
                     <?php else: ?>
                     Nee.

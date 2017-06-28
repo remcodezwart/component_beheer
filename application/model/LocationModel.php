@@ -2,7 +2,6 @@
 
 class LocationModel
 {
-
     public static function getAllLocations()
     {
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -102,6 +101,7 @@ class LocationModel
         $query = $database->prepare($sql);
         $query->execute();
         $locations = $query->fetchALL();
+
         return Filter::XSSFilter($locations);
     }
 
@@ -115,7 +115,7 @@ class LocationModel
             $query->execute(array(':component' => $componentId));
             $locations = $query->fetchALL();
         } else {
-            $sql = "SELECT comloc.*, components.name AS name, location.address AS address FROM ((comloc INNER JOIN components ON comloc.component_id = components.id) INNER JOIN location ON comloc.location_id = location.id) WHERE comloc.component_id = :component AND comloc.location_id = :location";
+            $sql = "SELECT comloc.*, components.name AS name, location.address AS address FROM ((comloc INNER JOIN components ON comloc.component_id = components.id) INNER JOIN location ON comloc.location_id = location.id) WHERE comloc.component_id = :component AND comloc.location_id = :location LIMIT 1";
             $query = $database->prepare($sql);
             $query->execute(array(':component' => $componentId, ':location' => $locationId));
             $locations = $query->fetch();

@@ -9,7 +9,12 @@ document.addEventListener('keydown', function(key) {
 				type: "POST",
 				url: url+"index/searchAction",
 				data:{csrf_token: token, search: terms, json: true},
-				success: function(data) {	
+				beforeSend: function()
+				{
+					$('#terms').empty().append("<div class=\"progress\"><div class=\"indeterminate\"></div></div>");
+				},
+				success: function(data) 
+				{	
 					var html = "";
 					if (data.length > 0) {
 						for (index in data) {
@@ -28,10 +33,12 @@ document.addEventListener('keydown', function(key) {
 				    	</tr>"
 					}
 					
-					$('#terms').empty().append("gezocht op: "+terms);
+					$('#terms').empty().append("gezocht op: " + terms);
 					$('#results').empty().append(html); 
 				},
-				fail: function() {
+				fail: function() 
+				{
+					$('#terms').empty().append("gezocht op: " + terms);
 					alert('er is een onbekende fout opgetreden');
 				},
 			});
