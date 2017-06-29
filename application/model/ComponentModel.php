@@ -1,13 +1,20 @@
 <?php
 class ComponentModel
 {
-    public static function getAllComponent()
+    public static function getAllComponent($limit = null)
     {
+        if ($limit === null || !is_numeric($limit) || 0 >= $limit) {
+            $limit = 5;   
+        } else {
+            $limit = $limit * 5;
+        }
+
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT * FROM components WHERE active = 1";
+        $sql = "SELECT * FROM components WHERE active = 1 LIMIT :start, :amount";
         $query = $database->prepare($sql);
-        $query->execute();
+        $query->execute(array(':start' => $limit-5, ':amount' => 5));
+
         $components = $query->fetchAll();
         // fetchAll() is the PDO method that gets all result rows
         return Filter::XSSFilter($components);
@@ -218,7 +225,7 @@ class ComponentModel
 
         $query = $database->prepare($sql);
         
-        $query->execute(array(':start' => $limit-5, ':end' => $limit));
+        $query->execute(array(':start' => $limit-5, ':amount' => 5));
 
         $orders = $query->fetchAll();
 

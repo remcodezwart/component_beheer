@@ -17,7 +17,7 @@ class IndexController extends Controller
     public function index()
     {
         $this->View->render('index/index', array(
-            'components' => ComponentModel::getAllComponent(),
+            'components' => ComponentModel::getAllComponent(request::get('page')),
             'locations' => LocationModel::getAllLocations(),
             'comloc' => LocationModel::getAllComloc()
         ));

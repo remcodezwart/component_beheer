@@ -1,5 +1,7 @@
 <h1 class="center-align">Onderdelen</h1>
 
+    <?=$this->generateNav(Config::get('URL')."index/index", Request::get('page'))?>
+
 <table class="striped responsive-table">
     <thead>
         <tr>
