@@ -2,13 +2,19 @@
 
 class SupplierModel
 {
-	public static function getAllSuppliers()
+	public static function getAllSuppliers($limit = null)
 	{
+		if ($limit === null || !is_numeric($limit) || 0 >= $limit) {
+            $limit = 5;   
+        } else {
+            $limit = $limit*5;
+        }
+
 		$database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT * FROM supplier WHERE active = :active";
+        $sql = "SELECT * FROM supplier WHERE active = :active LIMIT :start, :amount";
         $query = $database->prepare($sql);
-        $query->execute(array(':active' => 1));
+        $query->execute(array(':active' => 1, ':start' => $limit-5, 'amount' => 5));
 
         $suppliers = $query->fetchALL();
         return Filter::XSSFilter($suppliers);

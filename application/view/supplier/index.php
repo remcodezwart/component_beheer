@@ -1,5 +1,7 @@
 <h3 class="center-align">leveranciers</h3>
 
+<?=$this->generateNav(Config::get('URL')."supplier/index", Request::get('page'))?>
+
 <table class="striped responsive-table">
 	<thead>
 		<tr>

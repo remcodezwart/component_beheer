@@ -19,7 +19,7 @@ class LocationController extends Controller
     public function index()
     {
         $this->View->render('location/index',array(
-            'locations' => LocationModel::getAllLocations()
+            'locations' => LocationModel::getAllLocations(request::get('page'))
         ));
     }
 

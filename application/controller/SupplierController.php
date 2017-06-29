@@ -18,7 +18,7 @@ class SupplierController extends Controller
     public function index() 
     {
         $this->View->render('supplier/index', array(
-            'suppliers' => SupplierModel::getAllSuppliers()
+            'suppliers' => SupplierModel::getAllSuppliers(request::get('page'))
         ));
     }
 
@@ -64,7 +64,7 @@ class SupplierController extends Controller
     public function mutationsIndex() 
     {
         $this->View->render('mutations/index', array(
-            'mutations' => mutationModel::getMutation(),
+            'mutations' => mutationModel::getMutation(request::get('page')),
             'components' => componentModel::getAllComponent(),
             'locations' => locationModel::getAllLocations()
         ));

@@ -36,8 +36,14 @@ class mutationModel
         return false;
 	}
 
-	public static function getMutation()
+	public static function getMutation($limit = null)
 	{
+        if ($limit === null || !is_numeric($limit) || 0 >= $limit) {
+            $limit = 5;   
+        } else {
+            $limit = $limit*5;
+        }
+
 		$database = DatabaseFactory::getFactory()->getConnection();
 
         $sql = "SELECT mutations.*,users.user_id,users.user_name, location.id,location.address,components.id,components.name FROM mutations 
@@ -46,10 +52,11 @@ class mutationModel
         INNER JOIN location ON	
 			mutations.location_id = location.id
 		INNER JOIN users ON	
-			mutations.user_id = users.user_id";
+			mutations.user_id = users.user_id
+        LIMIT :start, :amount";
 
         $query = $database->prepare($sql);
-        $query->execute();
+        $query->execute(array(':start' => $limit-5, ':amount' => 5));
         $mutations = $query->fetchALL();
 
         return Filter::XSSFilter($mutations);

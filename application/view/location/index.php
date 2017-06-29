@@ -1,5 +1,7 @@
 <h3>Locaties</h3>
 
+<?=$this->generateNav(Config::get('URL')."location/index", Request::get('page'))?>
+
 <table class="striped responsive-table">
 	<thead>
 		<tr>

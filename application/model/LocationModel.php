@@ -2,13 +2,20 @@
 
 class LocationModel
 {
-    public static function getAllLocations()
+    public static function getAllLocations($limit = null)
     {
+
+        if ($limit === null || !is_numeric($limit) || 0 >= $limit) {
+            $limit = 5;   
+        } else {
+            $limit = $limit*5;
+        }
+
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT * FROM location WHERE active = :active";
+        $sql = "SELECT * FROM location WHERE active = :active LIMIT :start, :amount";
         $query = $database->prepare($sql);
-        $query->execute(array(':active' => 1));
+        $query->execute(array(':active' => 1, ':start' => $limit-5, ':amount' => 5));
 
         $locations = $query->fetchALL();
         return Filter::XSSFilter($locations);

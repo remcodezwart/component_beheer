@@ -1,4 +1,7 @@
 <h4 class="center-align">gebeurtenissen</h4>
+
+<?=$this->generateNav(Config::get('URL')."supplier/mutationsIndex", Request::get('page'))?>
+
 <table class="striped responsive-table" cellspacing="0">
 	<thead>
 		<tr>
