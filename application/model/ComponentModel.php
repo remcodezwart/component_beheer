@@ -221,7 +221,7 @@ class ComponentModel
             $limit = $limit*5;
         }
         
-        $sql = "SELECT order_history.amount as orderAmount,order_history.id as order_id,order_history.*,supplier.id,supplier.name as supplierName,supplier.active as activeSupplier,components.* FROM order_history INNER JOIN components ON order_history.componentId = components.id INNER JOIN supplier ON order_history.supplierId = supplier.id WHERE order_history.active = 1 AND supplier.active = 1 AND components.active = 1 ORDER BY history ASC LIMIT :start, :end";
+        $sql = "SELECT order_history.amount as orderAmount,order_history.id as order_id,order_history.*,supplier.id,supplier.name as supplierName,supplier.active as activeSupplier,components.* FROM order_history INNER JOIN components ON order_history.componentId = components.id INNER JOIN supplier ON order_history.supplierId = supplier.id WHERE order_history.active = 1 AND supplier.active = 1 AND components.active = 1 ORDER BY history ASC LIMIT :start, :amount";
 
         $query = $database->prepare($sql);
         
