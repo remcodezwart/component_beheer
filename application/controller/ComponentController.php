@@ -93,7 +93,7 @@ class ComponentController extends Controller
     {
         $this->View->render('orderOverview/index', array(
             'locations' => LocationModel::getAllLocations(),
-            'orders' => ComponentModel::getAllOrders(),
+            'orders' => ComponentModel::getAllOrders(request::get('page')),
             'stores' => SupplierModel::getAllSuppliers(),     
             'components' => ComponentModel::getAllComponent()
         ));

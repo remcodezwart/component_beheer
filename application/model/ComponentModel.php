@@ -204,13 +204,21 @@ class ComponentModel
         return false;
     }
 
-    public static function getAllOrders()
+    public static function getAllOrders($limit = null)
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT order_history.amount as orderAmount,order_history.id as order_id,order_history.*,supplier.id,supplier.name as supplierName,supplier.active as activeSupplier,components.* FROM order_history INNER JOIN components ON order_history.componentId = components.id INNER JOIN supplier ON order_history.supplierId = supplier.id WHERE order_history.active = :active AND supplier.active = :active AND components.active = :active ORDER BY history ASC";
+        if ($limit === null || !is_numeric($limit) || 0 >= $limit) {
+            $limit = 5;   
+        } else {
+            $limit = $limit*5;
+        }
+        
+        $sql = "SELECT order_history.amount as orderAmount,order_history.id as order_id,order_history.*,supplier.id,supplier.name as supplierName,supplier.active as activeSupplier,components.* FROM order_history INNER JOIN components ON order_history.componentId = components.id INNER JOIN supplier ON order_history.supplierId = supplier.id WHERE order_history.active = 1 AND supplier.active = 1 AND components.active = 1 ORDER BY history ASC LIMIT :start, :end";
+
         $query = $database->prepare($sql);
-        $query->execute(array(':active' => 1));
+        
+        $query->execute(array(':start' => $limit-5, ':end' => $limit));
 
         $orders = $query->fetchAll();
 

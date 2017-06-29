@@ -1,5 +1,6 @@
 <h3>Orders</h3>
 
+	<?=$this->generateNav(Config::get('URL')."component/orderOverview", Request::get('page'))?>
 <h2>Openstaanden orders</h2>
 <table class="striped responsive-table">
 	<thead>

@@ -161,4 +161,30 @@ class View
 
         return false;
     }
+
+    public static function generateNav($url, $page, $size = 2)
+    { 
+        if ( !is_numeric($page) ) {
+            $page = 1;
+        }
+
+        $html = '<ul class="pagination">';
+
+        $size = intval($size);
+        $limit = $page+$size;
+        $page = $page-$size;
+
+        for ($page; $limit >= $page ; $page++) {
+            if (0 >= $page) continue;
+            if ($page == Request::get('page')) {
+                $html .= '<li class="active"><a href="'.$url.'?page='.$page.'">'.$page.'</a></li>';
+            } else {
+                $html .= '<li class="waves-effect"><a href="'.$url.'?page='.$page.'">'.$page.'</a></li>';
+            }
+        }
+
+        $html .= '</ul>';
+
+        return $html;
+    }
 }
