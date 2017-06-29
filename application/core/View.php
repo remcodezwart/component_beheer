@@ -176,7 +176,7 @@ class View
 
         for ($page; $limit >= $page ; $page++) {
             if (0 >= $page) continue;
-            if ($page == Request::get('page')) {
+            if ($page == Request::get('page') || !is_numeric(Request::get('page')) && $page == 1) {
                 $html .= '<li class="active"><a href="'.$url.'?page='.$page.'">'.$page.'</a></li>';
             } else {
                 $html .= '<li class="waves-effect"><a href="'.$url.'?page='.$page.'">'.$page.'</a></li>';
