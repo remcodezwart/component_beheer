@@ -36,12 +36,12 @@ class mutationModel
         return false;
 	}
 
-	public static function getMutation($limit = null)
+	public static function getMutation($page = null)
 	{
-        if ($limit === null || !is_numeric($limit) || 0 >= $limit) {
-            $limit = 5;   
+        if ($page === null || !is_numeric($page) || 0 >= $page) {
+            $offset = 0;   
         } else {
-            $limit = $limit*5;
+            $offset = ($page-1)*5;
         }
 
 		$database = DatabaseFactory::getFactory()->getConnection();
@@ -53,10 +53,12 @@ class mutationModel
 			mutations.location_id = location.id
 		INNER JOIN users ON	
 			mutations.user_id = users.user_id
-        LIMIT :start, :amount";
+        LIMIT :offset, 5";
 
         $query = $database->prepare($sql);
-        $query->execute(array(':start' => $limit-5, ':amount' => 5));
+        $query->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $query->execute();
+
         $mutations = $query->fetchALL();
 
         Filter::XSSFilter($mutations);

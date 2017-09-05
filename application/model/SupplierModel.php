@@ -2,19 +2,20 @@
 
 class SupplierModel
 {
-	public static function getAllSuppliers($limit = null)
+	public static function getAllSuppliers($page = null)
 	{
-		if ($limit === null || !is_numeric($limit) || 0 >= $limit) {
-            $limit = 5;   
+		if ($page === null || !is_numeric($page) || 0 >= $page) {
+            $offset = 0;   
         } else {
-            $limit = $limit*5;
+            $offset = ($page-1)*5;
         }
 
 		$database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT * FROM supplier WHERE active = :active LIMIT :start, :amount";
+        $sql = "SELECT * FROM supplier WHERE active = 1 LIMIT :start, 5";
         $query = $database->prepare($sql);
-        $query->execute(array(':active' => 1, ':start' => $limit-5, 'amount' => 5));
+        $query->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $query->execute();
 
         $suppliers = $query->fetchALL();
         return Filter::XSSFilter($suppliers);

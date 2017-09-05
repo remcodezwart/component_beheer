@@ -50,7 +50,7 @@ return array(
 	'DB_HOST' => 'localhost',
 	'DB_NAME' => 'component_management',
 	'DB_USER' => 'root',
-	'DB_PASS' => '',
+	'DB_PASS' => '47NQUyYQ8DJHA6AM',
 	'DB_PORT' => '3306',
 	'DB_CHARSET' => 'utf8',
 	/**

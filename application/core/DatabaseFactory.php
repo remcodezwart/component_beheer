@@ -34,8 +34,8 @@ class DatabaseFactory
 
 	public function getConnection() {
 		if (!$this->database) {
-			//$options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING);
-			$options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING, PDO::ATTR_ORACLE_NULLS => PDO::NULL_NATURAL, PDO::ATTR_EMULATE_PREPARES => false);
+			$options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING);
+			// $options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING, PDO::ATTR_ORACLE_NULLS => PDO::NULL_NATURAL, PDO::ATTR_EMULATE_PREPARES => false);
 			
 			$this->database = new PDO(
 				Config::get('DB_TYPE') . ':host=' . Config::get('DB_HOST') . ';dbname=' .

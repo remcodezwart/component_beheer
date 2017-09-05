@@ -1,20 +1,20 @@
 <?php
 class ComponentModel
 {
-    public static function getAllComponent($limit = null)
+    public static function getAllComponent($page = null)
     {
-        if ($limit === null || !is_numeric($limit) || 0 >= $limit) {
-            $limit = 5;   
+        if ($page === null || !is_numeric($page) || 0 >= $page) {
+            $offset = 0;   
         } else {
-            $limit = $limit * 5;
+            $offset = ($page-1)*5;
         }
 
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT * FROM components WHERE active = 1 LIMIT :start, :amount";
+        $sql = "SELECT * FROM components WHERE active = 1 LIMIT :offset, 5";
         $query = $database->prepare($sql);
-        $query->execute(array(':start' => $limit-5, ':amount' => 5));
-
+        $query->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $query->execute();
         $components = $query->fetchAll();
         // fetchAll() is the PDO method that gets all result rows
         return Filter::XSSFilter($components);
@@ -211,21 +211,21 @@ class ComponentModel
         return false;
     }
 
-    public static function getAllOrders($limit = null)
+    public static function getAllOrders($page = null)
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        if ($limit === null || !is_numeric($limit) || 0 >= $limit) {
-            $limit = 5;   
+        if ($page === null || !is_numeric($page) || 0 >= $page) {
+            $offset = 0;   
         } else {
-            $limit = $limit*5;
+            $offset = ($page-1)*5;
         }
         
-        $sql = "SELECT order_history.amount as orderAmount,order_history.id as order_id,order_history.*,supplier.id,supplier.name as supplierName,supplier.active as activeSupplier,components.* FROM order_history INNER JOIN components ON order_history.componentId = components.id INNER JOIN supplier ON order_history.supplierId = supplier.id WHERE order_history.active = 1 AND supplier.active = 1 AND components.active = 1 ORDER BY history ASC LIMIT :start, :amount";
+        $sql = "SELECT order_history.amount as orderAmount,order_history.id as order_id,order_history.*,supplier.id,supplier.name as supplierName,supplier.active as activeSupplier,components.* FROM order_history INNER JOIN components ON order_history.componentId = components.id INNER JOIN supplier ON order_history.supplierId = supplier.id WHERE order_history.active = 1 AND supplier.active = 1 AND components.active = 1 ORDER BY history ASC LIMIT :offset, 5";
 
         $query = $database->prepare($sql);
-        
-        $query->execute(array(':start' => $limit-5, ':amount' => 5));
+        $query->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $query->execute();
 
         $orders = $query->fetchAll();
 
