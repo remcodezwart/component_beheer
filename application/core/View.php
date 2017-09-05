@@ -168,7 +168,7 @@ class View
             $page = 1;
         }
 
-        $html = '<ul class="pagination">';
+        $html = '<ul class="center-align pagination">';
 
         $size = intval($size);
         $limit = $page+$size;

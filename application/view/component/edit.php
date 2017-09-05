@@ -1,12 +1,14 @@
-<h2><?=$this->component->name ?></h2>
+<h4><?=$this->component->name ?></h4>
+
 <?php if ($this->comloc) {
-    foreach ($this->comloc as $com) {?>
-        <label>In voorraad bij <?=$this->comloc->address?>: <?=$this->comloc->amount?></label>
+    foreach ($this->comloc as $componentInformation) {?>
+        <label>In voorraad bij <?=$componentInformation->address?>: <?=$componentInformation->amount?></label>
 <?php }} ?>
 
 <a class="waves-effect waves-light btn" href="<?=Config::get('URL'); ?>index/loanMe?id=<?=$this->component->id ?>">onderdeel uitlenen</a>
 
-<a class="waves-effect waves-light btn" href="<?=Config::get('URL'); ?>component/switchAmount?id=<?=$this->component->id ?>">verander onderdelen per locatie<i class="material-icons">mode_edit</i></a>
+<a class="waves-effect waves-light btn" href="<?=Config::get('URL'); ?>component/switchAmount?id=<?=$this->component->id ?>">verander onderdelen per locatie<i class="material-icons left">mode_edit</i></a>
+
 <form method="post" action="<?=Config::get('URL'); ?>component/editSave">
     <p>Verander naam:</p>
     <input name="name" type="text" value="<?=$this->component->name ?>">

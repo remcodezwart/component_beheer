@@ -59,6 +59,8 @@ class mutationModel
         $query->execute(array(':start' => $limit-5, ':amount' => 5));
         $mutations = $query->fetchALL();
 
-        return Filter::XSSFilter($mutations);
+        Filter::XSSFilter($mutations);
+
+        return $mutations;
 	}	
 }
