@@ -7,6 +7,7 @@
         <tr>
             <th>Naam onderdeel</th>
             <th>locatie</th>
+            <th>ov nummer</th>
             <th>Aantal</th>
             <th>Datum en tijd dat het onderdeel geleend is</th>
             <th>Acties</th>
@@ -17,6 +18,7 @@
             <tr> 
                 <td><?=$loand->name ?></td>
                 <td><?=$loand->address ?></td>
+                <td><?=$loand->barcode ?></td>
                 <td><?=$loand->amount ?></td>
                 <td><?=$loand->date ?></td>
                 <td><a class="waves-effect waves-light btn yellow" href="<?=Config::get('URL') ?>loan/edit?id=<?=$loand->id?>"><i class="material-icons">mode_edit</i></a><a class="waves-effect waves-light btn blue" href="<?=Config::get('URL') ?>loan/delete?id=<?=$loand->id ?>"><i class="material-icons">archive</i></a></td>
