@@ -50,6 +50,9 @@
 				                <li <?php if (View::checkForActiveControllerAndAction($filename, "supplier/mutationsIndex")) { echo ' class="active" '; } ?> >
 				                    <a href="<?=Config::get('URL'); ?>supplier/mutationsIndex">mutations</a>
 				                </li>
+				                <li <?php if (View::checkForActiveAction($filename, "loan")) { echo ' class="active" '; } ?> >
+				                    <a href="<?=Config::get('URL'); ?>loan">Uitgeleende onderdelen</a>
+				                </li>
 				                <li <?php if (View::checkForActiveAction($filename, "login")) { echo ' class="active" '; } ?> >
 				                    <a href="<?=Config::get('URL'); ?>login/logout">Uitloggen</a>
 				                </li>

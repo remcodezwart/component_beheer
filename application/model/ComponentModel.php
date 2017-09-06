@@ -45,7 +45,6 @@ class ComponentModel
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $sql = "
-
         INSERT INTO components (name, description, specs, hyperlink, minAmount, returns) 
         VALUES (:name, :description, :specs, :hyperlink, :minAmount, :return)";
         $query = $database->prepare($sql);
@@ -64,9 +63,9 @@ class ComponentModel
         return false;
     }
 
-    public static function updateComponent($description, $specs, $hyperlink, $minAmount, $name, $id)
+    public static function updateComponent($description, $specs, $hyperlink, $minAmount, $name, $return, $id)
     {
-        if (empty($description) || empty($specs) || empty($hyperlink) || empty($minAmount) && $minAmount !== '0' || is_numeric($minAmount) === false || empty($name)) {
+        if (empty($return) || empty($description) || empty($specs) || empty($hyperlink) || empty($minAmount) || is_numeric($minAmount) === false || $minAmount <= 0 || empty($name)) {
             
             Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
             return false;
@@ -79,11 +78,12 @@ class ComponentModel
 
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "UPDATE components SET name = :name, description = :description, specs = :specs, hyperlink = :hyperlink, minAmount = :minAmount WHERE id = :id LIMIT 1";
+        $sql = "UPDATE components SET name = :name, description = :description, specs = :specs, hyperlink = :hyperlink, minAmount = :minAmount, returns = :return WHERE id = :id LIMIT 1";
         $query = $database->prepare($sql);
-        $query->execute(array(':minAmount' => $minAmount, ':name' => $name,':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':id' => $id));
+        $query->execute(array(':minAmount' => $minAmount, ':name' => $name,':description' => $description, ':specs' => $specs, ':hyperlink' => $hyperlink, ':return' => ($return === '1' ? '1' : '0'), ':id' => $id));
 
         if ($query->rowCount() == 1) {
+            Session::add('feedback_positive', Text::get('EDIT_COMPONENT_SUCCES'));
             ComponentModel::checkIfComponentsUnderMinimumAmount();
             return true;
         }
@@ -92,7 +92,7 @@ class ComponentModel
         return false;
     }
 
-    public static function loanComponent($id, $amount, $location)
+    public static function loanComponent($id, $amount, $location, $barcode)
     {   
         $validate = locationModel::getSomeComloc($id, $location);
 
@@ -119,11 +119,23 @@ class ComponentModel
         WHERE component_id = :componentId AND location_id = :locationId";
         $query = $database->prepare($sql);
 
-        $query->execute(array(':amount' => $amount, ':componentId' => $id, ':locationId' => $id));
+        $query->execute(array(':amount' => $amount, ':componentId' => $id, ':locationId' => $location));
 
         if ($query->rowCount() == 1) {
             ComponentModel::checkIfComponentsUnderMinimumAmount();
-            mutationModel::addMutation($id, $location, "-".$amount, "Onderdeel uitgeleend");
+            
+            $loanReturn = self::getComponent($id);
+
+            if ($loanReturn->returns == 1) {
+                mutationModel::addMutation($id, $location, "-".$amount, "Onderdeel uitgeleend");
+                $sql = "INSERT INTO loaned (component_id, location_id, barcode, amount)
+                VAlUES(:componentId, :locationId ,:barcode ,:amount)";
+                $query = $database->prepare($sql);
+                $query->execute(array(':componentId' => $id, ':locationId' => $location, ':barcode' => $barcode, ':amount' => $amount));
+            } else {
+                mutationModel::addMutation($id, $location, "-".$amount, "Onderdeel uitgeleend(Hoeft niet terug gebracht te worden)");
+            }
+
             return true;
         }
 

@@ -12,7 +12,7 @@ class SupplierModel
 
 		$database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT * FROM supplier WHERE active = 1 LIMIT :start, 5";
+        $sql = "SELECT * FROM supplier WHERE active = 1 LIMIT :offset, 5";
         $query = $database->prepare($sql);
         $query->bindParam(':offset', $offset, PDO::PARAM_INT);
         $query->execute();

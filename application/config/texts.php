@@ -69,5 +69,6 @@ return array(
 	"REQUIERED_FIELDS" => "Vul alle verplichten velden in",
 	"NOT_ENOUGH_COMPONENTS" => "U heeft meer componenten ingevuld dan dat er zijn",
 	"MUTANT_CREATION_FAILED" => "Error het maken van een mutatie is mislukt door een onbekende fout",
-	"MUTANT_CREATION_SUCCES" => "Er is met succes een mutatie gemaakt"
+	"MUTANT_CREATION_SUCCES" => "Er is met succes een mutatie gemaakt",
+	"EDIT_COMPONENT_SUCCES" => "Component succesvol bewerkt"
 );

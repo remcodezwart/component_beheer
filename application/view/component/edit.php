@@ -20,7 +20,12 @@
     <input type="hidden" name="id" value="<?=$this->component->id?>"/>
     <label>stuur mij een automatische email als het aantal onder</label>
     <input value="<?=$this->component->minAmount ?>" type="number" name="minAmount" required="true">
-    <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
+
+    <label>Moet dit teruggebracht worden?</label>
+    <input type="radio" <?php if ($this->component->returns == 1) { echo "checked=\"true\""; } ?> name="return" value="1" id="true"><label for="true">Ja</label>
+    <input type="radio" <?php if ($this->component->returns == 0) { echo "checked=\"true\""; } ?> name="return" value="0" id="false"><label for="false">Nee</label>
+
+    <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>"><br>
     <button class="btn waves-effect waves-light blue" type="submit" name="action">opslaan
         <i class="material-icons right">send</i>
     </button>

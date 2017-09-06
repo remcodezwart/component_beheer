@@ -60,9 +60,7 @@ class mutationModel
         $query->execute();
 
         $mutations = $query->fetchALL();
-
-        Filter::XSSFilter($mutations);
-
-        return $mutations;
-	}	
+        
+        return Filter::XSSFilter($mutations);
+    }
 }
