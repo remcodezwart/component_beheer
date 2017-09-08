@@ -23,14 +23,6 @@ class ComponentController extends Controller
         ));
     }
 
-    public function preCreate()
-    {
-        $this->View->render('component/createcomloc', array(
-            'create' => array(Request::post('name'), Request::post('description'), Request::post('specs'), Request::post('hyperlink'), Request::post('amount')),
-            'locations' => LocationModel::getAllLocations()
-        ));
-    }
-
     public function switchAmount()
     {
         $this->View->render('component/amounts', array(

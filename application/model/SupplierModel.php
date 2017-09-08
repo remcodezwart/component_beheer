@@ -51,6 +51,8 @@ class SupplierModel
         $sql = "INSERT INTO supplier (name) VALUES(:name)";
         $query = $database->prepare($sql);
         $query->execute(array(':name' => $name));
+
+        return true;
 	} 
 
 	public static function editSupplier($name, $id)
@@ -70,6 +72,8 @@ class SupplierModel
         $sql = "UPDATE supplier SET name = :name WHERE id = :id";
         $query = $database->prepare($sql);
         $query->execute(array(':name' => $name, ':id' => $id));
+
+        return true;
 	}
 
 	public static function deleteSupplier($id)
@@ -84,5 +88,7 @@ class SupplierModel
         $sql = "UPDATE supplier SET active = :active WHERE id = :id";
         $query = $database->prepare($sql);
         $query->execute(array(':active' => 0, ':id' => $id));
+
+        return true;
 	}
 }

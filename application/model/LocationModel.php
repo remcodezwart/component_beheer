@@ -28,6 +28,7 @@ class LocationModel
         if (empty($id)) {
             Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
             return false;
+            exit;
         }
 
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -45,6 +46,7 @@ class LocationModel
         if (empty($adress)) {
             Session::add('feedback_negative', Text::get('LOCATION_NO_ADDRESS'));
             return false;
+            exit;
         }
 
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -57,6 +59,8 @@ class LocationModel
             Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
             return false;
         }
+
+        return true;
     }
 
     public static function deleteLocation($id)
@@ -64,6 +68,7 @@ class LocationModel
         if (empty($id)) {
             Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
             return false;
+            exit;
         }
 
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -74,7 +79,10 @@ class LocationModel
 
         if ($query->rowCount() !== 1) {
             Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
-        } 
+            return false;
+        }
+
+        return true; 
     }
 
     public static function editLocation($id, $address)
@@ -99,6 +107,8 @@ class LocationModel
             Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
             return false;
         } 
+
+        return true;
     }
 
     public static function getAllComloc()
@@ -144,6 +154,7 @@ class LocationModel
             Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
             return false;
         }
+        return true;
     }
 
     public static function createComloc($componentId, $locationId, $amount)
