@@ -125,6 +125,8 @@ class LoanModel
 	        $query = $database->prepare($sql);
 	        $query->execute(array(':id' => $id, ':barcode' => $barcode, ':amount' => $amount, ':location' => $locationId));
 
+	    	mutationModel::addMutation($old->component_id ,$locationId ,$amountDiference ,"Onderdeel extra/minder geleend");
+
 	        if ($query->rowCount() !== 1) {
 	            Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
 	            return false;
@@ -137,9 +139,16 @@ class LoanModel
 	{
 		$database = DatabaseFactory::getFactory()->getConnection();
 
-		$sql = "UPDATE comloc SET amount = amount - :amount WHERE location_id=:locationId AND component_id  = :componentId";
+		$sql = "UPDATE comloc SET amount = amount + :amount WHERE location_id=:locationId AND component_id  = :componentId";
 	    $query = $database->prepare($sql);
-	    $query->execute(array(':componentId' => $componentId, ':amount' => $amount, ':locationId' => $locationId));
+
+	    $query->bindParam(':amount', $amount, PDO::PARAM_INT);
+	    $query->bindParam(':locationId', $locationId, PDO::PARAM_INT);
+	    $query->bindParam(':componentId', $componentId, PDO::PARAM_INT);
+
+	    $query->execute();
+
+	    mutationModel::addMutation($componentId ,$locationId ,$amount ,"Onderdeel terug gebracht/lening geanuleerd");
 
 	    if ($query->rowCount() !== 1) {
             Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
