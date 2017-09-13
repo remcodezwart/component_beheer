@@ -2,6 +2,22 @@
 
 <?=$this->generateNav(Config::get('URL')."supplier/mutationsIndex", Request::get('page'))?>
 
+<form action="" method="get" class="center-align">
+	<div class="input-field inline">
+	
+	<input id="startdate" type="text" name="startdate" placeholder="dd-mm-jjjj">
+	<label for="startdate">tussen</label>
+	</div>
+	<div class="input-field inline">
+	<label id="enddate" for="enddate">en</label>
+	<input type="text" name="enddate" placeholder="dd-mm-jjjj">
+	</div>
+	<div class="input-field inline">
+	<button class="btn waves-effect waves-light" type="submit">verzenden</button>
+	</div>
+	
+</form>
+
 <table class="striped responsive-table" cellspacing="0">
 	<thead>
 		<tr>

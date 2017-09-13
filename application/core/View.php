@@ -173,13 +173,18 @@ class View
         $size = intval($size);
         $limit = $page+$size;
         $page = $page-$size;
+        $dates = "";
+        if (!empty(Request::get('startdate')) && !empty(Request::get('enddate'))) {
+            $dates = '&startdate='.Request::get('startdate').'&enddate='.Request::get('enddate');
+        }
+
 
         for ($page; $limit >= $page ; $page++) {
             if (0 >= $page) continue;
             if ($page == Request::get('page') || !is_numeric(Request::get('page')) && $page == 1) {
-                $html .= '<li class="active"><a href="'.$url.'?page='.$page.'">'.$page.'</a></li>';
+                $html .= '<li class="active"><a href="'.$url.'?page='.$page.$dates.'">'.$page.'</a></li>';
             } else {
-                $html .= '<li class="waves-effect"><a href="'.$url.'?page='.$page.'">'.$page.'</a></li>';
+                $html .= '<li class="waves-effect"><a href="'.$url.'?page='.$page.$dates.'">'.$page.'</a></li>';
             }
         }
 

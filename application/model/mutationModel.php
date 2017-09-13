@@ -36,7 +36,7 @@ class mutationModel
         return false;
 	}
 
-	public static function getMutation($page = null)
+	public static function getMutation($page = null,$startdate = null,$enddate = null)
 	{
         if ($page === null || !is_numeric($page) || 0 >= $page) {
             $offset = 0;   
@@ -44,7 +44,15 @@ class mutationModel
             $offset = ($page-1)*5;
         }
 
+        
+
 		$database = DatabaseFactory::getFactory()->getConnection();
+        $where = "";
+        if (!empty($startdate) && !empty($enddate)) {
+            $date1 = date("Y-m-d",strtotime($startdate));
+            $date2 = date("Y-m-d",strtotime($enddate));
+            $where = "WHERE mutations.date >= :date1 AND mutations.date <= :date2";
+        }
 
         $sql = "SELECT mutations.*,users.user_id,users.user_name, location.id,location.address,components.id,components.name FROM mutations 
         INNER JOIN components ON
@@ -52,11 +60,16 @@ class mutationModel
         INNER JOIN location ON	
 			mutations.location_id = location.id
 		INNER JOIN users ON	
-			mutations.user_id = users.user_id
-        LIMIT :offset, 5";
+			mutations.user_id = users.user_id ".
+            $where
+        ." LIMIT :offset, 5";
 
         $query = $database->prepare($sql);
         $query->bindParam(':offset', $offset, PDO::PARAM_INT);
+        if (!empty($startdate) && !empty($enddate)) {
+            $query->bindParam(':date1', $date1, PDO::PARAM_STR);
+            $query->bindParam(':date2', $date2, PDO::PARAM_STR);
+        }
         $query->execute();
 
         $mutations = $query->fetchALL();
