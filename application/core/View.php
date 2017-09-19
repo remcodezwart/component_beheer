@@ -175,7 +175,11 @@ class View
         $page = $page-$size;
         $dates = "";
         if (!empty(Request::get('startdate')) && !empty(Request::get('enddate'))) {
-            $dates = '&startdate='.Request::get('startdate').'&enddate='.Request::get('enddate');
+            $startDate = Request::get('startdate');
+            $endDate = Request::get('enddate');
+            Filter::XSSFilter($startDate);
+            Filter::XSSFilter($endDate);
+            $dates = '&startdate='.$startDate.'&enddate='. $endDate;
         }
 
 

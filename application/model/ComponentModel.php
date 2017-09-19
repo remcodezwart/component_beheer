@@ -93,22 +93,22 @@ class ComponentModel
     }
 
     public static function loanComponent($id, $amount, $location, $barcode)
-    {   
+    {      
         $validate = locationModel::getSomeComloc($id, $location);
 
         if (empty($id) || empty($amount) || is_numeric($amount) === false || $validate === false) {
+            var_dump($validate);
+            exit;
             Session::add('feedback_negative', Text::get('REQUIERED_FIELDS'));
             return false;
         }
-
-        $amount = $validate->amount - $amount;
 
         if (!is_numeric($amount) ) {
             Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
             return false;
         }
 
-        if (0 > $amount) {
+        if (0 > ($validate->amount - $amount) && $amount > 0) {
             Session::add('feedback_negative', Text::get('NOT_ENOUGH_COMPONENTS'));
             return false;
         }
@@ -119,7 +119,12 @@ class ComponentModel
         WHERE component_id = :componentId AND location_id = :locationId";
         $query = $database->prepare($sql);
 
-        $query->execute(array(':amount' => $amount, ':componentId' => $id, ':locationId' => $location));
+        $amountOld = $validate->amount - $amount;
+
+        $query->bindParam(':amount',  $amountOld, PDO::PARAM_INT);
+        $query->bindParam(':componentId', $id, PDO::PARAM_STR);
+        $query->bindParam(':locationId', $location, PDO::PARAM_STR);
+        $query->execute();
 
         if ($query->rowCount() == 1) {
             ComponentModel::checkIfComponentsUnderMinimumAmount();
@@ -135,7 +140,6 @@ class ComponentModel
             } else {
                 mutationModel::addMutation($id, $location, "-".$amount, "Onderdeel uitgeleend(Hoeft niet terug gebracht te worden)");
             }
-
             return true;
         }
 

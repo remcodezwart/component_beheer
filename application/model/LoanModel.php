@@ -87,10 +87,10 @@ class LoanModel
 		if (self::delete($id)) {
 			self::updateComloc($loanAmount->component_id, $loanAmount->amount, $loanAmount->location_id);
 	        return true;
-	        exit;
+		} else {
+			Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
+	    	return false;
 		}
-		Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
-	    return false;
 	}
 
 	public static function edit($id, $locationId, $amount, $barcode) 
@@ -103,9 +103,7 @@ class LoanModel
 
 		$old = self::getLoan($id);
 
-		$amountDiference =  $amount - $old->amount;
-		
-		$validate = locationModel::getSomeComloc($id, $locationId);
+		$amountDiference =  ($amount - $old->amount)*-1;
 
 		if (0 > ($old->amount-$amountDiference)  ) {
             Session::add('feedback_negative', Text::get('NOT_ENOUGH_COMPONENTS'));
@@ -115,7 +113,8 @@ class LoanModel
 
 		if ($old->location_id !== $locationId) {
 			if (self::completedLoan($id)) {
-				ComponentModel::loanComponent($id, $locationId, $amount, $barcode);
+				$amount *= 1;
+				ComponentModel::loanComponent($old->component_id, $amount, $locationId, $barcode);
 			}
 		} else {
 			self::updateComloc($old->component_id, $amountDiference, $locationId);
